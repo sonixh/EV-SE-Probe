@@ -18,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   bool isoEntered = false;
   bool urlEntered = false;
   bool loginError = false;
+  bool rtoError = false;
   NetworkHandler nH = new NetworkHandler();
 
   void login() async {
@@ -26,7 +27,11 @@ class _LoginPageState extends State<LoginPage> {
       url = iso + '.nuvve.com';
     }
     temp = await nH.login(username, password, url);
-    if (temp[3] == 'success') {
+    if (temp == null) {
+      setState(() {
+        rtoError = true;
+      });
+    } else if (temp[3] == 'success') {
       Provider.of<User>(context, listen: false).setName(temp[0]);
       Provider.of<User>(context, listen: false).setToken(temp[1]);
       Provider.of<User>(context, listen: false).setRole(temp[2]);
@@ -106,6 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                 labelText: 'Password',
               ),
               onChanged: (value) {
+                //TODO: secure
                 password = value;
                 setState(() {
                   passwordEntered = true;
@@ -172,6 +178,11 @@ class _LoginPageState extends State<LoginPage> {
             if (loginError)
               Text(
                 'Invalid username or password',
+                style: TextStyle(color: Colors.red[500]),
+              ),
+            if (rtoError)
+              Text(
+                'Invalid TSO/RTO Entered',
                 style: TextStyle(color: Colors.red[500]),
               ),
           ],

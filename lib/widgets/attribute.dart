@@ -47,7 +47,6 @@ class _AttributeState extends State<Attribute> {
       }
       if (widget.x == 'energyUp') {
         internal = snapshot.data.energyUp + " kWh";
-        print(internal);
       }
       if (widget.x == 'energyNet') {
         internal = snapshot.data.energyNet + " kWh";

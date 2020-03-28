@@ -11,20 +11,26 @@ class NetworkHandler<T> {
   final T type;
 
   Future<List> login(String username, String password, String url) async {
-    final response = await http
-        .get('https://$url/api/auth?user=$username&password=$password');
-    if (response.statusCode == 200) {
-      if (jsonDecode(response.body)['status'] == 'success') {
-        String token = jsonDecode(response.body)['token'];
-        String name = jsonDecode(response.body)['name'];
-        String role = jsonDecode(response.body)['roles'][0];
-        String status = jsonDecode(response.body)['status'];
-        return [name, token, role, status];
+    try {
+      final response = await http
+          .get('https://$url/api/auth?user=$username&password=$password');
+      if (response.statusCode == 200) {
+        if (jsonDecode(response.body)['status'] == 'success') {
+          String token = jsonDecode(response.body)['token'];
+          print(token);
+          String name = jsonDecode(response.body)['name'];
+          String role = jsonDecode(response.body)['roles'][0];
+          String status = jsonDecode(response.body)['status'];
+          return [name, token, role, status];
+        } else {
+          return [null, null, null, jsonDecode(response.body)['__errors__']];
+        }
       } else {
-        return [null, null, null, jsonDecode(response.body)['__errors__']];
+        throw Exception('Failed to login');
       }
-    } else {
-      throw Exception('Failed to login');
+    } catch (e) {
+      print(e);
+      return null;
     }
   }
 
@@ -50,6 +56,7 @@ class NetworkHandler<T> {
               .toList();
         } else if (type == EVSEStatus) {
           try {
+            print(json.decode(response.body)['evses_log']);
             return (json.decode(response.body)['evses_log'] as List)
                 .map((i) => EVSEStatus.fromJson(i))
                 .toList();

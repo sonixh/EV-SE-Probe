@@ -33,7 +33,8 @@ class _DeveloperPageState extends State<DeveloperPage> {
           token: token, name: name, username: username, url: url);
       Provider.of<User>(context, listen: false).setEVSEList(evseList);
       print('EVSE list loaded');
-      print(evseList);
+      //only prints out 'instance of EVSE'
+      //print(evseList);
     }
     Provider.of<User>(context, listen: false).setType('evse');
   }

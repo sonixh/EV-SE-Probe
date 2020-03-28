@@ -8,7 +8,8 @@ class EVSEInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(future);
+    //prints out 'instance of EVSE'
+    //print(future);
     return Container(
       padding: EdgeInsets.only(top: 20, bottom: 30, left: 30, right: 30),
       child: Column(
