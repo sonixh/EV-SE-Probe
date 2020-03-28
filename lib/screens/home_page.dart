@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:v2g/models/network_handler.dart';
 import 'package:v2g/models/user.dart';
 import 'package:v2g/widgets/developer.dart';
@@ -18,6 +19,9 @@ class HomePage extends StatelessWidget {
 
       NetworkHandler nH = NetworkHandler();
       String logoutResponse = (await nH.logout(username, token, name, url));
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('username', null);
+      prefs.setString('url', null);
 
       Navigator.pushReplacementNamed(context, '/login');
 

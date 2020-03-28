@@ -17,7 +17,6 @@ class NetworkHandler<T> {
       if (response.statusCode == 200) {
         if (jsonDecode(response.body)['status'] == 'success') {
           String token = jsonDecode(response.body)['token'];
-          print(token);
           String name = jsonDecode(response.body)['name'];
           String role = jsonDecode(response.body)['roles'][0];
           String status = jsonDecode(response.body)['status'];

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:v2g/models/network_handler.dart';
 import 'package:v2g/models/user.dart';
 import 'package:provider/provider.dart';
@@ -20,13 +23,68 @@ class _LoginPageState extends State<LoginPage> {
   bool loginError = false;
   bool rtoError = false;
   NetworkHandler nH = new NetworkHandler();
+  bool isLoggedIn = false;
+  final _storage = FlutterSecureStorage();
+
+  @override
+  void initState() {
+    super.initState();
+    autoLogin();
+  }
+
+  void autoLogin() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String userId = prefs.getString('username');
+    final pass = await _storage.read(key: 'password');
+    final String i = prefs.getString('iso');
+
+    if (userId != null && pass != null && i != null) {
+      url = i + '.nuvve.com';
+
+      setState(() {
+        isLoggedIn = true;
+        username = userId;
+        password = pass;
+        iso = i;
+      });
+
+      List temp = await nH.login(username, password, url);
+      if (temp == null) {
+        setState(() {
+          rtoError = true;
+        });
+      } else if (temp[3] == 'success') {
+        Provider.of<User>(context, listen: false).setName(temp[0]);
+        Provider.of<User>(context, listen: false).setToken(temp[1]);
+        Provider.of<User>(context, listen: false).setRole(temp[2]);
+        Provider.of<User>(context, listen: false).setUsername(username);
+        Provider.of<User>(context, listen: false).seturl(url);
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        print(temp[3]);
+        setState(() {
+          loginError = true;
+        });
+      }
+    }
+  }
 
   void login() async {
-    List temp = [];
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('username', username);
+    await _storage.write(key: 'password', value: password);
+    prefs.setString('iso', iso);
+
+    setState(() {
+      isLoggedIn = true;
+    });
+
     if (isoEntered) {
       url = iso + '.nuvve.com';
     }
-    temp = await nH.login(username, password, url);
+
+    List temp = await nH.login(username, password, url);
+
     if (temp == null) {
       setState(() {
         rtoError = true;
@@ -69,125 +127,129 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: EdgeInsets.only(
-          top: 70,
-          right: 40,
-          left: 40,
-        ),
-        child: Column(
-          children: <Widget>[
-            Text(
-              'V2G',
-              style: TextStyle(
-                fontSize: 30,
-              ),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            TextField(
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Username',
-              ),
-              onChanged: (value) {
-                username = value;
-                setState(() {
-                  usernameEntered = true;
-                });
-              },
-            ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 10),
-            ),
-            TextField(
-              textAlign: TextAlign.center,
-              obscureText: true,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Password',
-              ),
-              onChanged: (value) {
-                //TODO: secure
-                password = value;
-                setState(() {
-                  passwordEntered = true;
-                });
-              },
-            ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 10),
-            ),
-            TextField(
-              enabled: !determineDisabledURLField(),
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'TSO/RTO',
-              ),
-              onChanged: (value) {
-                iso = value;
-                if (value == '') {
-                  setState(() {
-                    isoEntered = false;
-                  });
-                } else {
-                  setState(() {
-                    isoEntered = true;
-                  });
-                }
-              },
-            ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 10),
-            ),
-            Text('OR'),
-            Padding(
-              padding: EdgeInsets.only(bottom: 10),
-            ),
-            TextField(
-              enabled: !determineDisabledNameField(),
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'URL',
-              ),
-              onChanged: (value) {
-                url = value;
-                if (value == '') {
-                  setState(() {
-                    urlEntered = false;
-                  });
-                } else {
-                  setState(() {
-                    urlEntered = true;
-                  });
-                }
-              },
-            ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 10),
-            ),
-            FlatButton(
-              child: Text('Login'),
-              onPressed: !determineDisabled() ? null : login,
-            ),
-            if (loginError)
+    if (isLoggedIn) {
+      return Scaffold(
+          body: Container(child: SpinKitPulse(color: Colors.white, size: 100)));
+    } else {
+      return Scaffold(
+        body: Container(
+          padding: EdgeInsets.only(
+            top: 70,
+            right: 40,
+            left: 40,
+          ),
+          child: Column(
+            children: <Widget>[
               Text(
-                'Invalid username or password',
-                style: TextStyle(color: Colors.red[500]),
+                'V2G',
+                style: TextStyle(
+                  fontSize: 30,
+                ),
               ),
-            if (rtoError)
-              Text(
-                'Invalid TSO/RTO Entered',
-                style: TextStyle(color: Colors.red[500]),
+              SizedBox(
+                height: 40,
               ),
-          ],
+              TextField(
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Username',
+                ),
+                onChanged: (value) {
+                  username = value;
+                  setState(() {
+                    usernameEntered = true;
+                  });
+                },
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 10),
+              ),
+              TextField(
+                textAlign: TextAlign.center,
+                obscureText: true,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Password',
+                ),
+                onChanged: (value) {
+                  password = value;
+                  setState(() {
+                    passwordEntered = true;
+                  });
+                },
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 10),
+              ),
+              TextField(
+                enabled: !determineDisabledURLField(),
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'TSO/RTO',
+                ),
+                onChanged: (value) {
+                  iso = value;
+                  if (value == '') {
+                    setState(() {
+                      isoEntered = false;
+                    });
+                  } else {
+                    setState(() {
+                      isoEntered = true;
+                    });
+                  }
+                },
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 10),
+              ),
+              Text('OR'),
+              Padding(
+                padding: EdgeInsets.only(bottom: 10),
+              ),
+              TextField(
+                enabled: !determineDisabledNameField(),
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'URL',
+                ),
+                onChanged: (value) {
+                  url = value;
+                  if (value == '') {
+                    setState(() {
+                      urlEntered = false;
+                    });
+                  } else {
+                    setState(() {
+                      urlEntered = true;
+                    });
+                  }
+                },
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 10),
+              ),
+              FlatButton(
+                child: Text('Login'),
+                onPressed: !determineDisabled() ? null : login,
+              ),
+              if (loginError)
+                Text(
+                  'Invalid username or password',
+                  style: TextStyle(color: Colors.red[500]),
+                ),
+              if (rtoError)
+                Text(
+                  'Invalid TSO/RTO Entered',
+                  style: TextStyle(color: Colors.red[500]),
+                ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }

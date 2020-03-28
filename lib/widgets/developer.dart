@@ -7,6 +7,7 @@ import 'package:v2g/models/evse.dart';
 import 'package:v2g/models/evse_status.dart';
 import 'package:v2g/models/user.dart';
 import 'package:v2g/screens/list_page.dart';
+import 'package:v2g/screens/peer_page.dart';
 import 'package:v2g/widgets/reusable_card.dart';
 import '../constants.dart';
 import 'icon_content.dart';
@@ -133,7 +134,7 @@ class _DeveloperPageState extends State<DeveloperPage> {
             getEVSEList(token, name, username, url);
             getEVSEStatusList(token, name, username, url);
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => ListPage()));
+                context, MaterialPageRoute(builder: (context) => PeerPage()));
           },
           colour: kAccentColor,
           cardChild: Container(
