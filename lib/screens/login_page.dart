@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    autoLogin();
+    //autoLogin();
   }
 
   void autoLogin() async {
@@ -70,26 +70,28 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void login() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('username', username);
-    await _storage.write(key: 'password', value: password);
-    prefs.setString('iso', iso);
-
-    setState(() {
-      isLoggedIn = true;
-    });
-
     if (isoEntered) {
       url = iso + '.nuvve.com';
     }
 
     List temp = await nH.login(username, password, url);
-
     if (temp == null) {
+      //temp is set to null in NH
       setState(() {
         rtoError = true;
       });
+      print(rtoError);
     } else if (temp[3] == 'success') {
+      setState(() {
+        isLoggedIn = true;
+      });
+      //Set storage
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('username', username);
+      await _storage.write(key: 'password', value: password);
+      prefs.setString('iso', iso);
+
+      print('Success logging in');
       Provider.of<User>(context, listen: false).setName(temp[0]);
       Provider.of<User>(context, listen: false).setToken(temp[1]);
       Provider.of<User>(context, listen: false).setRole(temp[2]);
@@ -100,6 +102,7 @@ class _LoginPageState extends State<LoginPage> {
       print(temp[3]);
       setState(() {
         loginError = true;
+        rtoError = false;
       });
     }
   }
@@ -239,12 +242,12 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 if (loginError)
                   Text(
-                    'Invalid username or password',
+                    'Invalid username or password entered',
                     style: TextStyle(color: Colors.red[500]),
                   ),
                 if (rtoError)
                   Text(
-                    'Invalid TSO/RTO Entered',
+                    'Invalid TSO/RTO entered',
                     style: TextStyle(color: Colors.red[500]),
                   ),
               ],
