@@ -23,7 +23,7 @@ class _ResourceList extends State<ResourceList> {
     //sortedList = evStatusList;
 
     if (sortedList != null) {
-      sortedList.sort((a, b) => b.peerConnected.compareTo(a.peerConnected));
+      sortedList.sort((a, b) => a.evseState.compareTo(b.evseState));
 
       sortedList = sortedList
           .where((object) =>
