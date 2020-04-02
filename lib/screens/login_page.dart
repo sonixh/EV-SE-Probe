@@ -138,115 +138,117 @@ class _LoginPageState extends State<LoginPage> {
             right: 40,
             left: 40,
           ),
-          child: Column(
-            children: <Widget>[
-              Text(
-                'V2G',
-                style: TextStyle(
-                  fontSize: 30,
-                ),
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              TextField(
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Username',
-                ),
-                onChanged: (value) {
-                  username = value;
-                  setState(() {
-                    usernameEntered = true;
-                  });
-                },
-              ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 10),
-              ),
-              TextField(
-                textAlign: TextAlign.center,
-                obscureText: true,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
-                ),
-                onChanged: (value) {
-                  password = value;
-                  setState(() {
-                    passwordEntered = true;
-                  });
-                },
-              ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 10),
-              ),
-              TextField(
-                enabled: !determineDisabledURLField(),
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'TSO/RTO',
-                ),
-                onChanged: (value) {
-                  iso = value;
-                  if (value == '') {
-                    setState(() {
-                      isoEntered = false;
-                    });
-                  } else {
-                    setState(() {
-                      isoEntered = true;
-                    });
-                  }
-                },
-              ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 10),
-              ),
-              Text('OR'),
-              Padding(
-                padding: EdgeInsets.only(bottom: 10),
-              ),
-              TextField(
-                enabled: !determineDisabledNameField(),
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'URL',
-                ),
-                onChanged: (value) {
-                  url = value;
-                  if (value == '') {
-                    setState(() {
-                      urlEntered = false;
-                    });
-                  } else {
-                    setState(() {
-                      urlEntered = true;
-                    });
-                  }
-                },
-              ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 10),
-              ),
-              FlatButton(
-                child: Text('Login'),
-                onPressed: !determineDisabled() ? null : login,
-              ),
-              if (loginError)
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
                 Text(
-                  'Invalid username or password',
-                  style: TextStyle(color: Colors.red[500]),
+                  'V2G',
+                  style: TextStyle(
+                    fontSize: 30,
+                  ),
                 ),
-              if (rtoError)
-                Text(
-                  'Invalid TSO/RTO Entered',
-                  style: TextStyle(color: Colors.red[500]),
+                SizedBox(
+                  height: 40,
                 ),
-            ],
+                TextField(
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Username',
+                  ),
+                  onChanged: (value) {
+                    username = value;
+                    setState(() {
+                      usernameEntered = true;
+                    });
+                  },
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                ),
+                TextField(
+                  textAlign: TextAlign.center,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Password',
+                  ),
+                  onChanged: (value) {
+                    password = value;
+                    setState(() {
+                      passwordEntered = true;
+                    });
+                  },
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                ),
+                TextField(
+                  enabled: !determineDisabledURLField(),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'TSO/RTO',
+                  ),
+                  onChanged: (value) {
+                    iso = value;
+                    if (value == '') {
+                      setState(() {
+                        isoEntered = false;
+                      });
+                    } else {
+                      setState(() {
+                        isoEntered = true;
+                      });
+                    }
+                  },
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                ),
+                Text('OR'),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                ),
+                TextField(
+                  enabled: !determineDisabledNameField(),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'URL',
+                  ),
+                  onChanged: (value) {
+                    url = value;
+                    if (value == '') {
+                      setState(() {
+                        urlEntered = false;
+                      });
+                    } else {
+                      setState(() {
+                        urlEntered = true;
+                      });
+                    }
+                  },
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                ),
+                FlatButton(
+                  child: Text('Login'),
+                  onPressed: !determineDisabled() ? null : login,
+                ),
+                if (loginError)
+                  Text(
+                    'Invalid username or password',
+                    style: TextStyle(color: Colors.red[500]),
+                  ),
+                if (rtoError)
+                  Text(
+                    'Invalid TSO/RTO Entered',
+                    style: TextStyle(color: Colors.red[500]),
+                  ),
+              ],
+            ),
           ),
         ),
       );

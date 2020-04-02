@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-        margin: EdgeInsets.only(right: 60, left: 60, top: 50, bottom: 50),
+        margin: EdgeInsets.only(right: 40, left: 40, top: 25, bottom: 50),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -43,15 +43,15 @@ class HomePage extends StatelessWidget {
                 'PJM',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 60,
+                  fontSize: 45,
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 15),
             DeveloperPage(),
-            SizedBox(height: 50),
+            SizedBox(height: 30),
             Container(
-              padding: EdgeInsets.only(left: 60, right: 60),
+              padding: EdgeInsets.only(left: 40, right: 40),
               child: ReusableCard(
                 margin: 0,
                 colour: Color(0xFFabca46),

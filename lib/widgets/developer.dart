@@ -101,7 +101,7 @@ class _DeveloperPageState extends State<DeveloperPage> {
           ),
         if (role == "developer")
           Container(
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.all(10),
             child: Divider(
               color: Colors.white,
               thickness: 3,
@@ -123,7 +123,7 @@ class _DeveloperPageState extends State<DeveloperPage> {
           },
         ),
         Container(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.all(10),
           child: Divider(
             color: Colors.white,
             thickness: 3,
