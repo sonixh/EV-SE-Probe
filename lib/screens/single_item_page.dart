@@ -71,7 +71,6 @@ class _SingleItemPageState extends State<SingleItemPage> {
           .toList()[0];
     } else if (sharedValue == 0 && type == 'evse') {
       status = true;
-      print('here in single item page');
       EVSEStatus evseStatus = new EVSEStatus();
       f = evseStatus.fetchEVSEStatus(
           evseID: iD, token: token, name: name, username: username, url: url);

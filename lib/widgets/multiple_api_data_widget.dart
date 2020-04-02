@@ -75,7 +75,7 @@ class _MultipleAPIDataWidgetState extends State<MultipleAPIDataWidget> {
                       if (sortedList[index].peerConnected == 'false')
                         NotConnected(sortedList: sortedList, index: index),
                       SizedBox(
-                        height: 20,
+                        height: 17,
                       ),
                     ],
                   );
@@ -108,6 +108,14 @@ class Connected extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BoxDecoration box = new BoxDecoration(
+      color: kAccentColor,
+      border: Border.all(
+        width: 1,
+        color: Colors.white,
+      ),
+    );
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -118,7 +126,7 @@ class Connected extends StatelessWidget {
         );
       },
       child: Container(
-        color: kAccentColor,
+        decoration: box,
         margin: EdgeInsets.only(
           left: 7,
           right: 7,

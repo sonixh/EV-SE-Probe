@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:v2g/models/network_handler.dart';
 import 'package:v2g/models/user.dart';
 import 'package:v2g/widgets/developer.dart';
-import 'package:v2g/widgets/electrician.dart';
 import 'package:v2g/widgets/reusable_card.dart';
 
 class HomePage extends StatelessWidget {
@@ -32,8 +31,6 @@ class HomePage extends StatelessWidget {
       }
     }
 
-    String role = Provider.of<User>(context).role;
-
     return Scaffold(
       body: Container(
         margin: EdgeInsets.only(right: 60, left: 60, top: 50, bottom: 50),
@@ -51,8 +48,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            if (role == 'electrician') ElectricianPage(),
-            if (role == 'developer') DeveloperPage(),
+            DeveloperPage(),
             SizedBox(height: 50),
             Container(
               padding: EdgeInsets.only(left: 60, right: 60),

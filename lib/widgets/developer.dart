@@ -79,31 +79,34 @@ class _DeveloperPageState extends State<DeveloperPage> {
     String name = Provider.of<User>(context).name;
     String username = Provider.of<User>(context).username;
     String url = Provider.of<User>(context).url;
+    String role = Provider.of<User>(context).role;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        ReusableCard(
-          margin: 0,
-          onPress: () {
-            getEVList(token, name, username, url);
-            getEVStatusList(token, name, username, url);
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => ListPage()));
-          },
-          colour: kAccentColor,
-          cardChild: Container(
-            padding: EdgeInsets.only(top: 15, bottom: 10),
-            child: IconContent(icon: FontAwesomeIcons.car, label: 'EV'),
+        if (role == "developer")
+          ReusableCard(
+            margin: 0,
+            onPress: () {
+              getEVList(token, name, username, url);
+              getEVStatusList(token, name, username, url);
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => ListPage()));
+            },
+            colour: kAccentColor,
+            cardChild: Container(
+              padding: EdgeInsets.only(top: 15, bottom: 10),
+              child: IconContent(icon: FontAwesomeIcons.car, label: 'EV'),
+            ),
           ),
-        ),
-        Container(
-          padding: EdgeInsets.all(20),
-          child: Divider(
-            color: Colors.white,
-            thickness: 3,
+        if (role == "developer")
+          Container(
+            padding: EdgeInsets.all(20),
+            child: Divider(
+              color: Colors.white,
+              thickness: 3,
+            ),
           ),
-        ),
         ReusableCard(
           margin: 0,
           colour: kAccentColor,
@@ -129,8 +132,8 @@ class _DeveloperPageState extends State<DeveloperPage> {
         ReusableCard(
           margin: 0,
           onPress: () {
-            getEVList(token, name, username, url);
-            getEVStatusList(token, name, username, url);
+            //getEVList(token, name, username, url);
+            //getEVStatusList(token, name, username, url);
             getEVSEList(token, name, username, url);
             getEVSEStatusList(token, name, username, url);
             Navigator.push(

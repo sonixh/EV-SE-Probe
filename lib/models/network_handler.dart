@@ -14,6 +14,7 @@ class NetworkHandler<T> {
     try {
       final response = await http
           .get('https://$url/api/auth?user=$username&password=$password');
+
       if (response.statusCode == 200) {
         if (jsonDecode(response.body)['status'] == 'success') {
           String token = jsonDecode(response.body)['token'];
@@ -55,7 +56,7 @@ class NetworkHandler<T> {
               .toList();
         } else if (type == EVSEStatus) {
           try {
-            print(json.decode(response.body)['evses_log']);
+            //print(json.decode(response.body)['evses_log']);
             return (json.decode(response.body)['evses_log'] as List)
                 .map((i) => EVSEStatus.fromJson(i))
                 .toList();

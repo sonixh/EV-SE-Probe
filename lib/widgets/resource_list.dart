@@ -3,7 +3,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:v2g/models/user.dart';
 import 'package:v2g/screens/single_item_page.dart';
-
 import '../constants.dart';
 
 class ResourceList extends StatefulWidget {
@@ -70,7 +69,7 @@ class _ResourceList extends State<ResourceList> {
                         Connected(sortedList: sortedList, index: index),
                       if (sortedList[index].peerConnected == 'true')
                         SizedBox(
-                          height: 20,
+                          height: 17,
                         ),
                     ],
                   );
@@ -103,6 +102,45 @@ class Connected extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BoxDecoration box = new BoxDecoration(
+      color: kAccentColor,
+      border: Border.all(
+        width: 1,
+        color: Colors.white,
+      ),
+    );
+    BoxDecoration redBox = new BoxDecoration(
+      color: kAccentColor,
+      border: Border.all(
+        width: 3,
+        color: Colors.red,
+      ),
+    );
+    BoxDecoration yellowBox = new BoxDecoration(
+      color: kAccentColor,
+      border: Border.all(
+        width: 3,
+        color: Colors.yellow,
+      ),
+    );
+    BoxDecoration blueBox = new BoxDecoration(
+      color: kAccentColor,
+      border: Border.all(
+        width: 3,
+        color: Colors.lightBlue,
+      ),
+    );
+
+    if (sortedList[index].evseState == 'B1') {
+      box = redBox;
+    }
+    if (sortedList[index].evseState == 'LR') {
+      box = yellowBox;
+    }
+    if (sortedList[index].evseState == 'NR') {
+      box = blueBox;
+    }
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -113,7 +151,7 @@ class Connected extends StatelessWidget {
         );
       },
       child: Container(
-        color: kAccentColor,
+        decoration: box,
         margin: EdgeInsets.only(
           left: 7,
           right: 7,
