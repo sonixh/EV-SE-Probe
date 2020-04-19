@@ -53,7 +53,7 @@ class _SingleItemPageState extends State<SingleItemPage> {
     List evseList = Provider.of<User>(context).evseList;
     List evList = Provider.of<User>(context).evList;
     EVSE evse = new EVSE();
-    DetailedEV ev = new DetailedEV();
+    EV ev = new EV();
 
     if (sharedValue == 1 && type == 'evse') {
       status = false;

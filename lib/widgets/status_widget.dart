@@ -51,12 +51,7 @@ class _StatusWidgetState extends State<StatusWidget> {
             Attribute(
               snapshot: snapshot,
               label: 'Real Power ',
-              x: 'energyTotal',
-            ),
-            Attribute(
-              snapshot: snapshot,
-              label: 'Net Energy ',
-              x: 'energyNet',
+              x: 'realPower',
             ),
             Attribute(
               snapshot: snapshot,
@@ -103,6 +98,10 @@ class _StatusWidgetState extends State<StatusWidget> {
                 snapshot: snapshot,
                 label: 'Primary Status ',
                 x: 'primaryStatus'),
+            Attribute(
+                snapshot: snapshot,
+                label: 'Secondary Status ',
+                x: 'secondaryStatus'),
           ];
           String type = Provider.of<User>(context).type;
           if (type == 'evse') {

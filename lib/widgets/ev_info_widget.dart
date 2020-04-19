@@ -4,7 +4,7 @@ import '../constants.dart';
 
 class EVInfoWidget extends StatelessWidget {
   EVInfoWidget({@required this.future});
-  final DetailedEV future;
+  final EV future;
 
   @override
   Widget build(BuildContext context) {

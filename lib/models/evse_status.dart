@@ -5,7 +5,7 @@ class EVSEStatus {
   final String status;
   final String timestamp;
   final String energyNet;
-  final String energyTotal;
+  final String realPower;
   final String energyUp;
   final String energyDown;
   final String peerConnected;
@@ -14,13 +14,15 @@ class EVSEStatus {
   final String evseState;
   final String id;
   final String carName;
+  final String vinConnected;
+  final String powerFactor;
 
   EVSEStatus(
       {this.name,
       this.status,
       this.timestamp,
       this.energyNet,
-      this.energyTotal,
+      this.realPower,
       this.energyDown,
       this.energyUp,
       this.peerConnected,
@@ -28,24 +30,27 @@ class EVSEStatus {
       this.evseState,
       this.evState,
       this.id,
-      this.carName});
+      this.carName,
+      this.vinConnected,
+      this.powerFactor});
 
   factory EVSEStatus.fromJson(Map<String, dynamic> json) {
     return EVSEStatus(
-      name: json['name'],
-      status: json['status'],
-      timestamp: json['timestamp'],
-      energyNet: json['energy_net_kwh'],
-      energyTotal: json['power_flow_real_kw'],
-      energyDown: json['energy_down_kwh'],
-      energyUp: json['energy_up_kwh'],
-      peerConnected: json['peer_connected'],
-      gfci: json['gfci_state'],
-      evseState: json['evse_state'],
-      evState: json['ev_status'],
-      id: json['evse_id'],
-      carName: json['car_name'],
-    );
+        name: json['name'],
+        status: json['status'],
+        timestamp: json['timestamp'],
+        energyNet: json['energy_net_kwh'],
+        realPower: json['power_flow_real_kw'],
+        energyDown: json['energy_down_kwh'],
+        energyUp: json['energy_up_kwh'],
+        peerConnected: json['peer_connected'],
+        gfci: json['gfci_state'],
+        evseState: json['evse_state'],
+        evState: json['ev_status'],
+        id: json['evse_id'],
+        vinConnected: json['vin'],
+        carName: json['car_name'],
+        powerFactor: json['power_factor']);
   }
 
   Future<EVSEStatus> fetchEVSEStatus(

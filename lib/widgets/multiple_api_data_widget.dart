@@ -45,7 +45,7 @@ class _MultipleAPIDataWidgetState extends State<MultipleAPIDataWidget> {
       return Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(top: 5, bottom: 20, left: 20, right: 20),
+            padding: EdgeInsets.only(top: 0, bottom: 5, left: 20, right: 20),
             child: TextField(
               textAlign: TextAlign.center,
               decoration: InputDecoration(
@@ -62,7 +62,7 @@ class _MultipleAPIDataWidgetState extends State<MultipleAPIDataWidget> {
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.only(top: 5, left: 15, right: 15, bottom: 5),
+              padding: EdgeInsets.only(top: 0, left: 5, right: 5, bottom: 0),
               child: ListView.builder(
                 itemCount: sortedList.length,
                 scrollDirection: Axis.vertical,
@@ -75,7 +75,7 @@ class _MultipleAPIDataWidgetState extends State<MultipleAPIDataWidget> {
                       if (sortedList[index].peerConnected == 'false')
                         NotConnected(sortedList: sortedList, index: index),
                       SizedBox(
-                        height: 17,
+                        height: 10,
                       ),
                     ],
                   );
@@ -108,10 +108,12 @@ class Connected extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String type = Provider.of<User>(context).type;
+
     BoxDecoration box = new BoxDecoration(
       color: kAccentColor,
       border: Border.all(
-        width: 1,
+        width: 2,
         color: Colors.white,
       ),
     );
@@ -131,7 +133,6 @@ class Connected extends StatelessWidget {
           left: 7,
           right: 7,
         ),
-        padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -143,10 +144,16 @@ class Connected extends StatelessWidget {
                     text: '${sortedList[index].name}   ',
                     style: nameTextStyle,
                   ),
-                  TextSpan(
-                    text: 'ID: ${sortedList[index].id}',
-                    style: kLabelTextStyle,
-                  ),
+                  if (type == 'ev')
+                    TextSpan(
+                      text: 'VIN: ${sortedList[index].id}',
+                      style: kLabelTextStyle,
+                    ),
+                  if (type == 'evse')
+                    TextSpan(
+                      text: 'ID: ${sortedList[index].id}',
+                      style: kLabelTextStyle,
+                    ),
                 ],
               ),
             ),
@@ -169,6 +176,7 @@ class NotConnected extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String type = Provider.of<User>(context).type;
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -184,7 +192,6 @@ class NotConnected extends StatelessWidget {
           left: 7,
           right: 7,
         ),
-        padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -196,10 +203,16 @@ class NotConnected extends StatelessWidget {
                     text: '${sortedList[index].name}   ',
                     style: nameTextStyle,
                   ),
-                  TextSpan(
-                    text: 'ID: ${sortedList[index].id}',
-                    style: kLabelTextStyle,
-                  ),
+                  if (type == 'ev')
+                    TextSpan(
+                      text: 'VIN: ${sortedList[index].id}',
+                      style: kLabelTextStyle,
+                    ),
+                  if (type == 'evse')
+                    TextSpan(
+                      text: 'ID: ${sortedList[index].id}',
+                      style: kLabelTextStyle,
+                    ),
                 ],
               ),
             ),

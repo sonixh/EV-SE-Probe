@@ -42,6 +42,12 @@ class _AttributeState extends State<Attribute> {
       if (widget.x == 'peerConnected') {
         internal = snapshot.data.peerConnected;
       }
+      if (widget.x == 'realPower') {
+        internal = snapshot.data.realPower + " kW";
+      }
+      if (widget.x == 'secondaryStatus') {
+        internal = snapshot.data.secondaryStatus;
+      }
       if (widget.x == 'energyDown') {
         internal = snapshot.data.energyDown + " kWh";
       }

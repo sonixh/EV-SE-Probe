@@ -73,7 +73,7 @@ class NetworkHandler<T> {
           }
         } else {
           return (json.decode(response.body)['cars_info'] as List)
-              .map((i) => DetailedEV.fromJson(i))
+              .map((i) => EV.fromJson(i))
               .toList();
         }
       }
@@ -84,13 +84,12 @@ class NetworkHandler<T> {
     final response = await http.get(url);
     if (response.statusCode == 200) {
       if (jsonDecode(response.body)['status'] == 'success') {
-        if (type == DetailedEV) {
+        if (type == EV) {
           try {
-            return DetailedEV.fromJson(
-                (json.decode(response.body)['cars_info'])[0]);
+            return EV.fromJson((json.decode(response.body)['cars_info'])[0]);
           } catch (e) {
             print(e);
-            return DetailedEV(
+            return EV(
               id: 'null',
               make: 'null',
               model: 'null',
@@ -108,13 +107,13 @@ class NetworkHandler<T> {
             return EVSEStatus.fromJson(
                 (json.decode(response.body)['evses_log'])[0]);
           } catch (e) {
-            print(e);
+            print('here in EVSEStatus in nH: $e');
             return EVSEStatus(
               name: 'null',
               status: 'null',
               timestamp: 'null',
               energyNet: 'null',
-              energyTotal: 'null',
+              realPower: 'null',
             );
           }
         } else if (type == EVStatus) {
@@ -123,7 +122,7 @@ class NetworkHandler<T> {
             return EVStatus.fromJson(
                 (json.decode(response.body)['cars_log'])[0]);
           } catch (e) {
-            print(e);
+            print('here in EVStatus in NH: $e');
             return EVStatus(
               name: 'null',
               evseName: 'null',

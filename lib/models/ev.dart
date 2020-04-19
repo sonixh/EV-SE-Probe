@@ -1,7 +1,7 @@
 import 'network_handler.dart';
 
-class DetailedEV {
-  NetworkHandler nH = new NetworkHandler(type: DetailedEV);
+class EV {
+  NetworkHandler nH = new NetworkHandler(type: EV);
 
   final String id;
   final String make;
@@ -13,7 +13,7 @@ class DetailedEV {
   final String minRange;
   final String maxRange;
 
-  DetailedEV(
+  EV(
       {this.make,
       this.model,
       this.year,
@@ -24,8 +24,8 @@ class DetailedEV {
       this.minRange,
       this.maxRange});
 
-  factory DetailedEV.fromJson(Map<String, dynamic> json) {
-    return DetailedEV(
+  factory EV.fromJson(Map<String, dynamic> json) {
+    return EV(
       id: json['vin'],
       make: json['make'],
       model: json['model'],
@@ -38,7 +38,7 @@ class DetailedEV {
     );
   }
 
-  Future<DetailedEV> fetchEV(
+  Future<EV> fetchEV(
       {String username,
       String name,
       String vin,
@@ -50,7 +50,7 @@ class DetailedEV {
 
   Future<List> fetchDetailedEVList(
       {String username, String name, String token, String url}) async {
-    NetworkHandler nH = new NetworkHandler(type: DetailedEV);
+    NetworkHandler nH = new NetworkHandler(type: EV);
     return await nH.fetchList(
         'https://$url/api/get_info?user=$username&name=$name&token=$token');
   }

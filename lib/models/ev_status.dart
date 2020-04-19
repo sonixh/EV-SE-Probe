@@ -10,31 +10,32 @@ class EVStatus {
   final String primaryStatus;
   final String vin;
   final String id;
+  final String secondaryStatus;
 
-  EVStatus({
-    this.name,
-    this.evseName,
-    this.peerConnected,
-    this.soc,
-    this.miles,
-    this.credit,
-    this.primaryStatus,
-    this.vin,
-    this.id,
-  });
+  EVStatus(
+      {this.name,
+      this.evseName,
+      this.peerConnected,
+      this.soc,
+      this.miles,
+      this.credit,
+      this.primaryStatus,
+      this.vin,
+      this.id,
+      this.secondaryStatus});
 
   factory EVStatus.fromJson(Map<String, dynamic> json) {
     return EVStatus(
-      name: json['car_name'],
-      evseName: json['evse_name'],
-      peerConnected: json['peer_connected'],
-      soc: json['soc'],
-      miles: json['miles'],
-      credit: json['credit'],
-      primaryStatus: json['primary_status'],
-      vin: json['vin'],
-      id: json['vin'],
-    );
+        name: json['car_name'],
+        evseName: json['evse_name'],
+        peerConnected: json['peer_connected'],
+        soc: json['soc'],
+        miles: json['miles'],
+        credit: json['credit'],
+        primaryStatus: json['primary_status'],
+        vin: json['vin'],
+        id: json['vin'],
+        secondaryStatus: json['secondary_status']);
   }
 
   Future<EVStatus> fetchEVStatus(

@@ -39,23 +39,6 @@ class EVSEInfoWidget extends StatelessWidget {
                 style: kLabelTextStyle,
                 children: <TextSpan>[
                   TextSpan(
-                    text: 'Nominal Voltage ',
-                    style: kLabelTextStyle,
-                  ),
-                  TextSpan(
-                    text: '${future.nominalVoltage} V',
-                    style: kLargeLabelTextStyle,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            child: RichText(
-              text: TextSpan(
-                style: kLabelTextStyle,
-                children: <TextSpan>[
-                  TextSpan(
                     text: 'Latitude, Longitude ',
                     style: kLabelTextStyle,
                   ),

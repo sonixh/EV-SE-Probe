@@ -24,12 +24,13 @@ class _LoginPageState extends State<LoginPage> {
   bool rtoError = false;
   NetworkHandler nH = new NetworkHandler();
   bool isLoggedIn = false;
+  bool rtoChange = false;
   final _storage = FlutterSecureStorage();
 
   @override
   void initState() {
     super.initState();
-    //autoLogin();
+    autoLogin();
   }
 
   void autoLogin() async {
@@ -38,9 +39,20 @@ class _LoginPageState extends State<LoginPage> {
     final pass = await _storage.read(key: 'password');
     final String i = prefs.getString('iso');
 
+    if (userId != null && pass != null && i == null) {
+      //change RTO
+      username = userId;
+      password = pass;
+      this.setState(() {
+        rtoChange = true;
+      });
+
+      usernameEntered = true;
+      passwordEntered = true;
+    }
+
     if (userId != null && pass != null && i != null) {
       url = i + '.nuvve.com';
-
       setState(() {
         isLoggedIn = true;
         username = userId;
@@ -153,36 +165,56 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   height: 40,
                 ),
-                TextField(
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Username',
+                if (rtoChange)
+                  TextField(
+                    textAlign: TextAlign.center,
+                    enabled: false,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: username,
+                    ),
                   ),
-                  onChanged: (value) {
-                    username = value;
-                    setState(() {
-                      usernameEntered = true;
-                    });
-                  },
-                ),
+                if (!rtoChange)
+                  TextField(
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Username',
+                    ),
+                    onChanged: (value) {
+                      username = value;
+                      setState(() {
+                        usernameEntered = true;
+                      });
+                    },
+                  ),
                 Padding(
                   padding: EdgeInsets.only(bottom: 10),
                 ),
-                TextField(
-                  textAlign: TextAlign.center,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
+                if (rtoChange)
+                  TextField(
+                    enabled: false,
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: '***********',
+                    ),
                   ),
-                  onChanged: (value) {
-                    password = value;
-                    setState(() {
-                      passwordEntered = true;
-                    });
-                  },
-                ),
+                if (!rtoChange)
+                  TextField(
+                    textAlign: TextAlign.center,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Password',
+                    ),
+                    onChanged: (value) {
+                      password = value;
+                      setState(() {
+                        passwordEntered = true;
+                      });
+                    },
+                  ),
                 Padding(
                   padding: EdgeInsets.only(bottom: 10),
                 ),

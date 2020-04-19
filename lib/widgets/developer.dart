@@ -7,7 +7,7 @@ import 'package:v2g/models/evse.dart';
 import 'package:v2g/models/evse_status.dart';
 import 'package:v2g/models/user.dart';
 import 'package:v2g/screens/list_page.dart';
-import 'package:v2g/screens/peer_page.dart';
+import 'package:v2g/screens/resource_page.dart';
 import 'package:v2g/widgets/reusable_card.dart';
 import '../constants.dart';
 import 'icon_content.dart';
@@ -23,7 +23,7 @@ class _DeveloperPageState extends State<DeveloperPage> {
   List<dynamic> evseStatusList = [];
   List<dynamic> evStatusList = [];
   EVSE devse = new EVSE();
-  DetailedEV dev = new DetailedEV();
+  EV dev = new EV();
   EVSEStatus evseStatus = new EVSEStatus();
   EVStatus evStatus = new EVStatus();
 
@@ -52,7 +52,7 @@ class _DeveloperPageState extends State<DeveloperPage> {
 
   void getEVSEStatusList(
       String token, String name, String username, String url) async {
-    if (evseStatusList.isEmpty) {
+    if (true) {
       evseStatusList = await evseStatus.fetchDetailedEVSEStatusList(
           token: token, username: username, name: name, url: url);
       Provider.of<User>(context, listen: false)
@@ -132,12 +132,12 @@ class _DeveloperPageState extends State<DeveloperPage> {
         ReusableCard(
           margin: 0,
           onPress: () {
-            //getEVList(token, name, username, url);
-            //getEVStatusList(token, name, username, url);
+            getEVList(token, name, username, url);
+            getEVStatusList(token, name, username, url);
             getEVSEList(token, name, username, url);
             getEVSEStatusList(token, name, username, url);
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => PeerPage()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ResourcePage()));
           },
           colour: kAccentColor,
           cardChild: Container(

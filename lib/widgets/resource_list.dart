@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:v2g/models/user.dart';
-import 'package:v2g/screens/single_item_page.dart';
+import 'package:v2g/screens/single_resource_page.dart';
 import '../constants.dart';
 
 class ResourceList extends StatefulWidget {
@@ -40,7 +40,7 @@ class _ResourceList extends State<ResourceList> {
       return Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(top: 5, bottom: 20, left: 20, right: 20),
+            padding: EdgeInsets.only(top: 0, bottom: 5, left: 20, right: 20),
             child: TextField(
               textAlign: TextAlign.center,
               decoration: InputDecoration(
@@ -55,9 +55,13 @@ class _ResourceList extends State<ResourceList> {
               },
             ),
           ),
+          Container(
+            child: Text('EVSE Name ↔︎ EV Name'),
+            padding: EdgeInsets.only(top: 10, bottom: 10),
+          ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.only(top: 5, left: 15, right: 15, bottom: 30),
+              padding: EdgeInsets.only(top: 0, left: 5, right: 5, bottom: 0),
               child: ListView.builder(
                 itemCount: sortedList.length,
                 scrollDirection: Axis.vertical,
@@ -69,7 +73,7 @@ class _ResourceList extends State<ResourceList> {
                         Connected(sortedList: sortedList, index: index),
                       if (sortedList[index].peerConnected == 'true')
                         SizedBox(
-                          height: 17,
+                          height: 10,
                         ),
                     ],
                   );
@@ -105,7 +109,7 @@ class Connected extends StatelessWidget {
     BoxDecoration box = new BoxDecoration(
       color: kAccentColor,
       border: Border.all(
-        width: 1,
+        width: 3,
         color: Colors.white,
       ),
     );
@@ -146,7 +150,8 @@ class Connected extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SingleItemPage(iD: sortedList[index].id),
+            builder: (context) => SingleResourcePage(
+                iD: sortedList[index].id, vin: sortedList[index].vinConnected),
           ),
         );
       },
@@ -156,7 +161,7 @@ class Connected extends StatelessWidget {
           left: 7,
           right: 7,
         ),
-        padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
+        padding: EdgeInsets.only(top: 1, bottom: 1, left: 3, right: 3),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -165,8 +170,12 @@ class Connected extends StatelessWidget {
                 style: kLabelTextStyle,
                 children: <TextSpan>[
                   TextSpan(
-                    text: '${sortedList[index].name}<>',
+                    text: '${sortedList[index].name}',
                     style: nameTextStyle,
+                  ),
+                  TextSpan(
+                    text: ' ↔︎ ',
+                    style: kLargeLabelTextStyle,
                   ),
                   TextSpan(
                     text: '${sortedList[index].carName}',

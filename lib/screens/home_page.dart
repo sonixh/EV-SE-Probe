@@ -31,6 +31,27 @@ class HomePage extends StatelessWidget {
       }
     }
 
+    void changeRTO() async {
+      String username = Provider.of<User>(context, listen: false).username;
+      String token = Provider.of<User>(context, listen: false).token;
+      String name = Provider.of<User>(context, listen: false).name;
+      String url = Provider.of<User>(context, listen: false).url;
+
+      NetworkHandler nH = NetworkHandler();
+      String logoutResponse = (await nH.logout(username, token, name, url));
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      prefs.setString('iso', null);
+
+      Navigator.pushReplacementNamed(context, '/login');
+
+      if (logoutResponse == 'success') {
+        Navigator.pushReplacementNamed(context, '/login');
+      } else {
+        print('error logging out');
+      }
+    }
+
     return Scaffold(
       body: Container(
         margin: EdgeInsets.only(right: 40, left: 40, top: 25, bottom: 50),
@@ -63,7 +84,7 @@ class HomePage extends StatelessWidget {
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
-                onPress: logout,
+                onPress: changeRTO,
               ),
             ),
             SizedBox(
