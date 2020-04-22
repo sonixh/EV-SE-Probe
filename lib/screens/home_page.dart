@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:v2g/models/network_handler.dart';
 import 'package:v2g/models/user.dart';
-import 'package:v2g/widgets/developer.dart';
+import 'package:v2g/widgets/ev_evse_resource_buttons.dart';
 import 'package:v2g/widgets/reusable_card.dart';
 
 class HomePage extends StatelessWidget {
@@ -69,7 +69,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 15),
-            DeveloperPage(),
+            EVEVSEResourceButtons(),
             SizedBox(height: 30),
             Container(
               padding: EdgeInsets.only(left: 40, right: 40),

@@ -13,10 +13,9 @@ import 'package:v2g/widgets/evse_info_widget.dart';
 import 'package:v2g/widgets/status_widget.dart';
 
 class SingleItemPage extends StatefulWidget {
-  const SingleItemPage({Key key, this.iD, this.type}) : super(key: key);
+  const SingleItemPage({Key key, this.iD}) : super(key: key);
 
   final String iD;
-  final String type;
 
   @override
   _SingleItemPageState createState() => _SingleItemPageState(iD: iD);
@@ -24,7 +23,6 @@ class SingleItemPage extends StatefulWidget {
 
 class _SingleItemPageState extends State<SingleItemPage> {
   Future f;
-  int _count = 0;
 
   _SingleItemPageState({@required this.iD});
   final String iD;
@@ -58,16 +56,14 @@ class _SingleItemPageState extends State<SingleItemPage> {
     if (sharedValue == 1 && type == 'evse') {
       status = false;
       evse = evseList
-          .where((object) =>
-              (object.name.toLowerCase().contains(iD.toLowerCase())) ||
-              (object.id.toLowerCase().contains(iD.toLowerCase())))
+          .where(
+              (object) => (object.id.toLowerCase().contains(iD.toLowerCase())))
           .toList()[0];
     } else if (sharedValue == 1 && type == 'ev') {
       status = false;
       ev = evList
-          .where((object) =>
-              (object.name.toLowerCase().contains(iD.toLowerCase())) ||
-              (object.id.toLowerCase().contains(iD.toLowerCase())))
+          .where(
+              (object) => (object.id.toLowerCase().contains(iD.toLowerCase())))
           .toList()[0];
     } else if (sharedValue == 0 && type == 'evse') {
       status = true;
@@ -91,10 +87,16 @@ class _SingleItemPageState extends State<SingleItemPage> {
                 appBar: AppBar(
                   title: Column(
                     children: <Widget>[
-                      Text(
-                        '${snapshot.data.name}',
-                        style: TextStyle(fontSize: 17),
-                      ),
+                      if (type == 'ev')
+                        Text(
+                          'EV: ${snapshot.data.name}',
+                          style: TextStyle(fontSize: 17),
+                        ),
+                      if (type == 'evse')
+                        Text(
+                          'EVSE: ${snapshot.data.name}',
+                          style: TextStyle(fontSize: 17),
+                        ),
                     ],
                   ),
                   elevation: 0,
@@ -109,6 +111,7 @@ class _SingleItemPageState extends State<SingleItemPage> {
                       child: CupertinoSegmentedControl(
                         padding: EdgeInsets.only(top: 0),
                         selectedColor: kAccentColor,
+                        unselectedColor: kBackgroundColor,
                         borderColor: kAccentColor,
                         children: optionWidgets,
                         onValueChanged: (int val) {
@@ -121,9 +124,7 @@ class _SingleItemPageState extends State<SingleItemPage> {
                     ),
                     RefreshIndicator(
                       onRefresh: () async {
-                        setState(() {
-                          _count = _count + 1;
-                        });
+                        setState(() {});
                         await Future.delayed(new Duration(seconds: 1));
                         return null;
                       },
@@ -160,12 +161,12 @@ class _SingleItemPageState extends State<SingleItemPage> {
             children: <Widget>[
               if (type == 'evse')
                 Text(
-                  '${evse.name}',
+                  'EVSE: ${evse.name}',
                   style: TextStyle(fontSize: 17),
                 ),
               if (type == 'ev')
                 Text(
-                  '${ev.name}',
+                  'EV: ${ev.name}',
                   style: TextStyle(fontSize: 17),
                 ),
             ],
@@ -180,6 +181,7 @@ class _SingleItemPageState extends State<SingleItemPage> {
               width: 325,
               child: CupertinoSegmentedControl(
                 padding: EdgeInsets.only(top: 0),
+                unselectedColor: kBackgroundColor,
                 selectedColor: kAccentColor,
                 borderColor: kAccentColor,
                 children: optionWidgets,

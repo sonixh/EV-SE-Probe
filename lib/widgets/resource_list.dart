@@ -14,6 +14,8 @@ class _ResourceList extends State<ResourceList> {
   String userInputValue = '';
   List sortedList;
   int index;
+  bool refreshing = true;
+
   @override
   Widget build(BuildContext context) {
     List evseStatusList = Provider.of<User>(context).evseStatusList;
@@ -35,8 +37,18 @@ class _ResourceList extends State<ResourceList> {
                   .contains(userInputValue.toLowerCase())))
           .toList();
     }
-
-    if (sortedList != null) {
+    if (refreshing == true) {
+      this.setState(() {
+        refreshing = false;
+      });
+      return Center(
+        child: SpinKitPulse(
+          color: Colors.white,
+          size: 100,
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } else if (sortedList != null && refreshing == false) {
       return Column(
         children: <Widget>[
           Container(
@@ -165,23 +177,33 @@ class Connected extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            RichText(
-              text: TextSpan(
-                style: kLabelTextStyle,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: '${sortedList[index].name}',
-                    style: nameTextStyle,
+            Container(
+              height: 25,
+              child: FittedBox(
+                fit: BoxFit.fitWidth,
+                child: RichText(
+                  text: TextSpan(
+                    style: kLabelTextStyle,
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: '${sortedList[index].name}',
+                        style: nameTextStyle,
+                      ),
+                      TextSpan(
+                        text: ' ↔︎ ',
+                        style: kLargeLabelTextStyle,
+                      ),
+                      TextSpan(
+                        text: '${sortedList[index].carName} ',
+                        style: nameTextStyle,
+                      ),
+                      TextSpan(
+                        text: '${sortedList[index].realPower}kW',
+                        style: nameWithBackgroundTextStyle,
+                      ),
+                    ],
                   ),
-                  TextSpan(
-                    text: ' ↔︎ ',
-                    style: kLargeLabelTextStyle,
-                  ),
-                  TextSpan(
-                    text: '${sortedList[index].carName}',
-                    style: nameTextStyle,
-                  ),
-                ],
+                ),
               ),
             ),
           ],

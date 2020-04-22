@@ -17,10 +17,23 @@ const kLargeLabelRouteTextStyle = TextStyle(
   fontWeight: FontWeight.w500,
 );
 
+const kGreyedOutTextStyle = TextStyle(
+  fontSize: 22,
+  color: Colors.white10,
+  fontWeight: FontWeight.w500,
+);
+
 const nameTextStyle = TextStyle(
   fontSize: 18,
   color: Color(0xfff2f1ee),
   fontWeight: FontWeight.w500,
+);
+
+const nameWithBackgroundTextStyle = TextStyle(
+  fontSize: 18,
+  color: Colors.black54,
+  fontWeight: FontWeight.w500,
+  backgroundColor: Colors.white70,
 );
 
 const kNumberTextStyle = TextStyle(

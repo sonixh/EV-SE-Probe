@@ -52,9 +52,7 @@ class _SingleResourcePage extends State<SingleResourcePage> {
     // print(vin);
 
     evseInfo = evseList
-        .where((object) =>
-            (object.name.toLowerCase().contains(iD.toLowerCase())) ||
-            (object.id.toLowerCase().contains(iD.toLowerCase())))
+        .where((object) => (object.id.toLowerCase().contains(iD.toLowerCase())))
         .toList()[0];
     // print(evseInfo.id);
     // print(iD);
@@ -96,7 +94,7 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                         return null;
                       },
                       child: Container(
-                        height: 500,
+                        height: 700,
                         child: ListView(
                           children: [
                             Container(
@@ -105,6 +103,8 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                 margin: 0,
                                 onPress: () {
                                   print('Going to EVSE status page');
+                                  Provider.of<User>(context, listen: false)
+                                      .setType('evse');
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -301,11 +301,13 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                 margin: 0,
                                 onPress: () {
                                   print('Going to single EV status page');
+                                  Provider.of<User>(context, listen: false)
+                                      .setType('ev');
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          SingleItemPage(iD: iD),
+                                          SingleItemPage(iD: vin),
                                     ),
                                   );
                                 },

@@ -12,12 +12,12 @@ import 'package:v2g/widgets/reusable_card.dart';
 import '../constants.dart';
 import 'icon_content.dart';
 
-class DeveloperPage extends StatefulWidget {
+class EVEVSEResourceButtons extends StatefulWidget {
   @override
-  _DeveloperPageState createState() => _DeveloperPageState();
+  _EVEVSEResourceButtonsState createState() => _EVEVSEResourceButtonsState();
 }
 
-class _DeveloperPageState extends State<DeveloperPage> {
+class _EVEVSEResourceButtonsState extends State<EVEVSEResourceButtons> {
   List<dynamic> evseList = [];
   List<dynamic> evList = [];
   List<dynamic> evseStatusList = [];
@@ -64,7 +64,7 @@ class _DeveloperPageState extends State<DeveloperPage> {
 
   void getEVStatusList(
       String token, String name, String username, String url) async {
-    if (evStatusList.isEmpty) {
+    if (true) {
       evStatusList = await evStatus.fetchDetailedEVStatusList(
           token: token, username: username, name: name, url: url);
       Provider.of<User>(context, listen: false).setEVStatusList(evStatusList);

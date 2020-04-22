@@ -45,6 +45,11 @@ class _StatusWidgetState extends State<StatusWidget> {
             ),
             Attribute(
               snapshot: snapshot,
+              label: 'Peer Connected ',
+              x: 'peerConnected',
+            ),
+            Attribute(
+              snapshot: snapshot,
               label: 'Timestamp ',
               x: 'timestamp',
             ),
@@ -63,11 +68,7 @@ class _StatusWidgetState extends State<StatusWidget> {
               label: 'Energy Down ',
               x: 'energyDown',
             ),
-            Attribute(
-              snapshot: snapshot,
-              label: 'Peer Connected ',
-              x: 'peerConnected',
-            ),
+
             Attribute(
               snapshot: snapshot,
               label: 'GFCI ',
@@ -85,7 +86,6 @@ class _StatusWidgetState extends State<StatusWidget> {
             ),
           ];
           List<Widget> evStatusChildren = <Widget>[
-            Attribute(snapshot: snapshot, label: 'Name ', x: 'name'),
             Attribute(snapshot: snapshot, label: 'EVSE Name ', x: 'evseName'),
             Attribute(
                 snapshot: snapshot,

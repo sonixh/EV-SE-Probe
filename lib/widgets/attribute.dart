@@ -109,10 +109,17 @@ class _AttributeState extends State<Attribute> {
                 text: widget.label,
                 style: kLabelTextStyle,
               ),
-              TextSpan(
-                text: externalString,
-                style: kLargeLabelTextStyle,
-              ),
+              if (widget.label != "Car Name ")
+                TextSpan(
+                  text: externalString,
+                  style: kLargeLabelTextStyle,
+                ),
+              if (widget.snapshot.data.peerConnected == 'false' &&
+                  widget.label == "Car Name ")
+                TextSpan(
+                  text: externalString,
+                  style: kGreyedOutTextStyle,
+                ),
             ],
           ),
         ),
