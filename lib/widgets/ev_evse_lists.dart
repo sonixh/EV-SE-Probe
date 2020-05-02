@@ -67,6 +67,7 @@ class _EVEVSEListsState extends State<EVEVSELists> {
           Container(
             padding: EdgeInsets.only(top: 0, bottom: 5, left: 20, right: 20),
             child: TextField(
+              autocorrect: false,
               textAlign: TextAlign.center,
               decoration: InputDecoration(
                 labelText: 'Search',
@@ -151,7 +152,9 @@ class Connected extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SingleItemPage(iD: sortedList[index].id),
+            builder: (context) => FittedBox(
+                fit: BoxFit.fitWidth,
+                child: SingleItemPage(iD: sortedList[index].id)),
           ),
         );
       },
@@ -210,7 +213,9 @@ class NotConnected extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SingleItemPage(iD: sortedList[index].id),
+            builder: (context) => FittedBox(
+                fit: BoxFit.fitWidth,
+                child: SingleItemPage(iD: sortedList[index].id)),
           ),
         );
       },

@@ -167,6 +167,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 if (rtoChange)
                   TextField(
+                    autocorrect: false,
                     textAlign: TextAlign.center,
                     enabled: false,
                     decoration: InputDecoration(
@@ -176,6 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 if (!rtoChange)
                   TextField(
+                    autocorrect: false,
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -193,6 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 if (rtoChange)
                   TextField(
+                    autocorrect: false,
                     enabled: false,
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
@@ -202,6 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 if (!rtoChange)
                   TextField(
+                    autocorrect: false,
                     textAlign: TextAlign.center,
                     obscureText: true,
                     decoration: InputDecoration(
@@ -219,6 +223,7 @@ class _LoginPageState extends State<LoginPage> {
                   padding: EdgeInsets.only(bottom: 10),
                 ),
                 TextField(
+                  autocorrect: false,
                   enabled: !determineDisabledURLField(),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
@@ -246,6 +251,7 @@ class _LoginPageState extends State<LoginPage> {
                   padding: EdgeInsets.only(bottom: 10),
                 ),
                 TextField(
+                  autocorrect: false,
                   enabled: !determineDisabledNameField(),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(

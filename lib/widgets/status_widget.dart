@@ -48,10 +48,13 @@ class _StatusWidgetState extends State<StatusWidget> {
               label: 'Peer Connected ',
               x: 'peerConnected',
             ),
-            Attribute(
-              snapshot: snapshot,
-              label: 'Timestamp ',
-              x: 'timestamp',
+            FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Attribute(
+                snapshot: snapshot,
+                label: 'Timestamp ',
+                x: 'timestamp',
+              ),
             ),
             Attribute(
               snapshot: snapshot,

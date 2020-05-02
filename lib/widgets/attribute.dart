@@ -120,6 +120,12 @@ class _AttributeState extends State<Attribute> {
                   text: externalString,
                   style: kGreyedOutTextStyle,
                 ),
+              if (widget.snapshot.data.peerConnected == 'true' &&
+                  widget.label == "Car Name ")
+                TextSpan(
+                  text: externalString,
+                  style: kLargeLabelTextStyle,
+                ),
             ],
           ),
         ),

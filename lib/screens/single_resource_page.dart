@@ -43,13 +43,16 @@ class _SingleResourcePage extends State<SingleResourcePage> {
 
     List evseList = Provider.of<User>(context).evseList;
     List evList = Provider.of<User>(context).evList;
+    String role = Provider.of<User>(context).role;
 
-    evInfo = evList
-        .where(
-            (object) => (object.id.toLowerCase().contains(vin.toLowerCase())))
-        .toList()[0];
-    // print(evInfo.id);
-    // print(vin);
+    if (role == 'developer') {
+      evInfo = evList
+          .where(
+              (object) => (object.id.toLowerCase().contains(vin.toLowerCase())))
+          .toList()[0];
+      // print(evInfo.id);
+      // print(vin);
+    }
 
     evseInfo = evseList
         .where((object) => (object.id.toLowerCase().contains(iD.toLowerCase())))
@@ -168,7 +171,7 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                               Container(
                                 height: 20,
                                 child: FittedBox(
-                                  fit: BoxFit.fitWidth,
+                                  alignment: Alignment.centerLeft,
                                   child: RichText(
                                     text: TextSpan(
                                       style: kLabelTextStyle,
@@ -187,22 +190,20 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                 ),
                               ),
                             if (evseInfo.utility != "")
-                              FittedBox(
-                                child: Container(
-                                  child: RichText(
-                                    text: TextSpan(
-                                      style: kLabelTextStyle,
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: 'RTO/Utility ',
-                                          style: kLabelTextStyle,
-                                        ),
-                                        TextSpan(
-                                          text: evseInfo.utility,
-                                          style: kLargeLabelTextStyle,
-                                        ),
-                                      ],
-                                    ),
+                              Container(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: kLabelTextStyle,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'RTO/Utility ',
+                                        style: kLabelTextStyle,
+                                      ),
+                                      TextSpan(
+                                        text: evseInfo.utility,
+                                        style: kLargeLabelTextStyle,
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -300,16 +301,18 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                 colour: kBackgroundColor,
                                 margin: 0,
                                 onPress: () {
-                                  print('Going to single EV status page');
-                                  Provider.of<User>(context, listen: false)
-                                      .setType('ev');
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          SingleItemPage(iD: vin),
-                                    ),
-                                  );
+                                  if (role == 'developer') {
+                                    print('Going to single EV status page');
+                                    Provider.of<User>(context, listen: false)
+                                        .setType('ev');
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            SingleItemPage(iD: vin),
+                                      ),
+                                    );
+                                  }
                                 },
                                 cardChild: RichText(
                                   text: TextSpan(
@@ -319,10 +322,16 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                         text: 'EV Name ',
                                         style: kLabelTextStyle,
                                       ),
-                                      TextSpan(
-                                        text: snapshot.data[1].name,
-                                        style: kLargeLabelRouteTextStyle,
-                                      ),
+                                      if (role == 'developer')
+                                        TextSpan(
+                                          text: snapshot.data[1].name,
+                                          style: kLargeLabelRouteTextStyle,
+                                        ),
+                                      if (role != 'developer')
+                                        TextSpan(
+                                          text: 'Private',
+                                          style: kGreyedOutTextStyle,
+                                        ),
                                     ],
                                   ),
                                 ),
@@ -337,10 +346,16 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                       text: 'VIN ',
                                       style: kLabelTextStyle,
                                     ),
-                                    TextSpan(
-                                      text: evInfo.id,
-                                      style: kLargeLabelTextStyle,
-                                    ),
+                                    if (role == 'developer')
+                                      TextSpan(
+                                        text: evInfo.id,
+                                        style: kLargeLabelTextStyle,
+                                      ),
+                                    if (role != 'developer')
+                                      TextSpan(
+                                        text: 'Private',
+                                        style: kGreyedOutTextStyle,
+                                      ),
                                   ],
                                 ),
                               ),

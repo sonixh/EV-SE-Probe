@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
+import 'package:v2g/models/evse_status.dart';
 import 'package:v2g/models/user.dart';
 import 'package:v2g/screens/single_resource_page.dart';
 import '../constants.dart';
@@ -15,14 +16,31 @@ class _ResourceList extends State<ResourceList> {
   List sortedList;
   int index;
   bool refreshing = true;
+  EVSEStatus evseStatus = new EVSEStatus();
+  List evseStatusList;
+
+  void getEVSEStatusList(
+      String token, String name, String username, String url) async {
+    if (true) {
+      evseStatusList = await evseStatus.fetchDetailedEVSEStatusList(
+          token: token, username: username, name: name, url: url);
+      Provider.of<User>(context, listen: false)
+          .setEVSEStatusList(evseStatusList);
+      print('EVSE Status list loaded');
+    }
+    Provider.of<User>(context, listen: false).setType('evse');
+  }
 
   @override
   Widget build(BuildContext context) {
-    List evseStatusList = Provider.of<User>(context).evseStatusList;
     //List evStatusList = Provider.of<User>(context).evStatusList;
+    String token = Provider.of<User>(context).token;
+    String name = Provider.of<User>(context).name;
+    String username = Provider.of<User>(context).username;
+    String url = Provider.of<User>(context).url;
 
+    evseStatusList = Provider.of<User>(context).evseStatusList;
     sortedList = evseStatusList;
-    //sortedList = evStatusList;
 
     if (sortedList != null) {
       sortedList.sort((a, b) => a.evseState.compareTo(b.evseState));
@@ -45,7 +63,7 @@ class _ResourceList extends State<ResourceList> {
         child: SpinKitPulse(
           color: Colors.white,
           size: 100,
-          duration: Duration(seconds: 2),
+          duration: Duration(seconds: 1),
         ),
       );
     } else if (sortedList != null && refreshing == false) {
@@ -54,6 +72,7 @@ class _ResourceList extends State<ResourceList> {
           Container(
             padding: EdgeInsets.only(top: 0, bottom: 5, left: 20, right: 20),
             child: TextField(
+              autocorrect: false,
               textAlign: TextAlign.center,
               decoration: InputDecoration(
                 labelText: 'Search',
@@ -74,22 +93,31 @@ class _ResourceList extends State<ResourceList> {
           Expanded(
             child: Container(
               padding: EdgeInsets.only(top: 0, left: 5, right: 5, bottom: 0),
-              child: ListView.builder(
-                itemCount: sortedList.length,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (BuildContext context, index) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      if (sortedList[index].peerConnected == 'true')
-                        Connected(sortedList: sortedList, index: index),
-                      if (sortedList[index].peerConnected == 'true')
-                        SizedBox(
-                          height: 10,
-                        ),
-                    ],
-                  );
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  setState(() {
+                    getEVSEStatusList(token, name, username, url);
+                  });
+                  await Future.delayed(new Duration(seconds: 1));
+                  return null;
                 },
+                child: ListView.builder(
+                  itemCount: sortedList.length,
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (BuildContext context, index) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        if (sortedList[index].peerConnected == 'true')
+                          Connected(sortedList: sortedList, index: index),
+                        if (sortedList[index].peerConnected == 'true')
+                          SizedBox(
+                            height: 10,
+                          ),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
           ),
