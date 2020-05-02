@@ -152,9 +152,7 @@ class Connected extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => FittedBox(
-                fit: BoxFit.fitWidth,
-                child: SingleItemPage(iD: sortedList[index].id)),
+            builder: (context) => SingleItemPage(iD: sortedList[index].id),
           ),
         );
       },
@@ -213,9 +211,7 @@ class NotConnected extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => FittedBox(
-                fit: BoxFit.fitWidth,
-                child: SingleItemPage(iD: sortedList[index].id)),
+            builder: (context) => SingleItemPage(iD: sortedList[index].id),
           ),
         );
       },
