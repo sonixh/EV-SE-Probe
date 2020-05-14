@@ -19,7 +19,14 @@ class NetworkHandler<T> {
         if (jsonDecode(response.body)['status'] == 'success') {
           String token = jsonDecode(response.body)['token'];
           String name = jsonDecode(response.body)['name'];
-          String role = jsonDecode(response.body)['roles'][0];
+          String role;
+          try {
+            role = jsonDecode(response.body)['roles'][0];
+          } catch (e) {
+            print('role string warning: no role set for user');
+            role = 'none';
+          }
+
           String status = jsonDecode(response.body)['status'];
           return [name, token, role, status];
         } else {
@@ -29,8 +36,8 @@ class NetworkHandler<T> {
         throw Exception('Failed to login');
       }
     } catch (e) {
-      print(e);
-      return null;
+      print('$e Server not responding');
+      return [null, null, null, 'SNR'];
     }
   }
 
