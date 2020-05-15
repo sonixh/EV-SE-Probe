@@ -11,12 +11,19 @@ class User extends ChangeNotifier {
   String _type;
   List _evseStatusList;
   List _evStatusList;
+  String _iso;
+  String _version;
 
   User(this._username, this._token, this._name, this._role, this._evseList,
-      this._evList, this._url);
+      this._evList, this._url, this._iso, this._version);
 
   setUsername(String username) {
     _username = username;
+    notifyListeners();
+  }
+
+  setVersion(String version) {
+    _version = version;
     notifyListeners();
   }
 
@@ -63,6 +70,19 @@ class User extends ChangeNotifier {
   setType(String type) {
     _type = type;
     notifyListeners();
+  }
+
+  setIso(String iso) {
+    _iso = iso;
+    notifyListeners();
+  }
+
+  String get version {
+    return _version;
+  }
+
+  String get iso {
+    return _iso;
   }
 
   String get username {

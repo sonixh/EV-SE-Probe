@@ -61,58 +61,84 @@ class _EVEVSEListsState extends State<EVEVSELists> {
           duration: Duration(seconds: 1),
         ),
       );
+    } else if (sortedList.length == 0) {
+      return Center(
+        child: Text(
+          'Nothing to display for this user',
+          style: TextStyle(fontSize: 22),
+        ),
+      );
     } else if (sortedList != null && refreshing == false) {
-      return Column(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(top: 0, bottom: 5, left: 20, right: 20),
-            child: TextField(
-              autocorrect: false,
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                labelText: 'Search',
-              ),
-              onChanged: (value) {
-                setState(
-                  () {
-                    userInputValue = value;
-                  },
-                );
-              },
-            ),
-          ),
-          Expanded(
-            child: Container(
-              padding: EdgeInsets.only(top: 0, left: 5, right: 5, bottom: 0),
-              child: ListView.builder(
-                itemCount: sortedList.length,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (BuildContext context, index) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      if (sortedList[index].peerConnected == 'true')
-                        Connected(sortedList: sortedList, index: index),
-                      if (type == 'evse')
-                        if (sortedList[index].peerConnected == 'false' &&
-                            sortedList[index].status == 'Connected')
-                          NotConnected(sortedList: sortedList, index: index),
-                      if (type == 'ev')
-                        if (sortedList[index].peerConnected == 'false')
-                          NotConnected(sortedList: sortedList, index: index),
-                      if (type == 'evse')
-                        if (sortedList[index].status == 'NotConnected')
-                          NotConnecteda(sortedList: sortedList, index: index),
-                      SizedBox(
-                        height: 10,
-                      ),
-                    ],
+      double getMarginWidth() {
+        double width = MediaQuery.of(context).copyWith().size.width;
+        print(width);
+        if (width > 430) {
+          return width / 6.25;
+        } else {
+          return 0;
+        }
+      }
+
+      return Container(
+        margin:
+            EdgeInsets.only(left: getMarginWidth(), right: getMarginWidth()),
+        child: Column(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(top: 0, bottom: 5, left: 20, right: 20),
+              child: TextField(
+                autocorrect: false,
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  labelText: 'Search',
+                ),
+                onChanged: (value) {
+                  setState(
+                    () {
+                      userInputValue = value;
+                    },
                   );
                 },
               ),
             ),
-          ),
-        ],
+            if (sortedList.length != 0)
+              Expanded(
+                child: Container(
+                  padding:
+                      EdgeInsets.only(top: 0, left: 5, right: 5, bottom: 0),
+                  child: ListView.builder(
+                    itemCount: sortedList.length,
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (BuildContext context, index) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          if (sortedList[index].peerConnected == 'true')
+                            Connected(sortedList: sortedList, index: index),
+                          if (type == 'evse')
+                            if (sortedList[index].peerConnected == 'false' &&
+                                sortedList[index].status == 'Connected')
+                              NotConnected(
+                                  sortedList: sortedList, index: index),
+                          if (type == 'ev')
+                            if (sortedList[index].peerConnected == 'false')
+                              NotConnected(
+                                  sortedList: sortedList, index: index),
+                          if (type == 'evse')
+                            if (sortedList[index].status == 'NotConnected')
+                              NotConnecteda(
+                                  sortedList: sortedList, index: index),
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ),
+          ],
+        ),
       );
     } else {
       return Center(

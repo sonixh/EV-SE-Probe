@@ -15,7 +15,8 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
     ]);
     return ChangeNotifierProvider(
-      create: (context) => User(null, null, null, null, null, null, null),
+      create: (context) =>
+          User(null, null, null, null, null, null, null, null, null),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark().copyWith(

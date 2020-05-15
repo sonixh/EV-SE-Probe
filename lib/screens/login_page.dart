@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:v2g/constants.dart';
 import 'package:v2g/models/network_handler.dart';
@@ -35,6 +36,7 @@ class _LoginPageState extends State<LoginPage> {
   bool loggingIn = false;
   bool serverNRError = false;
   bool noInternetError = false;
+  String version;
 
   @override
   void initState() {
@@ -53,6 +55,8 @@ class _LoginPageState extends State<LoginPage> {
       return 'france';
     } else if (index == 4) {
       return 'unitedkingdom';
+    } else if (index == 5) {
+      return 'custom';
     } else {
       return 'pjm';
     }
@@ -119,6 +123,11 @@ class _LoginPageState extends State<LoginPage> {
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 20)),
                           ),
+                          Center(
+                            child: Text('Custom',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20)),
+                          ),
                         ]),
                   ),
                   Container(
@@ -145,6 +154,7 @@ class _LoginPageState extends State<LoginPage> {
     final String userId = prefs.getString('username');
     final pass = await _storage.read(key: 'password');
     final String i = prefs.getString('iso');
+    List temp = [null, null, null, null];
 
     if (userId != null && pass != null && i == null) {
       //change RTO
@@ -167,9 +177,7 @@ class _LoginPageState extends State<LoginPage> {
       } else if (i == 'france') {
         url = 'aggregator.nuvve.fr';
       } else if (i == 'unitedkingdom') {
-        //TODO: error timeout
-        //url = 'aggregator.nuvve.co.uk';
-        url = 'pjm.nuvve.com';
+        url = 'aggregator.nuvve.co.uk';
       } else {
         url = i + '.nuvve.com';
       }
@@ -181,8 +189,26 @@ class _LoginPageState extends State<LoginPage> {
         iso = i;
       });
 
-      List temp = await nH.login(username, password, url);
-      if (temp == null) {
+      var result = await Connectivity().checkConnectivity();
+      if (result == ConnectivityResult.none) {
+        print('no internet connection');
+        temp[3] = 'NIC';
+      } else {
+        noInternetError = false;
+        temp = await nH.login(username, password, url);
+
+        PackageInfo packageInfo = await PackageInfo.fromPlatform();
+        setState(() {
+          version = packageInfo.version;
+        });
+      }
+
+      if (loginInfo[3] == 'NIC') {
+        print('here');
+        setState(() {
+          noInternetError = true;
+        });
+      } else if (temp == null) {
         setState(() {
           rtoError = true;
         });
@@ -192,6 +218,8 @@ class _LoginPageState extends State<LoginPage> {
         Provider.of<User>(context, listen: false).setRole(temp[2]);
         Provider.of<User>(context, listen: false).setUsername(username);
         Provider.of<User>(context, listen: false).seturl(url);
+        Provider.of<User>(context, listen: false).setIso(iso);
+        Provider.of<User>(context, listen: false).setVersion(version);
         Navigator.pushReplacementNamed(context, '/home');
       } else if (temp[3] == 'SNR') {
         print(temp[3]);
@@ -210,7 +238,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void login() async {
-    if (isoEntered) {
+    if (isoEntered && !urlEntered) {
       if (iso == 'pjm') {
         url = iso + '.nuvve.com';
       } else if (iso == 'caiso') {
@@ -224,6 +252,9 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         url = iso + '.nuvve.com';
       }
+    } else if (urlEntered) {
+      print(url);
+      print(iso);
     }
 
     setState(() {
@@ -237,6 +268,11 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       noInternetError = false;
       loginInfo = await nH.login(username, password, url);
+
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      setState(() {
+        version = packageInfo.version;
+      });
     }
 
     setState(() {
@@ -248,13 +284,11 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         noInternetError = true;
       });
-      print(rtoError);
     } else if (loginInfo[3] == 'SNR') {
       //temp is set to null in NH
       setState(() {
         serverNRError = true;
       });
-      print(rtoError);
     } else if (loginInfo == null) {
       setState(() {
         rtoError = true;
@@ -275,7 +309,10 @@ class _LoginPageState extends State<LoginPage> {
       Provider.of<User>(context, listen: false).setToken(loginInfo[1]);
       Provider.of<User>(context, listen: false).setRole(loginInfo[2]);
       Provider.of<User>(context, listen: false).setUsername(username);
+      Provider.of<User>(context, listen: false).setIso(iso);
       Provider.of<User>(context, listen: false).seturl(url);
+      Provider.of<User>(context, listen: false).setVersion(version);
+
       Navigator.pushReplacementNamed(context, '/home');
     } else {
       print(loginInfo[3]);
@@ -288,14 +325,16 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   bool determineDisabled() {
-    if (usernameEntered && passwordEntered && (isoEntered || urlEntered)) {
+    if (usernameEntered &&
+        passwordEntered &&
+        ((isoEntered && iso != 'custom') || (isoEntered && urlEntered))) {
       return true;
     }
     return false;
   }
 
   bool determineDisabledNameField() {
-    if (isoEntered) {
+    if (iso != 'custom') {
       return true;
     }
     return false;
@@ -308,205 +347,233 @@ class _LoginPageState extends State<LoginPage> {
     return false;
   }
 
+  double getMarginWidth() {
+    double width = MediaQuery.of(context).copyWith().size.width;
+    print(width);
+    if (width > 430) {
+      return width / 4.25;
+    } else {
+      return 0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (isLoggedIn) {
       return Scaffold(
           body: Container(child: SpinKitPulse(color: Colors.white, size: 100)));
     } else {
+      getMarginWidth();
       return Scaffold(
         body: Container(
+          margin:
+              EdgeInsets.only(left: getMarginWidth(), right: getMarginWidth()),
           padding: EdgeInsets.only(
             top: 70,
             right: 40,
             left: 40,
           ),
           child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Text(
-                  'EV/SE Probe',
-                  style: TextStyle(
-                    fontSize: 30,
-                  ),
-                ),
-                SizedBox(
-                  height: 40,
-                ),
-                if (rtoChange)
-                  TextField(
-                    autocorrect: false,
-                    textInputAction: TextInputAction.done,
-                    onSubmitted: (_) => FocusScope.of(context).unfocus(),
-                    textAlign: TextAlign.left,
-                    enabled: false,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: username,
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'EV/SE Probe',
+                    style: TextStyle(
+                      fontSize: 30,
                     ),
                   ),
-                if (!rtoChange)
-                  TextField(
-                    autocorrect: false,
-                    textInputAction: TextInputAction.next,
-                    onSubmitted: (_) => FocusScope.of(context).nextFocus(),
-                    textAlign: TextAlign.left,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Username',
+                  SizedBox(
+                    height: 40,
+                  ),
+                  if (rtoChange)
+                    TextField(
+                      autocorrect: false,
+                      textInputAction: TextInputAction.done,
+                      onSubmitted: (_) => FocusScope.of(context).unfocus(),
+                      textAlign: TextAlign.left,
+                      enabled: false,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: username,
+                      ),
                     ),
-                    onTap: () {
-                      setState(() {
-                        loginError = false;
+                  if (!rtoChange)
+                    TextField(
+                      autocorrect: false,
+                      textInputAction: TextInputAction.next,
+                      onSubmitted: (_) => FocusScope.of(context).nextFocus(),
+                      textAlign: TextAlign.left,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Username',
+                      ),
+                      onTap: () {
+                        setState(() {
+                          loginError = false;
 
-                        rtoError = false;
-                        serverNRError = false;
-                      });
-                    },
-                    onChanged: (value) {
-                      username = value;
-                      setState(() {
-                        usernameEntered = true;
-                      });
-                    },
+                          rtoError = false;
+                          serverNRError = false;
+                        });
+                      },
+                      onChanged: (value) {
+                        username = value;
+                        setState(() {
+                          usernameEntered = true;
+                        });
+                      },
+                    ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 10),
                   ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 10),
-                ),
-                if (rtoChange)
+                  if (rtoChange)
+                    TextField(
+                      autocorrect: false,
+                      enabled: false,
+                      textAlign: TextAlign.left,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: '***********',
+                      ),
+                    ),
+                  if (!rtoChange)
+                    TextField(
+                      textInputAction: TextInputAction.next,
+                      onSubmitted: (_) {
+                        displaySpinner();
+                        FocusScope.of(context).requestFocus(tsoNode);
+                      },
+                      autocorrect: false,
+                      textAlign: TextAlign.left,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Password',
+                      ),
+                      onTap: () {
+                        setState(() {
+                          loginError = false;
+                          rtoError = false;
+                          serverNRError = false;
+                        });
+                      },
+                      onChanged: (value) {
+                        password = value;
+                        setState(() {
+                          loginError = false;
+                          passwordEntered = true;
+                        });
+                      },
+                    ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 10),
+                  ),
                   TextField(
+                    focusNode: tsoNode,
                     autocorrect: false,
-                    enabled: false,
+                    controller: TextEditingController(
+                        text: iso != null ? iso.toUpperCase() : ''),
+                    //enabled: !determineDisabledURLField(),
+                    textInputAction: TextInputAction.done,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: '***********',
+                      labelText: 'TSO/RTO',
                     ),
-                  ),
-                if (!rtoChange)
-                  TextField(
-                    textInputAction: TextInputAction.next,
-                    onSubmitted: (_) {
-                      displaySpinner();
-                      FocusScope.of(context).requestFocus(tsoNode);
-                    },
-                    autocorrect: false,
-                    textAlign: TextAlign.left,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Password',
-                    ),
+                    readOnly: true,
                     onTap: () {
-                      setState(() {
-                        loginError = false;
-                        rtoError = false;
-                        serverNRError = false;
-                      });
-                    },
-                    onChanged: (value) {
-                      password = value;
-                      setState(() {
-                        loginError = false;
-                        passwordEntered = true;
-                      });
-                    },
-                  ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 10),
-                ),
-                TextField(
-                  focusNode: tsoNode,
-                  autocorrect: false,
-                  controller: TextEditingController(
-                      text: iso != null ? iso.toUpperCase() : ''),
-                  enabled: !determineDisabledURLField(),
-                  textInputAction: TextInputAction.done,
-                  textAlign: TextAlign.left,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'TSO/RTO',
-                  ),
-                  readOnly: true,
-                  onTap: () {
-                    displaySpinner();
-                    loginError = false;
-                    rtoError = false;
-                    serverNRError = false;
-                  },
-                ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 10),
-                ),
-                Text('OR'),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 10),
-                ),
-                TextField(
-                  autocorrect: false,
-                  enabled: !determineDisabledNameField(),
-                  textAlign: TextAlign.left,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'URL',
-                  ),
-                  onChanged: (value) {
-                    url = value;
-                    if (value == '') {
+                      displaySpinner();
+                      loginError = false;
+                      rtoError = false;
+                      serverNRError = false;
                       setState(() {
                         urlEntered = false;
                       });
-                    } else {
+                    },
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 10),
+                  ),
+                  Text('OR'),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 10),
+                  ),
+                  TextField(
+                    autocorrect: false,
+                    enabled: !determineDisabledNameField(),
+                    textAlign: TextAlign.left,
+                    onTap: () {
                       setState(() {
-                        urlEntered = true;
+                        loginError = false;
+                        rtoError = false;
+                        serverNRError = false;
                       });
-                    }
-                  },
-                ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 10),
-                ),
-                if (loggingIn == true)
-                  SpinKitPulse(
-                    color: Colors.white,
-                    size: 50,
-                    duration: Duration(seconds: 1),
-                  ),
-                if (loggingIn == false)
-                  Container(
-                    child: FlatButton(
-                      padding: EdgeInsets.all(15),
-                      disabledColor: kBackgroundColor,
-                      color: Colors.green,
-                      child: Text(
-                        'Login',
-                        style: TextStyle(fontSize: 22),
-                      ),
-                      onPressed: !determineDisabled() ? null : login,
+                    },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'URL',
                     ),
+                    onChanged: (value) {
+                      url = value;
+                      if (value == '') {
+                        setState(() {
+                          urlEntered = false;
+                        });
+                      } else {
+                        setState(() {
+                          urlEntered = true;
+                        });
+                      }
+                    },
                   ),
-                SizedBox(height: 10),
-                if (loginError)
-                  Text(
-                    'Invalid username or password entered',
-                    style: TextStyle(color: Colors.red[500]),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 10),
                   ),
-                if (rtoError)
-                  Text(
-                    'Invalid TSO/RTO entered',
-                    style: TextStyle(color: Colors.red[500]),
-                  ),
-                if (serverNRError)
-                  Text(
-                    'Server not responding',
-                    style: TextStyle(color: Colors.red[500]),
-                  ),
-                if (noInternetError)
-                  Text(
-                    'No internet connection',
-                    style: TextStyle(color: Colors.red[500]),
-                  ),
-              ],
+                  if (loggingIn == true)
+                    SpinKitPulse(
+                      color: Colors.white,
+                      size: 50,
+                      duration: Duration(seconds: 1),
+                    ),
+                  if (loggingIn == false)
+                    Container(
+                      child: FlatButton(
+                        padding: EdgeInsets.all(15),
+                        disabledColor: kBackgroundColor,
+                        color: Colors.green,
+                        child: Text(
+                          'Login',
+                          style: TextStyle(fontSize: 22),
+                        ),
+                        onPressed: !determineDisabled() ? null : login,
+                      ),
+                    ),
+                  SizedBox(height: 10),
+                  if (loginError)
+                    Text(
+                      'Invalid username or password entered',
+                      style: TextStyle(color: Colors.red[500]),
+                    ),
+                  if (rtoError)
+                    Text(
+                      'Invalid TSO/RTO entered',
+                      style: TextStyle(color: Colors.red[500]),
+                    ),
+                  if (serverNRError)
+                    Text(
+                      'Server not responding with URL: "https://$url"',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.red[500]),
+                    ),
+                  if (noInternetError)
+                    Text(
+                      'No internet connection',
+                      style: TextStyle(color: Colors.red[500]),
+                    ),
+                ],
+              ),
             ),
           ),
         ),

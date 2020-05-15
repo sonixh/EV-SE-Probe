@@ -45,7 +45,7 @@ class _SingleResourcePage extends State<SingleResourcePage> {
     List evList = Provider.of<User>(context).evList;
     String role = Provider.of<User>(context).role;
 
-    if (role == 'developer') {
+    if (evInfo != null && evList.length != 0) {
       evInfo = evList
           .where(
               (object) => (object.id.toLowerCase().contains(vin.toLowerCase())))
@@ -54,11 +54,14 @@ class _SingleResourcePage extends State<SingleResourcePage> {
       // print(vin);
     }
 
-    evseInfo = evseList
-        .where((object) => (object.id.toLowerCase().contains(iD.toLowerCase())))
-        .toList()[0];
-    // print(evseInfo.id);
-    // print(iD);
+    if (evseInfo != null && evseList.length != 0) {
+      evseInfo = evseList
+          .where(
+              (object) => (object.id.toLowerCase().contains(iD.toLowerCase())))
+          .toList()[0];
+      // print(evseInfo.id);
+      // print(iD);
+    }
 
     f0 = evseStatus.fetchEVSEStatus(
         evseID: iD, token: token, name: name, username: username, url: url);
@@ -322,16 +325,10 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                         text: 'EV Name ',
                                         style: kLabelTextStyle,
                                       ),
-                                      if (role == 'developer')
-                                        TextSpan(
-                                          text: snapshot.data[1].name,
-                                          style: kLargeLabelRouteTextStyle,
-                                        ),
-                                      if (role != 'developer')
-                                        TextSpan(
-                                          text: 'Private',
-                                          style: kGreyedOutTextStyle,
-                                        ),
+                                      TextSpan(
+                                        text: snapshot.data[1].name,
+                                        style: kLargeLabelRouteTextStyle,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -346,16 +343,11 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                       text: 'VIN ',
                                       style: kLabelTextStyle,
                                     ),
-                                    if (role == 'developer')
-                                      TextSpan(
-                                        text: evInfo.id,
-                                        style: kLargeLabelTextStyle,
-                                      ),
-                                    if (role != 'developer')
-                                      TextSpan(
-                                        text: 'Private',
-                                        style: kGreyedOutTextStyle,
-                                      ),
+                                    TextSpan(
+                                      //text: evInfo.id,
+                                      text: '${snapshot.data[1].vin}',
+                                      style: kLargeLabelTextStyle,
+                                    ),
                                   ],
                                 ),
                               ),
