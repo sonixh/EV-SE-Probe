@@ -68,85 +68,91 @@ class _LoginPageState extends State<LoginPage> {
       iso = 'pjm';
     });
     showModalBottomSheet(
-        context: context,
-        builder: (BuildContext builder) {
-          return Container(
-            color: Color.fromRGBO(5, 27, 27, 60),
-            height: MediaQuery.of(context).copyWith().size.height / 2.5,
-            child: Container(
-              decoration: BoxDecoration(
-                color: kBackgroundColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40.0),
-                  topRight: Radius.circular(40.0),
-                ),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    height: 250,
-                    child: CupertinoPicker(
-                        itemExtent: 50,
-                        onSelectedItemChanged: (int index) {
-                          this.setState(() {
-                            selectItemIndex = index;
-                            //print(selectItemIndex);
-                            iso = getRTOName(selectItemIndex);
-                            //print(iso);
-                          });
-                        },
-                        children: [
-                          Center(
-                            child: Text(
-                              'PJM',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                          ),
-                          Center(
-                            child: Text('CAISO',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20)),
-                          ),
-                          Center(
-                            child: Text('Denmark',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20)),
-                          ),
-                          Center(
-                            child: Text('France',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20)),
-                          ),
-                          Center(
-                            child: Text('United Kingdom',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20)),
-                          ),
-                          Center(
-                            child: Text('Custom',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20)),
-                          ),
-                        ]),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.green,
-                    ),
-                    child: FlatButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text('Done')),
-                  ),
-                ],
+      isDismissible: false,
+      context: context,
+      builder: (BuildContext builder) {
+        return Container(
+          color: Color.fromRGBO(5, 27, 27, 60),
+          height: MediaQuery.of(context).copyWith().size.height / 2.5,
+          child: Container(
+            decoration: BoxDecoration(
+              color: kBackgroundColor,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(40.0),
+                topRight: Radius.circular(40.0),
               ),
             ),
-          );
-        });
+            child: Column(
+              children: [
+                Container(
+                  height: 250,
+                  child: CupertinoPicker(
+                      itemExtent: 50,
+                      onSelectedItemChanged: (int index) {
+                        this.setState(() {
+                          selectItemIndex = index;
+                          //print(selectItemIndex);
+                          iso = getRTOName(selectItemIndex);
+                          //print(iso);
+                        });
+                      },
+                      children: [
+                        Center(
+                          child: Text(
+                            'PJM',
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                        ),
+                        Center(
+                          child: Text('CAISO',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                        ),
+                        Center(
+                          child: Text('Denmark',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                        ),
+                        Center(
+                          child: Text('France',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                        ),
+                        Center(
+                          child: Text('United Kingdom',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                        ),
+                        Center(
+                          child: Text('Custom',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                        ),
+                      ]),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.green,
+                  ),
+                  child: FlatButton(
+                      onPressed: () {
+                        if (passwordEntered &&
+                            usernameEntered &&
+                            iso != 'custom') {
+                          login();
+                        }
+                        Navigator.pop(context);
+                      },
+                      child: Text('Done')),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   void autoLogin() async {
