@@ -19,6 +19,16 @@ class _ResourceList extends State<ResourceList> {
   EVSEStatus evseStatus = new EVSEStatus();
   List evseStatusList;
 
+  double getMarginWidth() {
+    double width = MediaQuery.of(context).copyWith().size.width;
+    print(width);
+    if (width > 430) {
+      return width / 6.25;
+    } else {
+      return 0;
+    }
+  }
+
   void getEVSEStatusList(
       String token, String name, String username, String url) async {
     if (true) {
@@ -66,26 +76,15 @@ class _ResourceList extends State<ResourceList> {
           duration: Duration(seconds: 1),
         ),
       );
-    } else if (sortedList != null && sortedList.length == 0) {
-      return Center(
-        child: Text(
-          'Nothing to display for this user',
-          style: TextStyle(fontSize: 22),
-        ),
-      );
-    } else if (sortedList != null &&
-        refreshing == false &&
-        sortedList.length != 0) {
-      double getMarginWidth() {
-        double width = MediaQuery.of(context).copyWith().size.width;
-        print(width);
-        if (width > 430) {
-          return width / 6.25;
-        } else {
-          return 0;
-        }
-      }
-
+      // } else if (sortedList != null && sortedList.length == 0) {
+      //   return Center(
+      //     child: Text(
+      //       'Nothing to display for this user',
+      //       style: TextStyle(fontSize: 22),
+      //     ),
+      //   );
+      // }
+    } else if (sortedList != null && refreshing == false) {
       return Container(
         margin:
             EdgeInsets.only(left: getMarginWidth(), right: getMarginWidth()),
@@ -112,37 +111,46 @@ class _ResourceList extends State<ResourceList> {
               child: Text('EVSE Name ↔︎ EV Name'),
               padding: EdgeInsets.only(top: 10, bottom: 10),
             ),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.only(top: 0, left: 5, right: 5, bottom: 0),
-                child: RefreshIndicator(
-                  onRefresh: () async {
-                    setState(() {
-                      getEVSEStatusList(token, name, username, url);
-                    });
-                    await Future.delayed(new Duration(seconds: 1));
-                    return null;
-                  },
-                  child: ListView.builder(
-                    itemCount: sortedList.length,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (BuildContext context, index) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          if (sortedList[index].peerConnected == 'true')
-                            Connected(sortedList: sortedList, index: index),
-                          if (sortedList[index].peerConnected == 'true')
-                            SizedBox(
-                              height: 10,
-                            ),
-                        ],
-                      );
+            if (sortedList.length != 0)
+              Expanded(
+                child: Container(
+                  padding:
+                      EdgeInsets.only(top: 0, left: 5, right: 5, bottom: 0),
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      setState(() {
+                        getEVSEStatusList(token, name, username, url);
+                      });
+                      await Future.delayed(new Duration(seconds: 1));
+                      return null;
                     },
+                    child: ListView.builder(
+                      itemCount: sortedList.length,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (BuildContext context, index) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            if (sortedList[index].peerConnected == 'true')
+                              Connected(sortedList: sortedList, index: index),
+                            if (sortedList[index].peerConnected == 'true')
+                              SizedBox(
+                                height: 10,
+                              ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
+            if (sortedList.length == 0)
+              Center(
+                child: Text(
+                  'Nothing to display for this user',
+                  style: TextStyle(fontSize: 22),
+                ),
+              )
           ],
         ),
       );
@@ -210,6 +218,8 @@ class Connected extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
+        // print(sortedList[index].vinConnected);
+        // print(sortedList[index].id);
         Navigator.push(
           context,
           MaterialPageRoute(

@@ -46,12 +46,17 @@ class _SingleResourcePage extends State<SingleResourcePage> {
     String role = Provider.of<User>(context).role;
 
     if (evInfo != null && evList.length != 0) {
-      evInfo = evList
-          .where(
-              (object) => (object.id.toLowerCase().contains(vin.toLowerCase())))
-          .toList()[0];
-      // print(evInfo.id);
-      // print(vin);
+      try {
+        evInfo = evList
+            .where((object) =>
+                (object.id.toLowerCase().contains(vin.toLowerCase())))
+            .toList()[0];
+      } catch (e) {
+        print('$e here in single resource page');
+      }
+
+      print(evInfo.id);
+      print(vin);
     }
 
     if (evseInfo != null && evseList.length != 0) {
@@ -66,6 +71,7 @@ class _SingleResourcePage extends State<SingleResourcePage> {
     f0 = evseStatus.fetchEVSEStatus(
         evseID: iD, token: token, name: name, username: username, url: url);
 
+    print(vin);
     f1 = evStatus.fetchEVStatus(
         vin: vin, token: token, name: name, username: username, url: url);
 

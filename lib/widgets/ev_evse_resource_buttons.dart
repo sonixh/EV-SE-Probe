@@ -46,6 +46,7 @@ class _EVEVSEResourceButtonsState extends State<EVEVSEResourceButtons> {
           token: token, username: username, name: name, url: url);
       Provider.of<User>(context, listen: false).setEVList(evList);
       print('EV list loaded');
+      print(evList);
     }
     Provider.of<User>(context, listen: false).setType('ev');
   }

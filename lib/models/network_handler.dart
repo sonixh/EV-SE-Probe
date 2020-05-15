@@ -88,6 +88,7 @@ class NetworkHandler<T> {
   }
 
   Future fetch(String url) async {
+    print(url);
     final response = await http.get(url);
     if (response.statusCode == 200) {
       if (jsonDecode(response.body)['status'] == 'success') {
@@ -124,7 +125,7 @@ class NetworkHandler<T> {
             );
           }
         } else if (type == EVStatus) {
-          //print((json.decode(response.body)['cars_log']));
+          print((json.decode(response.body)['cars_log']));
           try {
             return EVStatus.fromJson(
                 (json.decode(response.body)['cars_log'])[0]);

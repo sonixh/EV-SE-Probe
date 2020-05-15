@@ -349,7 +349,6 @@ class _LoginPageState extends State<LoginPage> {
 
   double getMarginWidth() {
     double width = MediaQuery.of(context).copyWith().size.width;
-    print(width);
     if (width > 430) {
       return width / 4.25;
     } else {

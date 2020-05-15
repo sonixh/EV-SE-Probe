@@ -17,6 +17,16 @@ class _EVEVSEListsState extends State<EVEVSELists> {
   List sortedConnected;
   int index;
   bool refreshing = true;
+
+  double getMarginWidth() {
+    double width = MediaQuery.of(context).copyWith().size.width;
+    if (width > 430) {
+      return width / 6.25;
+    } else {
+      return 0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     List evseStatusList = Provider.of<User>(context).evseStatusList;
@@ -61,24 +71,14 @@ class _EVEVSEListsState extends State<EVEVSELists> {
           duration: Duration(seconds: 1),
         ),
       );
-    } else if (sortedList.length == 0) {
-      return Center(
-        child: Text(
-          'Nothing to display for this user',
-          style: TextStyle(fontSize: 22),
-        ),
-      );
+      // } else if (sortedList.length == 0) {
+      //   return Center(
+      //     child: Text(
+      //       'Nothing to display for this user',
+      //       style: TextStyle(fontSize: 22),
+      //     ),
+      //   );
     } else if (sortedList != null && refreshing == false) {
-      double getMarginWidth() {
-        double width = MediaQuery.of(context).copyWith().size.width;
-        print(width);
-        if (width > 430) {
-          return width / 6.25;
-        } else {
-          return 0;
-        }
-      }
-
       return Container(
         margin:
             EdgeInsets.only(left: getMarginWidth(), right: getMarginWidth()),
@@ -137,6 +137,13 @@ class _EVEVSEListsState extends State<EVEVSELists> {
                   ),
                 ),
               ),
+            if (sortedList.length == 0)
+              Center(
+                child: Text(
+                  'Nothing to display for this user',
+                  style: TextStyle(fontSize: 22),
+                ),
+              )
           ],
         ),
       );
