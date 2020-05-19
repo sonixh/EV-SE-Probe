@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
     List<double> getMarginWidth() {
       double width = MediaQuery.of(context).copyWith().size.width;
       if (width > 430) {
-        return [width / 4.25];
+        return [width / 4.25, width / 4.25, width / 4.25, width / 4.25];
       } else {
         return [40, 40, 25, 50];
       }
@@ -70,9 +70,10 @@ class _HomePageState extends State<HomePage> {
 
     String iso = Provider.of<User>(context, listen: false).iso;
     String version = Provider.of<User>(context, listen: false).version;
+    List margins = [null, null, null, null];
 
     if (iso != null && version != null) {
-      List margins = getMarginWidth();
+      margins = getMarginWidth();
       return Scaffold(
         body: Container(
           margin: EdgeInsets.only(

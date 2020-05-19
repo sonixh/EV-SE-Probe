@@ -41,6 +41,15 @@ class _SingleItemPageState extends State<SingleItemPage> {
   bool status;
   int sharedValue = 0;
 
+  double getMarginWidth() {
+    double width = MediaQuery.of(context).copyWith().size.width;
+    if (width > 430) {
+      return width / 5.25;
+    } else {
+      return 0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     String token = Provider.of<User>(context).token;
@@ -108,6 +117,8 @@ class _SingleItemPageState extends State<SingleItemPage> {
                       padding: EdgeInsets.only(
                           top: 5, bottom: 0, left: 20, right: 20),
                       width: 325,
+                      // margin: EdgeInsets.only(
+                      //     left: getMarginWidth(), right: getMarginWidth()),
                       child: CupertinoSegmentedControl(
                         padding: EdgeInsets.only(top: 0),
                         selectedColor: kAccentColor,

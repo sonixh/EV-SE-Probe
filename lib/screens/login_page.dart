@@ -32,6 +32,7 @@ class _LoginPageState extends State<LoginPage> {
   final _storage = FlutterSecureStorage();
   int selectItemIndex = -1;
   FocusNode tsoNode = FocusNode();
+  FocusNode urlNode = FocusNode();
   List loginInfo = [null, null, null, null];
   bool loggingIn = false;
   bool serverNRError = false;
@@ -144,6 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                           login();
                         }
                         Navigator.pop(context);
+                        FocusScope.of(context).requestFocus(urlNode);
                       },
                       child: Text('Done')),
                 ),
@@ -244,6 +246,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void login() async {
+    print('here');
     if (isoEntered && !urlEntered) {
       if (iso == 'pjm') {
         url = iso + '.nuvve.com';
@@ -506,6 +509,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding: EdgeInsets.only(bottom: 10),
                   ),
                   TextField(
+                    focusNode: urlNode,
                     autocorrect: false,
                     enabled: !determineDisabledNameField(),
                     textAlign: TextAlign.left,
@@ -516,6 +520,7 @@ class _LoginPageState extends State<LoginPage> {
                         serverNRError = false;
                       });
                     },
+                    onSubmitted: (_) => {login()},
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'URL',

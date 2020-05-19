@@ -92,346 +92,350 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                 ),
                 elevation: 0,
               ),
-              body: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Container(
-                    padding:
-                        EdgeInsets.only(top: 5, bottom: 0, left: 20, right: 20),
-                    width: 325,
-                    child: RefreshIndicator(
-                      onRefresh: () async {
-                        setState(() {});
-                        await Future.delayed(new Duration(seconds: 1));
-                        return null;
-                      },
-                      child: Container(
-                        height: 700,
-                        child: ListView(
-                          children: [
-                            Container(
-                              child: ReusableCard(
-                                colour: kBackgroundColor,
-                                margin: 0,
-                                onPress: () {
-                                  print('Going to EVSE status page');
-                                  Provider.of<User>(context, listen: false)
-                                      .setType('evse');
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          SingleItemPage(iD: iD),
-                                    ),
-                                  );
-                                },
-                                cardChild: RichText(
-                                  text: TextSpan(
-                                    style: kLabelTextStyle,
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text: 'EVSE Name ',
-                                        style: kLabelTextStyle,
-                                      ),
-                                      TextSpan(
-                                        text: snapshot.data[0].name,
-                                        style: kLargeLabelRouteTextStyle,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              child: RichText(
-                                text: TextSpan(
-                                  style: kLabelTextStyle,
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'EVSE ID ',
-                                      style: kLabelTextStyle,
-                                    ),
-                                    TextSpan(
-                                      text: snapshot.data[0].id,
-                                      style: kLargeLabelTextStyle,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              child: RichText(
-                                text: TextSpan(
-                                  style: kLabelTextStyle,
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'Reverse Feeding ',
-                                      style: kLabelTextStyle,
-                                    ),
-                                    TextSpan(
-                                      text: evseInfo.reverse,
-                                      style: kLargeLabelTextStyle,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            if (evseInfo.address != "")
+              body: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(
+                          top: 5, bottom: 0, left: 20, right: 20),
+                      width: 325,
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          setState(() {});
+                          await Future.delayed(new Duration(seconds: 1));
+                          return null;
+                        },
+                        child: Container(
+                          height: 700,
+                          child: ListView(
+                            children: [
                               Container(
-                                height: 20,
-                                child: FittedBox(
-                                  alignment: Alignment.centerLeft,
-                                  child: RichText(
+                                child: ReusableCard(
+                                  colour: kBackgroundColor,
+                                  margin: 0,
+                                  onPress: () {
+                                    print('Going to EVSE status page');
+                                    Provider.of<User>(context, listen: false)
+                                        .setType('evse');
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            SingleItemPage(iD: iD),
+                                      ),
+                                    );
+                                  },
+                                  cardChild: RichText(
                                     text: TextSpan(
                                       style: kLabelTextStyle,
                                       children: <TextSpan>[
                                         TextSpan(
-                                          text: 'Address ',
+                                          text: 'EVSE Name ',
                                           style: kLabelTextStyle,
                                         ),
                                         TextSpan(
-                                          text: evseInfo.address,
-                                          style: kLargeLabelTextStyle,
+                                          text: snapshot.data[0].name,
+                                          style: kLargeLabelRouteTextStyle,
                                         ),
                                       ],
                                     ),
                                   ),
                                 ),
                               ),
-                            if (evseInfo.utility != "")
                               Container(
                                 child: RichText(
                                   text: TextSpan(
                                     style: kLabelTextStyle,
                                     children: <TextSpan>[
                                       TextSpan(
-                                        text: 'RTO/Utility ',
+                                        text: 'EVSE ID ',
                                         style: kLabelTextStyle,
                                       ),
                                       TextSpan(
-                                        text: evseInfo.utility,
+                                        text: snapshot.data[0].id,
                                         style: kLargeLabelTextStyle,
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
-                            Container(
-                              child: RichText(
-                                text: TextSpan(
-                                  style: kLabelTextStyle,
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'State ',
-                                      style: kLabelTextStyle,
-                                    ),
-                                    TextSpan(
-                                      text: snapshot.data[0].evseState,
-                                      style: kLargeLabelTextStyle,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              child: RichText(
-                                text: TextSpan(
-                                  style: kLabelTextStyle,
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'GFCI ',
-                                      style: kLabelTextStyle,
-                                    ),
-                                    TextSpan(
-                                      text: snapshot.data[0].gfci,
-                                      style: kLargeLabelTextStyle,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              child: RichText(
-                                text: TextSpan(
-                                  style: kLabelTextStyle,
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'Real Power ',
-                                      style: kLabelTextStyle,
-                                    ),
-                                    TextSpan(
-                                      text: '${snapshot.data[0].realPower} kW',
-                                      style: kLargeLabelTextStyle,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              child: RichText(
-                                text: TextSpan(
-                                  style: kLabelTextStyle,
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'Power Factor ',
-                                      style: kLabelTextStyle,
-                                    ),
-                                    TextSpan(
-                                      text: snapshot.data[0].powerFactor,
-                                      style: kLargeLabelTextStyle,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              child: RichText(
-                                text: TextSpan(
-                                  style: kLabelTextStyle,
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'Peer Connected ',
-                                      style: kLabelTextStyle,
-                                    ),
-                                    TextSpan(
-                                      text: snapshot.data[0].peerConnected,
-                                      style: kLargeLabelTextStyle,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(top: 5, bottom: 5),
-                              child: Divider(thickness: 2, color: Colors.white),
-                            ),
-                            Container(
-                              child: ReusableCard(
-                                colour: kBackgroundColor,
-                                margin: 0,
-                                onPress: () {
-                                  if (role == 'developer') {
-                                    print('Going to single EV status page');
-                                    Provider.of<User>(context, listen: false)
-                                        .setType('ev');
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            SingleItemPage(iD: vin),
-                                      ),
-                                    );
-                                  }
-                                },
-                                cardChild: RichText(
+                              Container(
+                                child: RichText(
                                   text: TextSpan(
                                     style: kLabelTextStyle,
                                     children: <TextSpan>[
                                       TextSpan(
-                                        text: 'EV Name ',
+                                        text: 'Reverse Feeding ',
                                         style: kLabelTextStyle,
                                       ),
                                       TextSpan(
-                                        text: snapshot.data[1].name,
-                                        style: kLargeLabelRouteTextStyle,
+                                        text: evseInfo.reverse,
+                                        style: kLargeLabelTextStyle,
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              child: RichText(
-                                text: TextSpan(
-                                  style: kLabelTextStyle,
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'VIN ',
+                              if (evseInfo.address != "")
+                                Container(
+                                  height: 20,
+                                  child: FittedBox(
+                                    alignment: Alignment.centerLeft,
+                                    child: RichText(
+                                      text: TextSpan(
+                                        style: kLabelTextStyle,
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text: 'Address ',
+                                            style: kLabelTextStyle,
+                                          ),
+                                          TextSpan(
+                                            text: evseInfo.address,
+                                            style: kLargeLabelTextStyle,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              if (evseInfo.utility != "")
+                                Container(
+                                  child: RichText(
+                                    text: TextSpan(
                                       style: kLabelTextStyle,
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: 'RTO/Utility ',
+                                          style: kLabelTextStyle,
+                                        ),
+                                        TextSpan(
+                                          text: evseInfo.utility,
+                                          style: kLargeLabelTextStyle,
+                                        ),
+                                      ],
                                     ),
-                                    TextSpan(
-                                      //text: evInfo.id,
-                                      text: '${snapshot.data[1].vin}',
-                                      style: kLargeLabelTextStyle,
-                                    ),
-                                  ],
+                                  ),
+                                ),
+                              Container(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: kLabelTextStyle,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'State ',
+                                        style: kLabelTextStyle,
+                                      ),
+                                      TextSpan(
+                                        text: snapshot.data[0].evseState,
+                                        style: kLargeLabelTextStyle,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              child: RichText(
-                                text: TextSpan(
-                                  style: kLabelTextStyle,
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'SOC ',
-                                      style: kLabelTextStyle,
-                                    ),
-                                    TextSpan(
-                                      text: '${snapshot.data[1].soc} %',
-                                      style: kLargeLabelTextStyle,
-                                    ),
-                                  ],
+                              Container(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: kLabelTextStyle,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'GFCI ',
+                                        style: kLabelTextStyle,
+                                      ),
+                                      TextSpan(
+                                        text: snapshot.data[0].gfci,
+                                        style: kLargeLabelTextStyle,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              child: RichText(
-                                text: TextSpan(
-                                  style: kLabelTextStyle,
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'Primary Status ',
-                                      style: kLabelTextStyle,
-                                    ),
-                                    TextSpan(
-                                      text: snapshot.data[1].primaryStatus,
-                                      style: kLargeLabelTextStyle,
-                                    ),
-                                  ],
+                              Container(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: kLabelTextStyle,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'Real Power ',
+                                        style: kLabelTextStyle,
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            '${snapshot.data[0].realPower} kW',
+                                        style: kLargeLabelTextStyle,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              child: RichText(
-                                text: TextSpan(
-                                  style: kLabelTextStyle,
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'Secondary Status ',
-                                      style: kLabelTextStyle,
-                                    ),
-                                    TextSpan(
-                                      text: snapshot.data[1].secondaryStatus,
-                                      style: kLargeLabelTextStyle,
-                                    ),
-                                  ],
+                              Container(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: kLabelTextStyle,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'Power Factor ',
+                                        style: kLabelTextStyle,
+                                      ),
+                                      TextSpan(
+                                        text: snapshot.data[0].powerFactor,
+                                        style: kLargeLabelTextStyle,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              child: RichText(
-                                text: TextSpan(
-                                  style: kLabelTextStyle,
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'Peer Connected ',
-                                      style: kLabelTextStyle,
-                                    ),
-                                    TextSpan(
-                                      text: snapshot.data[1].peerConnected,
-                                      style: kLargeLabelTextStyle,
-                                    ),
-                                  ],
+                              Container(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: kLabelTextStyle,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'Peer Connected ',
+                                        style: kLabelTextStyle,
+                                      ),
+                                      TextSpan(
+                                        text: snapshot.data[0].peerConnected,
+                                        style: kLargeLabelTextStyle,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                              Container(
+                                padding: EdgeInsets.only(top: 5, bottom: 5),
+                                child:
+                                    Divider(thickness: 2, color: Colors.white),
+                              ),
+                              Container(
+                                child: ReusableCard(
+                                  colour: kBackgroundColor,
+                                  margin: 0,
+                                  onPress: () {
+                                    if (role == 'developer') {
+                                      print('Going to single EV status page');
+                                      Provider.of<User>(context, listen: false)
+                                          .setType('ev');
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              SingleItemPage(iD: vin),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  cardChild: RichText(
+                                    text: TextSpan(
+                                      style: kLabelTextStyle,
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: 'EV Name ',
+                                          style: kLabelTextStyle,
+                                        ),
+                                        TextSpan(
+                                          text: snapshot.data[1].name,
+                                          style: kLargeLabelRouteTextStyle,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: kLabelTextStyle,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'VIN ',
+                                        style: kLabelTextStyle,
+                                      ),
+                                      TextSpan(
+                                        //text: evInfo.id,
+                                        text: '${snapshot.data[1].vin}',
+                                        style: kLargeLabelTextStyle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: kLabelTextStyle,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'SOC ',
+                                        style: kLabelTextStyle,
+                                      ),
+                                      TextSpan(
+                                        text: '${snapshot.data[1].soc} %',
+                                        style: kLargeLabelTextStyle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: kLabelTextStyle,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'Primary Status ',
+                                        style: kLabelTextStyle,
+                                      ),
+                                      TextSpan(
+                                        text: snapshot.data[1].primaryStatus,
+                                        style: kLargeLabelTextStyle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: kLabelTextStyle,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'Secondary Status ',
+                                        style: kLabelTextStyle,
+                                      ),
+                                      TextSpan(
+                                        text: snapshot.data[1].secondaryStatus,
+                                        style: kLargeLabelTextStyle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: kLabelTextStyle,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'Peer Connected ',
+                                        style: kLabelTextStyle,
+                                      ),
+                                      TextSpan(
+                                        text: snapshot.data[1].peerConnected,
+                                        style: kLargeLabelTextStyle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           } else {
