@@ -5,6 +5,7 @@ import 'package:v2g/models/ev.dart';
 import 'package:v2g/models/ev_status.dart';
 import 'package:v2g/models/evse.dart';
 import 'package:v2g/models/evse_status.dart';
+import 'package:v2g/models/evse_swver.dart';
 import 'package:v2g/models/user.dart';
 import 'package:v2g/screens/list_page.dart';
 import 'package:v2g/screens/resource_page.dart';
@@ -22,7 +23,9 @@ class _EVEVSEResourceButtonsState extends State<EVEVSEResourceButtons> {
   List<dynamic> evList = [];
   List<dynamic> evseStatusList = [];
   List<dynamic> evStatusList = [];
+  List<dynamic> evseSwVerList = [];
   EVSE devse = new EVSE();
+  EVSESwVer evseSw = new EVSESwVer();
   EV dev = new EV();
   EVSEStatus evseStatus = new EVSEStatus();
   EVStatus evStatus = new EVStatus();
@@ -34,8 +37,17 @@ class _EVEVSEResourceButtonsState extends State<EVEVSEResourceButtons> {
           token: token, name: name, username: username, url: url);
       Provider.of<User>(context, listen: false).setEVSEList(evseList);
       print('EVSE list loaded');
-      //only prints out 'instance of EVSE'
-      //print(evseList);
+    }
+    Provider.of<User>(context, listen: false).setType('evse');
+  }
+
+  void getEVSESwVerList(
+      String token, String name, String username, String url) async {
+    if (evseSwVerList.isEmpty) {
+      evseSwVerList = await evseSw.fetchEVSESwVerList(
+          token: token, name: name, username: username, url: url);
+      Provider.of<User>(context, listen: false).setEVSESwVerList(evseSwVerList);
+      print('EVSE Software Version list loaded');
     }
     Provider.of<User>(context, listen: false).setType('evse');
   }
@@ -46,7 +58,6 @@ class _EVEVSEResourceButtonsState extends State<EVEVSEResourceButtons> {
           token: token, username: username, name: name, url: url);
       Provider.of<User>(context, listen: false).setEVList(evList);
       print('EV list loaded');
-      print(evList);
     }
     Provider.of<User>(context, listen: false).setType('ev');
   }
@@ -118,6 +129,7 @@ class _EVEVSEResourceButtonsState extends State<EVEVSEResourceButtons> {
           ),
           onPress: () {
             getEVSEList(token, name, username, url);
+            getEVSESwVerList(token, name, username, url);
             getEVSEStatusList(token, name, username, url);
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => ListPage()));

@@ -5,6 +5,7 @@ import 'package:v2g/models/ev.dart';
 import 'evse.dart';
 import 'ev_status.dart';
 import 'evse_status.dart';
+import 'evse_swver.dart';
 
 class NetworkHandler<T> {
   NetworkHandler({this.type});
@@ -78,6 +79,14 @@ class NetworkHandler<T> {
           } catch (e) {
             print(e);
           }
+        } else if (type == EVSESwVer) {
+          try {
+            return (json.decode(response.body)['config_info'] as List)
+                .map((i) => EVSESwVer.fromJson(i))
+                .toList();
+          } catch (e) {
+            print(e);
+          }
         } else {
           return (json.decode(response.body)['cars_info'] as List)
               .map((i) => EV.fromJson(i))
@@ -88,7 +97,6 @@ class NetworkHandler<T> {
   }
 
   Future fetch(String url) async {
-    print(url);
     final response = await http.get(url);
     if (response.statusCode == 200) {
       if (jsonDecode(response.body)['status'] == 'success') {
@@ -125,7 +133,7 @@ class NetworkHandler<T> {
             );
           }
         } else if (type == EVStatus) {
-          print((json.decode(response.body)['cars_log']));
+          //print((json.decode(response.body)['cars_log']));
           try {
             return EVStatus.fromJson(
                 (json.decode(response.body)['cars_log'])[0]);

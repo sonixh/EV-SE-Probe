@@ -1,10 +1,13 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:v2g/models/evse.dart';
+import 'package:v2g/models/evse_swver.dart';
 import '../constants.dart';
 
 class EVSEInfoWidget extends StatelessWidget {
-  EVSEInfoWidget({@required this.future});
   final EVSE future;
+  final EVSESwVer evseSwVer;
+  EVSEInfoWidget({@required this.future, @required this.evseSwVer});
 
   @override
   Widget build(BuildContext context) {
@@ -14,44 +17,49 @@ class EVSEInfoWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           if (future.address != '')
-            Container(
+            FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Container(
+                child: RichText(
+                  text: TextSpan(
+                    style: kLabelTextStyle,
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'Address ',
+                        style: kLabelTextStyle,
+                      ),
+                      TextSpan(
+                        text: '${future.address}',
+                        style: kLargeLabelTextStyle,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          FittedBox(
+            fit: BoxFit.fitWidth,
+            child: Container(
               child: RichText(
                 text: TextSpan(
                   style: kLabelTextStyle,
                   children: <TextSpan>[
                     TextSpan(
-                      text: 'Address ',
+                      text: 'Latitude, Longitude ',
                       style: kLabelTextStyle,
                     ),
                     TextSpan(
-                      text: '${future.address}',
+                      text: '${future.latitude}, ${future.longitude}',
                       style: kLargeLabelTextStyle,
                     ),
                   ],
                 ),
               ),
             ),
-          Container(
-            child: RichText(
-              text: TextSpan(
-                style: kLabelTextStyle,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Latitude, Longitude ',
-                    style: kLabelTextStyle,
-                  ),
-                  TextSpan(
-                    text: '${future.latitude}, ${future.longitude}',
-                    style: kLargeLabelTextStyle,
-                  ),
-                ],
-              ),
-            ),
           ),
           Container(
-            child: RichText(
-              text: TextSpan(
-                style: kLabelTextStyle,
+            child: AutoSizeText.rich(
+              TextSpan(
                 children: <TextSpan>[
                   TextSpan(
                     text: 'RTO/Utility ',
@@ -63,6 +71,8 @@ class EVSEInfoWidget extends StatelessWidget {
                   ),
                 ],
               ),
+              minFontSize: 8,
+              maxLines: 1,
             ),
           ),
           Container(
@@ -139,45 +149,11 @@ class EVSEInfoWidget extends StatelessWidget {
                 style: kLabelTextStyle,
                 children: <TextSpan>[
                   TextSpan(
-                    text: 'Hardware Version ',
-                    style: kLabelTextStyle,
-                  ),
-                  TextSpan(
-                    text: '${future.hardwareVersion}',
-                    style: kLargeLabelTextStyle,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            child: RichText(
-              text: TextSpan(
-                style: kLabelTextStyle,
-                children: <TextSpan>[
-                  TextSpan(
                     text: 'Part Number ',
                     style: kLabelTextStyle,
                   ),
                   TextSpan(
                     text: '${future.partNumber}',
-                    style: kLargeLabelTextStyle,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            child: RichText(
-              text: TextSpan(
-                style: kLabelTextStyle,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Vel Version ',
-                    style: kLabelTextStyle,
-                  ),
-                  TextSpan(
-                    text: '${future.velVersion}',
                     style: kLargeLabelTextStyle,
                   ),
                 ],
@@ -244,8 +220,49 @@ class EVSEInfoWidget extends StatelessWidget {
                     text: 'Reverse Feeding Permitted ',
                     style: kLabelTextStyle,
                   ),
+                  if (future.reverse == '1')
+                    TextSpan(
+                      text: 'True',
+                      style: kLargeLabelTextStyle,
+                    ),
+                  if (future.reverse == '0')
+                    TextSpan(
+                      text: 'False',
+                      style: kLargeLabelTextStyle,
+                    ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            child: RichText(
+              text: TextSpan(
+                style: kLabelTextStyle,
+                children: <TextSpan>[
                   TextSpan(
-                    text: '${future.reverse}',
+                    text: 'Hardware Version ',
+                    style: kLabelTextStyle,
+                  ),
+                  TextSpan(
+                    text: '${future.hardwareVersion}',
+                    style: kLargeLabelTextStyle,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 20),
+          Container(
+            child: RichText(
+              text: TextSpan(
+                style: kLabelTextStyle,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Agent Version ',
+                    style: kLabelTextStyle,
+                  ),
+                  TextSpan(
+                    text: evseSwVer.agentRevision,
                     style: kLargeLabelTextStyle,
                   ),
                 ],
@@ -258,34 +275,53 @@ class EVSEInfoWidget extends StatelessWidget {
                 style: kLabelTextStyle,
                 children: <TextSpan>[
                   TextSpan(
-                    text: 'RCD ',
+                    text: 'VEL Version ',
                     style: kLabelTextStyle,
                   ),
                   TextSpan(
-                    text: '${future.rcd}',
+                    text: evseSwVer.velRevision,
                     style: kLargeLabelTextStyle,
                   ),
                 ],
               ),
             ),
           ),
-          Container(
-            child: RichText(
-              text: TextSpan(
-                style: kLabelTextStyle,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Meter Version ',
-                    style: kLabelTextStyle,
-                  ),
-                  TextSpan(
-                    text: '${future.meterVersion}',
-                    style: kLargeLabelTextStyle,
-                  ),
-                ],
+          if (evseSwVer.rCDVersion != null)
+            Container(
+              child: RichText(
+                text: TextSpan(
+                  style: kLabelTextStyle,
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'RCD Version ',
+                      style: kLabelTextStyle,
+                    ),
+                    TextSpan(
+                      text: evseSwVer.rCDVersion,
+                      style: kLargeLabelTextStyle,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
+          if (evseSwVer.meterVersion != null)
+            Container(
+              child: RichText(
+                text: TextSpan(
+                  style: kLabelTextStyle,
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'Meter Version ',
+                      style: kLabelTextStyle,
+                    ),
+                    TextSpan(
+                      text: evseSwVer.meterVersion,
+                      style: kLargeLabelTextStyle,
+                    ),
+                  ],
+                ),
+              ),
+            ),
         ],
       ),
     );

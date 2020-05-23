@@ -21,7 +21,6 @@ class _ResourceList extends State<ResourceList> {
 
   double getMarginWidth() {
     double width = MediaQuery.of(context).copyWith().size.width;
-    print(width);
     if (width > 430) {
       return width / 6.25;
     } else {

@@ -7,6 +7,7 @@ import 'package:v2g/models/ev.dart';
 import 'package:v2g/models/evse.dart';
 import 'package:v2g/models/ev_status.dart';
 import 'package:v2g/models/evse_status.dart';
+import 'package:v2g/models/evse_swver.dart';
 import 'package:v2g/models/user.dart';
 import 'package:v2g/widgets/ev_info_widget.dart';
 import 'package:v2g/widgets/evse_info_widget.dart';
@@ -59,8 +60,10 @@ class _SingleItemPageState extends State<SingleItemPage> {
     String type = Provider.of<User>(context).type;
     List evseList = Provider.of<User>(context).evseList;
     List evList = Provider.of<User>(context).evList;
+    List evseSwVerList = Provider.of<User>(context).evseSwVerList;
     EVSE evse = new EVSE();
     EV ev = new EV();
+    EVSESwVer evseSwVer = new EVSESwVer();
 
     if (sharedValue == 1 && type == 'evse') {
       status = false;
@@ -68,6 +71,14 @@ class _SingleItemPageState extends State<SingleItemPage> {
           .where(
               (object) => (object.id.toLowerCase().contains(iD.toLowerCase())))
           .toList()[0];
+      try {
+        evseSwVer = evseSwVerList
+            .where((object) =>
+                (object.id.toLowerCase().contains(iD.toLowerCase())))
+            .toList()[0];
+      } catch (e) {
+        print('no config/get info for this evse');
+      }
     } else if (sharedValue == 1 && type == 'ev') {
       status = false;
       ev = evList
@@ -117,8 +128,6 @@ class _SingleItemPageState extends State<SingleItemPage> {
                       padding: EdgeInsets.only(
                           top: 5, bottom: 0, left: 20, right: 20),
                       width: 325,
-                      // margin: EdgeInsets.only(
-                      //     left: getMarginWidth(), right: getMarginWidth()),
                       child: CupertinoSegmentedControl(
                         padding: EdgeInsets.only(top: 0),
                         selectedColor: kAccentColor,
@@ -143,7 +152,9 @@ class _SingleItemPageState extends State<SingleItemPage> {
                         height: 500,
                         child: ListView(
                           children: [
-                            StatusWidget(future: f),
+                            StatusWidget(
+                              future: f,
+                            ),
                           ],
                         ),
                       ),
@@ -205,7 +216,10 @@ class _SingleItemPageState extends State<SingleItemPage> {
               ),
             ),
             if (sharedValue == 1 && type == 'evse')
-              EVSEInfoWidget(future: evse),
+              EVSEInfoWidget(
+                future: evse,
+                evseSwVer: evseSwVer,
+              ),
             if (sharedValue == 1 && type == 'ev') EVInfoWidget(future: ev),
           ],
         ),

@@ -11,11 +11,12 @@ class User extends ChangeNotifier {
   String _type;
   List _evseStatusList;
   List _evStatusList;
+  List _evseSwVerList;
   String _iso;
   String _version;
 
   User(this._username, this._token, this._name, this._role, this._evseList,
-      this._evList, this._url, this._iso, this._version);
+      this._evList, this._url, this._iso, this._version, this._evseSwVerList);
 
   setUsername(String username) {
     _username = username;
@@ -44,6 +45,11 @@ class User extends ChangeNotifier {
 
   setEVSEList(List evseList) {
     _evseList = evseList;
+    notifyListeners();
+  }
+
+  setEVSESwVerList(List evseSwVerList) {
+    _evseSwVerList = evseSwVerList;
     notifyListeners();
   }
 
@@ -91,6 +97,10 @@ class User extends ChangeNotifier {
 
   List get evseStatusList {
     return _evseStatusList;
+  }
+
+  List get evseSwVerList {
+    return _evseSwVerList;
   }
 
   List get evStatusList {

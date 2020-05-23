@@ -55,8 +55,8 @@ class _SingleResourcePage extends State<SingleResourcePage> {
         print('$e here in single resource page');
       }
 
-      print(evInfo.id);
-      print(vin);
+      print('Single resource page evInfo.id: ${evInfo.id}');
+      print('Single resource page vin: $vin');
     }
 
     if (evseInfo != null && evseList.length != 0) {
@@ -71,7 +71,6 @@ class _SingleResourcePage extends State<SingleResourcePage> {
     f0 = evseStatus.fetchEVSEStatus(
         evseID: iD, token: token, name: name, username: username, url: url);
 
-    print(vin);
     f1 = evStatus.fetchEVStatus(
         vin: vin, token: token, name: name, username: username, url: url);
 
@@ -201,19 +200,24 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                 ),
                               if (evseInfo.utility != "")
                                 Container(
-                                  child: RichText(
-                                    text: TextSpan(
-                                      style: kLabelTextStyle,
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: 'RTO/Utility ',
-                                          style: kLabelTextStyle,
-                                        ),
-                                        TextSpan(
-                                          text: evseInfo.utility,
-                                          style: kLargeLabelTextStyle,
-                                        ),
-                                      ],
+                                  height: 20,
+                                  child: FittedBox(
+                                    alignment: Alignment.centerLeft,
+                                    child: RichText(
+                                      text: TextSpan(
+                                        style: kLabelTextStyle,
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text: 'RTO/Utility ',
+                                            style: kLabelTextStyle,
+                                          ),
+                                          TextSpan(
+                                            text:
+                                                '${evseInfo.iso}/ ${evseInfo.utility}',
+                                            style: kLargeLabelTextStyle,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),

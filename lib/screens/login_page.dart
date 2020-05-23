@@ -43,6 +43,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     autoLogin();
+    //print('going to autoLogin');
   }
 
   String getRTOName(int index) {
@@ -158,9 +159,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void autoLogin() async {
+    //print('here in autologin');
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    //print("got prefs");
     final String userId = prefs.getString('username');
     final pass = await _storage.read(key: 'password');
+    //print('got password');
     final String i = prefs.getString('iso');
     List temp = [null, null, null, null];
 
@@ -177,6 +181,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (userId != null && pass != null && i != null) {
       if (i == 'pjm') {
+        //print('i is pjm');
         url = i + '.nuvve.com';
       } else if (i == 'caiso') {
         url = i + '.nuvve.com';
@@ -196,23 +201,26 @@ class _LoginPageState extends State<LoginPage> {
         password = pass;
         iso = i;
       });
-
+      //print('here right before connectivity');
       var result = await Connectivity().checkConnectivity();
+      //  print('got connectivity');
       if (result == ConnectivityResult.none) {
-        print('no internet connection');
+        //print('no internet connection');
         temp[3] = 'NIC';
       } else {
         noInternetError = false;
+        //print('here right before login');
         temp = await nH.login(username, password, url);
+        //print('logged in from nH');
 
         PackageInfo packageInfo = await PackageInfo.fromPlatform();
+        //print('got package version');
         setState(() {
           version = packageInfo.version;
         });
       }
 
       if (loginInfo[3] == 'NIC') {
-        print('here');
         setState(() {
           noInternetError = true;
         });
@@ -221,6 +229,7 @@ class _LoginPageState extends State<LoginPage> {
           rtoError = true;
         });
       } else if (temp[3] == 'success') {
+        //print('success from temp[3]');
         Provider.of<User>(context, listen: false).setName(temp[0]);
         Provider.of<User>(context, listen: false).setToken(temp[1]);
         Provider.of<User>(context, listen: false).setRole(temp[2]);
@@ -228,16 +237,17 @@ class _LoginPageState extends State<LoginPage> {
         Provider.of<User>(context, listen: false).seturl(url);
         Provider.of<User>(context, listen: false).setIso(iso);
         Provider.of<User>(context, listen: false).setVersion(version);
+        //print('pushing home screen');
         Navigator.pushReplacementNamed(context, '/home');
       } else if (temp[3] == 'SNR') {
-        print(temp[3]);
-        print(temp);
+        //print(temp[3]);
+        //print(temp);
         setState(() {
           loginError = true;
         });
       } else {
-        print(temp[3]);
-        print(temp);
+        //print(temp[3]);
+        //print(temp);
         setState(() {
           loginError = true;
         });
@@ -246,7 +256,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void login() async {
-    print('here');
+    //print('here');
     if (isoEntered && !urlEntered) {
       if (iso == 'pjm') {
         url = iso + '.nuvve.com';
@@ -262,8 +272,8 @@ class _LoginPageState extends State<LoginPage> {
         url = iso + '.nuvve.com';
       }
     } else if (urlEntered) {
-      print(url);
-      print(iso);
+      //print(url);
+      //print(iso);
     }
 
     setState(() {
@@ -543,7 +553,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   if (loggingIn == true)
                     SpinKitPulse(
-                      color: Colors.white,
+                      color: Colors.green,
                       size: 50,
                       duration: Duration(seconds: 1),
                     ),

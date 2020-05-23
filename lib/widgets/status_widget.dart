@@ -6,7 +6,7 @@ import 'attribute.dart';
 
 class StatusWidget extends StatefulWidget {
   final Future future;
-  const StatusWidget({Key key, this.future}) : super(key: key);
+  const StatusWidget({Key key, @required this.future}) : super(key: key);
   @override
   _StatusWidgetState createState() => _StatusWidgetState();
 }
@@ -27,12 +27,6 @@ class _StatusWidgetState extends State<StatusWidget> {
           );
         } else {
           List<Widget> evseStatusChildren = <Widget>[
-            //This is called METER_REV in the agent
-            // Attribute(
-            //   snapshot: snapshot,
-            //   label: 'rev ',
-            //   x: 'status',
-            // ),
             Attribute(
               snapshot: snapshot,
               label: 'Status ',
@@ -71,7 +65,6 @@ class _StatusWidgetState extends State<StatusWidget> {
               label: 'Energy Down ',
               x: 'energyDown',
             ),
-
             Attribute(
               snapshot: snapshot,
               label: 'GFCI ',
@@ -96,7 +89,6 @@ class _StatusWidgetState extends State<StatusWidget> {
                 x: 'peerConnected'),
             Attribute(snapshot: snapshot, label: 'State of Charge ', x: 'soc'),
             Attribute(snapshot: snapshot, label: 'Miles ', x: 'miles'),
-            Attribute(snapshot: snapshot, label: 'Credit ', x: 'credit'),
             Attribute(
                 snapshot: snapshot,
                 label: 'Primary Status ',
