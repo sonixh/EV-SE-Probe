@@ -42,8 +42,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    //try autologging in first
     autoLogin();
-    //print('going to autoLogin');
   }
 
   String getRTOName(int index) {
@@ -210,6 +210,7 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         noInternetError = false;
         //print('here right before login');
+        //Send request to API to login
         temp = await nH.login(username, password, url);
         //print('logged in from nH');
 
@@ -230,6 +231,7 @@ class _LoginPageState extends State<LoginPage> {
         });
       } else if (temp[3] == 'success') {
         //print('success from temp[3]');
+        //Set all user parameters
         Provider.of<User>(context, listen: false).setName(temp[0]);
         Provider.of<User>(context, listen: false).setToken(temp[1]);
         Provider.of<User>(context, listen: false).setRole(temp[2]);
@@ -256,7 +258,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void login() async {
-    //print('here');
     if (isoEntered && !urlEntered) {
       if (iso == 'pjm') {
         url = iso + '.nuvve.com';
@@ -571,6 +572,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   SizedBox(height: 10),
+                  //Begin Error Messages
                   if (loginError)
                     Text(
                       'Invalid username or password entered',

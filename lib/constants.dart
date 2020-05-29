@@ -11,6 +11,12 @@ const kLargeLabelTextStyle = TextStyle(
   fontWeight: FontWeight.w500,
 );
 
+const kDarkLargeLabelTextStyle = TextStyle(
+  fontSize: 22,
+  color: Colors.black54,
+  fontWeight: FontWeight.w500,
+);
+
 const kLargeLabelRouteTextStyle = TextStyle(
   fontSize: 22,
   color: kAccentColor,

@@ -91,12 +91,10 @@ class _EVEVSEResourceButtonsState extends State<EVEVSEResourceButtons> {
     String name = Provider.of<User>(context).name;
     String username = Provider.of<User>(context).username;
     String url = Provider.of<User>(context).url;
-    //String role = Provider.of<User>(context).role;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        //if (role == "developer")
         ReusableCard(
           margin: 0,
           onPress: () {
@@ -111,7 +109,6 @@ class _EVEVSEResourceButtonsState extends State<EVEVSEResourceButtons> {
             child: IconContent(icon: FontAwesomeIcons.car, label: 'EV'),
           ),
         ),
-        //if (role == "developer")
         Container(
           padding: EdgeInsets.all(10),
           child: Divider(

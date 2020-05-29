@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
     ]);
     return ChangeNotifierProvider(
       create: (context) =>
+          //User object istantiated here so we can use Provider
           User(null, null, null, null, null, null, null, null, null, null),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
           primaryColor: kBackgroundColor,
           scaffoldBackgroundColor: kBackgroundColor,
         ),
+        //entry point to app
         home: LoginPage(),
         routes: {
           '/login': (_) => LoginPage(),

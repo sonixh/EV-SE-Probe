@@ -95,7 +95,9 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               SizedBox(height: 15),
+              //Main element on this page
               EVEVSEResourceButtons(),
+              ////////////////////////
               SizedBox(height: 30),
               Container(
                 padding: EdgeInsets.only(left: 40, right: 40),

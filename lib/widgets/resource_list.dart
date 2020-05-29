@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:v2g/models/evse_status.dart';
 import 'package:v2g/models/user.dart';
 import 'package:v2g/screens/single_resource_page.dart';
+import 'package:v2g/widgets/round_icon_button.dart';
 import '../constants.dart';
 
 class ResourceList extends StatefulWidget {
@@ -18,6 +19,78 @@ class _ResourceList extends State<ResourceList> {
   bool refreshing = true;
   EVSEStatus evseStatus = new EVSEStatus();
   List evseStatusList;
+
+  void displayHelp() {
+    print('displaying help modal');
+
+    showModalBottomSheet(
+      isDismissible: true,
+      context: context,
+      builder: (BuildContext builder) {
+        return Container(
+          color: Color.fromRGBO(5, 27, 27, 60),
+          height: MediaQuery.of(context).copyWith().size.height / 2.5,
+          child: Container(
+            decoration: BoxDecoration(
+              color: kBackgroundColor,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(40.0),
+                topRight: Radius.circular(40.0),
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    'State: B1',
+                    style: kDarkLargeLabelTextStyle,
+                  ),
+                  color: Colors.red,
+                ),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    'State: B2',
+                    style: kDarkLargeLabelTextStyle,
+                  ),
+                  color: Colors.white,
+                ),
+                Container(
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      'State: LR',
+                      style: kDarkLargeLabelTextStyle,
+                    ),
+                    color: Colors.yellow),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    'State: NR',
+                    style: kDarkLargeLabelTextStyle,
+                  ),
+                  color: Colors.blue,
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.green,
+                  ),
+                  child: FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('Done')),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   double getMarginWidth() {
     double width = MediaQuery.of(context).copyWith().size.width;
@@ -106,9 +179,22 @@ class _ResourceList extends State<ResourceList> {
                 },
               ),
             ),
-            Container(
-              child: Text('EVSE Name ↔︎ EV Name'),
-              padding: EdgeInsets.only(top: 10, bottom: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  child: Text('EVSE Name ↔︎ EV Name'),
+                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Container(
+                  padding: EdgeInsets.only(bottom: 4),
+                  child: RoundIconButton(
+                      icon: Icons.help_outline, onPressed: displayHelp),
+                ),
+              ],
             ),
             if (sortedList.length != 0)
               Expanded(
