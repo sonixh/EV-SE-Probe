@@ -97,6 +97,20 @@ class _StatusWidgetState extends State<StatusWidget> {
                 snapshot: snapshot,
                 label: 'Secondary Status ',
                 x: 'secondaryStatus'),
+            Attribute(
+                snapshot: snapshot, label: 'Battery Temperature ', x: 'tBatt'),
+            Attribute(
+                snapshot: snapshot,
+                label: 'Cell Temperature Average ',
+                x: 'tCellAvg'),
+            Attribute(
+                snapshot: snapshot,
+                label: 'Cell Temperature Minimum ',
+                x: 'tCellMin'),
+            Attribute(
+                snapshot: snapshot,
+                label: 'Cell Temperature Maximum ',
+                x: 'tCellMax'),
           ];
           String type = Provider.of<User>(context).type;
           if (type == 'evse') {

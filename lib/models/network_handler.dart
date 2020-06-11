@@ -45,12 +45,39 @@ class NetworkHandler<T> {
   Future logout(String username, String token, String name, String url) async {
     final response = await http
         .get('https://$url/api/logout?user=$username&name=$name&token=$token');
+
     if (response.statusCode == 200) {
       String status;
       status = jsonDecode(response.body)['status'];
       return status;
     } else {
       throw Exception('Failed to logout');
+    }
+  }
+
+  Future fetchEVStatus(String url, String dataUrl) async {
+    final response = await http.get(url);
+    final dataResponse = await http.get(dataUrl);
+    if (response.statusCode == 200 && dataResponse.statusCode == 200) {
+      if (jsonDecode(response.body)['status'] == 'success' &&
+          jsonDecode(dataResponse.body)['status'] == 'success') {
+        try {
+          return EVStatus.fromTwoJson(
+              (json.decode(response.body)['cars_log'])[0],
+              (json.decode(dataResponse.body)['data'])[0]);
+        } catch (e) {
+          print('here in EV Status and Data in NH: $e');
+          return EVStatus(
+            name: 'null',
+            evseName: 'null',
+            peerConnected: 'null',
+            soc: 'null',
+            miles: 'null',
+            credit: 'null',
+            primaryStatus: 'null',
+          );
+        }
+      }
     }
   }
 
@@ -92,8 +119,11 @@ class NetworkHandler<T> {
               .map((i) => EV.fromJson(i))
               .toList();
         }
+      } else {
+        throw Exception('Failed: ${jsonDecode(response.body)['status']}');
       }
     }
+    throw Exception('Failed to get a successful response');
   }
 
   Future fetch(String url) async {

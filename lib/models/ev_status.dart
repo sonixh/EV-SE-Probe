@@ -11,31 +11,60 @@ class EVStatus {
   final String vin;
   final String id;
   final String secondaryStatus;
+  final String tBatt;
+  final String tCellAvg;
+  final String tCellMin;
+  final String tCellMax;
 
-  EVStatus(
-      {this.name,
-      this.evseName,
-      this.peerConnected,
-      this.soc,
-      this.miles,
-      this.credit,
-      this.primaryStatus,
-      this.vin,
-      this.id,
-      this.secondaryStatus});
+  EVStatus({
+    this.name,
+    this.evseName,
+    this.peerConnected,
+    this.soc,
+    this.miles,
+    this.credit,
+    this.primaryStatus,
+    this.vin,
+    this.id,
+    this.secondaryStatus,
+    this.tBatt,
+    this.tCellAvg,
+    this.tCellMin,
+    this.tCellMax,
+  });
 
-  factory EVStatus.fromJson(Map<String, dynamic> json) {
+  factory EVStatus.fromTwoJson(
+      Map<String, dynamic> evStatusJson, Map<String, dynamic> evDataJson) {
     return EVStatus(
-        name: json['car_name'],
-        evseName: json['evse_name'],
-        peerConnected: json['peer_connected'],
-        soc: json['soc'],
-        miles: json['miles'],
-        credit: json['credit'],
-        primaryStatus: json['primary_status'],
-        vin: json['vin'],
-        id: json['vin'],
-        secondaryStatus: json['secondary_status']);
+        name: evStatusJson['car_name'],
+        evseName: evStatusJson['evse_name'],
+        peerConnected: evStatusJson['peer_connected'],
+        soc: evStatusJson['soc'],
+        miles: evStatusJson['miles'],
+        credit: evStatusJson['credit'],
+        primaryStatus: evStatusJson['primary_status'],
+        vin: evStatusJson['vin'],
+        id: evStatusJson['vin'],
+        secondaryStatus: evStatusJson['secondary_status'],
+        tBatt: evDataJson['t_batt'],
+        tCellAvg: evDataJson['t_cell_avg'],
+        tCellMax: evDataJson['t_cell_max'],
+        tCellMin: evDataJson['t_cell_min']);
+  }
+
+  factory EVStatus.fromJson(Map<String, dynamic> evStatusJson) {
+    return EVStatus(
+      name: evStatusJson['car_name'],
+      evseName: evStatusJson['evse_name'],
+      peerConnected: evStatusJson['peer_connected'],
+      soc: evStatusJson['soc'],
+      miles: evStatusJson['miles'],
+      credit: evStatusJson['credit'],
+      primaryStatus: evStatusJson['primary_status'],
+      vin: evStatusJson['vin'],
+      id: evStatusJson['vin'],
+      secondaryStatus: evStatusJson['secondary_status'],
+    );
   }
 
   Future<EVStatus> fetchEVStatus(
@@ -45,8 +74,9 @@ class EVStatus {
       String token,
       String url}) async {
     NetworkHandler nH = new NetworkHandler(type: EVStatus);
-    return await nH.fetch(
-        'https://$url/api/get_status?user=$username&name=$name&token=$token&vin=$vin');
+    return await nH.fetchEVStatus(
+        'https://$url/api/get_status?user=$username&name=$name&token=$token&vin=$vin',
+        'https://$url/api/ev/data/get?user=$username&name=$name&token=$token&vin=$vin');
   }
 
   Future<List> fetchDetailedEVStatusList(

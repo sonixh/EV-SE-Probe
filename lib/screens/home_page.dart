@@ -17,10 +17,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).copyWith().size.height;
+
     List<double> getMarginWidth() {
       double width = MediaQuery.of(context).copyWith().size.width;
-      if (width > 430) {
+      print(width);
+      if (width > 430 && width < 1100) {
         return [width / 4.25, width / 4.25, width / 4.25, width / 4.25];
+      } else if (width >= 1100) {
+        return [width / 4.25, width / 4.25, 0, width / 4.25];
       } else {
         return [40, 40, 25, 50];
       }
@@ -80,7 +85,9 @@ class _HomePageState extends State<HomePage> {
               right: margins[0],
               left: margins[1],
               top: margins[2],
-              bottom: margins[3]),
+              //top: 0,
+              //bottom: margins[3]
+              bottom: 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -134,9 +141,11 @@ class _HomePageState extends State<HomePage> {
                   onPress: logout,
                 ),
               ),
-              SizedBox(
-                height: 80,
-              ),
+              height > 900
+                  ? SizedBox(
+                      height: 260,
+                    )
+                  : SizedBox(height: 80),
               Container(
                 child: Center(
                     child: Text(

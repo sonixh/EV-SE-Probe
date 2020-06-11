@@ -87,6 +87,30 @@ class _AttributeState extends State<Attribute> {
       if (widget.x == 'primaryStatus') {
         internal = snapshot.data.primaryStatus;
       }
+      if (widget.x == 'tBatt') {
+        internal = snapshot.data.tBatt;
+        if (internal != null) {
+          internal = internal + ' °C';
+        }
+      }
+      if (widget.x == 'tCellAvg') {
+        internal = snapshot.data.tCellAvg;
+        if (internal != null) {
+          internal = internal + ' °C';
+        }
+      }
+      if (widget.x == 'tCellMin') {
+        internal = snapshot.data.tCellMin;
+        if (internal != null) {
+          internal = internal + ' °C';
+        }
+      }
+      if (widget.x == 'tCellMax') {
+        internal = snapshot.data.tCellMax;
+        if (internal != null) {
+          internal = internal + ' °C';
+        }
+      }
 
       if (internal == null || internal == '') {
         this.setState(() {
