@@ -11,7 +11,7 @@ class EVStatus {
   final String vin;
   final String id;
   final String secondaryStatus;
-  final String tBatt;
+  //final String tAmbient;
   final String tCellAvg;
   final String tCellMin;
   final String tCellMax;
@@ -27,7 +27,7 @@ class EVStatus {
     this.vin,
     this.id,
     this.secondaryStatus,
-    this.tBatt,
+    //this.tAmbient,
     this.tCellAvg,
     this.tCellMin,
     this.tCellMax,
@@ -46,7 +46,7 @@ class EVStatus {
         vin: evStatusJson['vin'],
         id: evStatusJson['vin'],
         secondaryStatus: evStatusJson['secondary_status'],
-        tBatt: evDataJson['t_batt'],
+        //tAmbient: evDataJson['t_ambient'],
         tCellAvg: evDataJson['t_cell_avg'],
         tCellMax: evDataJson['t_cell_max'],
         tCellMin: evDataJson['t_cell_min']);

@@ -87,7 +87,7 @@ class _AttributeState extends State<Attribute> {
       if (widget.x == 'primaryStatus') {
         internal = snapshot.data.primaryStatus;
       }
-      if (widget.x == 'tBatt') {
+      if (widget.x == 'tAmbient') {
         internal = snapshot.data.tBatt;
         if (internal != null) {
           internal = internal + ' °C';

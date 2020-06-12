@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:v2g/models/user.dart';
+import '../constants.dart';
 import 'attribute.dart';
 
 class StatusWidget extends StatefulWidget {
@@ -99,18 +100,24 @@ class _StatusWidgetState extends State<StatusWidget> {
                 x: 'secondaryStatus'),
             Attribute(
                 snapshot: snapshot, label: 'Battery Temperature ', x: 'tBatt'),
-            Attribute(
-                snapshot: snapshot,
-                label: 'Cell Temperature Average ',
-                x: 'tCellAvg'),
-            Attribute(
-                snapshot: snapshot,
-                label: 'Cell Temperature Minimum ',
-                x: 'tCellMin'),
-            Attribute(
-                snapshot: snapshot,
-                label: 'Cell Temperature Maximum ',
-                x: 'tCellMax'),
+            Container(
+              child: RichText(
+                text: TextSpan(
+                  style: kLabelTextStyle,
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'Bat. Module °C (min,Avg,max) ',
+                      style: kLabelTextStyle,
+                    ),
+                    TextSpan(
+                      text:
+                          ('${double.parse(snapshot.data.tCellMin).truncate().toString()}, ${double.parse(snapshot.data.tCellAvg).truncate().toString()}, ${double.parse(snapshot.data.tCellMax).truncate().toString()}'),
+                      style: kLargeLabelTextStyle,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ];
           String type = Provider.of<User>(context).type;
           if (type == 'evse') {

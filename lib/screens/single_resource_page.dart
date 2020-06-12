@@ -433,6 +433,24 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                   ),
                                 ),
                               ),
+                              Container(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: kLabelTextStyle,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'Bat. Module °C (min,Avg,max) ',
+                                        style: kLabelTextStyle,
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            ('${double.parse(snapshot.data[1].tCellMin).truncate().toString()}, ${double.parse(snapshot.data[1].tCellAvg).truncate().toString()}, ${double.parse(snapshot.data[1].tCellMax).truncate().toString()}'),
+                                        style: kLargeLabelTextStyle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
