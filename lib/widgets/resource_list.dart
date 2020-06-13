@@ -33,58 +33,133 @@ class _ResourceList extends State<ResourceList> {
           child: Container(
             decoration: BoxDecoration(
               color: kBackgroundColor,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(40.0),
-                topRight: Radius.circular(40.0),
-              ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    'State: B1',
-                    style: kDarkLargeLabelTextStyle,
+            child: Container(
+              padding: EdgeInsets.only(top: 15),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 200,
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                Text(
+                                  'Peer Connected',
+                                  style: kLargeLabelTextStyle,
+                                ),
+                                Text(
+                                  '& Online',
+                                  style: kLargeLabelTextStyle,
+                                ),
+                              ],
+                            ),
+                            color: kAccentColor,
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            width: 200,
+                            child: Column(
+                              children: [
+                                Text(
+                                  'Not Peer',
+                                  style: kLargeLabelTextStyle,
+                                ),
+                                Text(
+                                  'Connected',
+                                  style: kLargeLabelTextStyle,
+                                ),
+                                Text(
+                                  '& Online',
+                                  style: kLargeLabelTextStyle,
+                                ),
+                              ],
+                            ),
+                            color: Colors.grey,
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            width: 200,
+                            child: Column(
+                              children: [
+                                Text(
+                                  'Offline',
+                                  style: kLargeLabelTextStyle,
+                                ),
+                              ],
+                            ),
+                            color: Colors.black12,
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 10),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                              'State: B1',
+                              style: kLargeLabelTextStyle,
+                            ),
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.red, width: 3)),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                              'State: B2',
+                              style: kLargeLabelTextStyle,
+                            ),
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.white, width: 3)),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                              'State: LR',
+                              style: kLargeLabelTextStyle,
+                            ),
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.yellow, width: 3)),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                              'State: NR',
+                              style: kLargeLabelTextStyle,
+                            ),
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.blue, width: 3)),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  color: Colors.red,
-                ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    'State: B2',
-                    style: kDarkLargeLabelTextStyle,
-                  ),
-                  color: Colors.white,
-                ),
-                Container(
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      'State: LR',
-                      style: kDarkLargeLabelTextStyle,
+                  SizedBox(height: 15),
+                  Container(
+                    margin: EdgeInsets.only(top: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.green,
                     ),
-                    color: Colors.yellow),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    'State: NR',
-                    style: kDarkLargeLabelTextStyle,
+                    child: FlatButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('Done')),
                   ),
-                  color: Colors.blue,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Colors.green,
-                  ),
-                  child: FlatButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text('Done')),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

@@ -439,7 +439,7 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                     style: kLabelTextStyle,
                                     children: <TextSpan>[
                                       TextSpan(
-                                        text: 'Bat. Module °C (min,Avg,max) ',
+                                        text: 'Bat. Module °C (min,avg,max) ',
                                         style: kLabelTextStyle,
                                       ),
                                       TextSpan(

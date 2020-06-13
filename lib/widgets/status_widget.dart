@@ -13,6 +13,14 @@ class StatusWidget extends StatefulWidget {
 }
 
 class _StatusWidgetState extends State<StatusWidget> {
+  String parseTemp(AsyncSnapshot snapshot) {
+    try {
+      return '${double.parse(snapshot.data.tCellMin).truncate().toString()}, ${double.parse(snapshot.data.tCellAvg).truncate().toString()}, ${double.parse(snapshot.data.tCellMax).truncate().toString()}';
+    } catch (e) {
+      return 'null';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -106,12 +114,11 @@ class _StatusWidgetState extends State<StatusWidget> {
                   style: kLabelTextStyle,
                   children: <TextSpan>[
                     TextSpan(
-                      text: 'Bat. Module °C (min,Avg,max) ',
+                      text: 'Bat. Module °C (min,avg,max) ',
                       style: kLabelTextStyle,
                     ),
                     TextSpan(
-                      text:
-                          ('${double.parse(snapshot.data.tCellMin).truncate().toString()}, ${double.parse(snapshot.data.tCellAvg).truncate().toString()}, ${double.parse(snapshot.data.tCellMax).truncate().toString()}'),
+                      text: parseTemp(snapshot),
                       style: kLargeLabelTextStyle,
                     ),
                   ],
