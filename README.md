@@ -14,6 +14,4 @@ Flutter app to view to view static and dynamic electric vehicle and V2G capable 
 
 ![image](https://user-images.githubusercontent.com/38408825/84706366-d5486480-af2a-11ea-95b9-b89aa1e338c3.png)
 
-![image](https://user-images.githubusercontent.com/38408825/84706489-06c13000-af2b-11ea-924e-3cfabca3d14d.png)
-
 
