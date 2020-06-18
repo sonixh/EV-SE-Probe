@@ -8,6 +8,7 @@ import 'package:v2g/models/evse.dart';
 import 'package:v2g/models/evse_status.dart';
 import 'package:v2g/models/user.dart';
 import 'package:v2g/screens/single_item_page.dart';
+import 'package:v2g/widgets/emergency_charge_button.dart';
 import 'package:v2g/widgets/reusable_card.dart';
 
 class SingleResourcePage extends StatefulWidget {
@@ -29,6 +30,14 @@ class _SingleResourcePage extends State<SingleResourcePage> {
   final String iD;
   final String vin;
   Future f;
+
+  String parseSoc(AsyncSnapshot snapshot) {
+    try {
+      return '${double.parse(snapshot.data[1].soc).truncate().toString()}% / ';
+    } catch (e) {
+      return '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -261,7 +270,7 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                     style: kLabelTextStyle,
                                     children: <TextSpan>[
                                       TextSpan(
-                                        text: 'Real Power ',
+                                        text: 'Real Power Flow ',
                                         style: kLabelTextStyle,
                                       ),
                                       TextSpan(
@@ -317,7 +326,7 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                   colour: kBackgroundColor,
                                   margin: 0,
                                   onPress: () {
-                                    if (role == 'developer') {
+                                    if (role == 'developer' && vin != '') {
                                       print('Going to single EV status page');
                                       Provider.of<User>(context, listen: false)
                                           .setType('ev');
@@ -366,21 +375,46 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                 ),
                               ),
                               Container(
-                                child: RichText(
-                                  text: TextSpan(
-                                    style: kLabelTextStyle,
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text: 'SOC ',
-                                        style: kLabelTextStyle,
+                                child: MediaQuery.of(context)
+                                            .copyWith()
+                                            .size
+                                            .width <
+                                        600
+                                    ? FittedBox(
+                                        fit: BoxFit.fitWidth,
+                                        child: RichText(
+                                          text: TextSpan(
+                                            style: kLabelTextStyle,
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text: 'State of Charge ',
+                                                style: kLabelTextStyle,
+                                              ),
+                                              TextSpan(
+                                                text: parseSoc(snapshot) +
+                                                    '${snapshot.data[1].socKwh} kWh',
+                                                style: kLargeLabelTextStyle,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    : RichText(
+                                        text: TextSpan(
+                                          style: kLabelTextStyle,
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text: 'State of Charge ',
+                                              style: kLabelTextStyle,
+                                            ),
+                                            TextSpan(
+                                              text: parseSoc(snapshot) +
+                                                  '${snapshot.data[1].socKwh} kWh',
+                                              style: kLargeLabelTextStyle,
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      TextSpan(
-                                        text: '${snapshot.data[1].soc} %',
-                                        style: kLargeLabelTextStyle,
-                                      ),
-                                    ],
-                                  ),
-                                ),
                               ),
                               Container(
                                 child: RichText(
@@ -439,18 +473,62 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                     style: kLabelTextStyle,
                                     children: <TextSpan>[
                                       TextSpan(
-                                        text: 'Bat. Module °C (min,avg,max) ',
+                                        text: 'Power Flow ',
                                         style: kLabelTextStyle,
                                       ),
                                       TextSpan(
                                         text:
-                                            ('${double.parse(snapshot.data[1].tCellMin).truncate().toString()}, ${double.parse(snapshot.data[1].tCellAvg).truncate().toString()}, ${double.parse(snapshot.data[1].tCellMax).truncate().toString()}'),
+                                            '${snapshot.data[1].powerFlow} kW',
                                         style: kLargeLabelTextStyle,
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
+                              MediaQuery.of(context).copyWith().size.width < 450
+                                  ? Container(
+                                      child: FittedBox(
+                                        fit: BoxFit.fitWidth,
+                                        child: RichText(
+                                          text: TextSpan(
+                                            style: kLabelTextStyle,
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text:
+                                                    'Bat. Module °C (min,avg,max) ',
+                                                style: kLabelTextStyle,
+                                              ),
+                                              TextSpan(
+                                                text:
+                                                    ('${double.parse(snapshot.data[1].tCellMin).truncate().toString()}, ${double.parse(snapshot.data[1].tCellAvg).truncate().toString()}, ${double.parse(snapshot.data[1].tCellMax).truncate().toString()}'),
+                                                style: kLargeLabelTextStyle,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : Container(
+                                      child: RichText(
+                                        text: TextSpan(
+                                          style: kLabelTextStyle,
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text:
+                                                  'Bat. Module °C (min,avg,max) ',
+                                              style: kLabelTextStyle,
+                                            ),
+                                            TextSpan(
+                                              text:
+                                                  ('${double.parse(snapshot.data[1].tCellMin).truncate().toString()}, ${double.parse(snapshot.data[1].tCellAvg).truncate().toString()}, ${double.parse(snapshot.data[1].tCellMax).truncate().toString()}'),
+                                              style: kLargeLabelTextStyle,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                              SizedBox(height: 40),
+                              EmergencyChargeButton(vin: snapshot.data[1].vin),
                             ],
                           ),
                         ),

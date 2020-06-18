@@ -28,7 +28,22 @@ class _SingleItemPageState extends State<SingleItemPage> {
   _SingleItemPageState({@required this.iD});
   final String iD;
 
-  final Map<int, Widget> optionWidgets = const <int, Widget>{
+  final Map<int, Widget> evseOptionWidgets = const <int, Widget>{
+    0: Text(
+      'Status',
+      style: TextStyle(fontSize: 29),
+    ),
+    1: Text(
+      'Info',
+      style: TextStyle(fontSize: 29),
+    ),
+    2: Text(
+      'Meter',
+      style: TextStyle(fontSize: 29),
+    ),
+  };
+
+  final Map<int, Widget> evOptionWidgets = const <int, Widget>{
     0: Text(
       'Status',
       style: TextStyle(fontSize: 29),
@@ -40,6 +55,7 @@ class _SingleItemPageState extends State<SingleItemPage> {
   };
 
   bool status;
+  bool meter;
   int sharedValue = 0;
 
   double getMarginWidth() {
@@ -67,6 +83,7 @@ class _SingleItemPageState extends State<SingleItemPage> {
 
     if (sharedValue == 1 && type == 'evse') {
       status = false;
+      meter = false;
       evse = evseList
           .where(
               (object) => (object.id.toLowerCase().contains(iD.toLowerCase())))
@@ -81,20 +98,27 @@ class _SingleItemPageState extends State<SingleItemPage> {
       }
     } else if (sharedValue == 1 && type == 'ev') {
       status = false;
+      meter = false;
       ev = evList
           .where(
               (object) => (object.id.toLowerCase().contains(iD.toLowerCase())))
           .toList()[0];
     } else if (sharedValue == 0 && type == 'evse') {
       status = true;
+      meter = false;
       EVSEStatus evseStatus = new EVSEStatus();
       f = evseStatus.fetchEVSEStatus(
           evseID: iD, token: token, name: name, username: username, url: url);
-    } else {
+    } else if (sharedValue == 0 && type == 'ev') {
       status = true;
+      meter = false;
       EVStatus evStatus = new EVStatus();
       f = evStatus.fetchEVStatus(
           vin: iD, token: token, name: name, username: username, url: url);
+    } else {
+      //TODO: meter API call
+      meter = true;
+      status = false;
     }
 
     if (status) {
@@ -133,7 +157,8 @@ class _SingleItemPageState extends State<SingleItemPage> {
                         selectedColor: kAccentColor,
                         unselectedColor: kBackgroundColor,
                         borderColor: kAccentColor,
-                        children: optionWidgets,
+                        children:
+                            type == 'ev' ? evOptionWidgets : evseOptionWidgets,
                         onValueChanged: (int val) {
                           setState(() {
                             sharedValue = val;
@@ -176,7 +201,7 @@ class _SingleItemPageState extends State<SingleItemPage> {
           },
         ),
       );
-    } else {
+    } else if (status == false && meter == false) {
       return Scaffold(
         appBar: AppBar(
           title: Column(
@@ -206,7 +231,7 @@ class _SingleItemPageState extends State<SingleItemPage> {
                 unselectedColor: kBackgroundColor,
                 selectedColor: kAccentColor,
                 borderColor: kAccentColor,
-                children: optionWidgets,
+                children: type == 'ev' ? evOptionWidgets : evseOptionWidgets,
                 onValueChanged: (int val) {
                   setState(() {
                     sharedValue = val;
@@ -221,6 +246,49 @@ class _SingleItemPageState extends State<SingleItemPage> {
                 evseSwVer: evseSwVer,
               ),
             if (sharedValue == 1 && type == 'ev') EVInfoWidget(future: ev),
+          ],
+        ),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Column(
+            children: <Widget>[
+              Text(
+                'Meter: ${ev.name}',
+                style: TextStyle(fontSize: 17),
+              ),
+            ],
+          ),
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(top: 5, bottom: 0, left: 20, right: 20),
+              width: 325,
+              child: CupertinoSegmentedControl(
+                padding: EdgeInsets.only(top: 0),
+                unselectedColor: kBackgroundColor,
+                selectedColor: kAccentColor,
+                borderColor: kAccentColor,
+                children: type == 'ev' ? evOptionWidgets : evseOptionWidgets,
+                onValueChanged: (int val) {
+                  setState(() {
+                    sharedValue = val;
+                  });
+                },
+                groupValue: sharedValue,
+              ),
+            ),
+            Expanded(
+              child: Center(
+                child: Text(
+                  'No Meter Data to Display',
+                  style: kLargeLabelTextStyle,
+                ),
+              ),
+            ),
           ],
         ),
       );

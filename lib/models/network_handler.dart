@@ -55,6 +55,41 @@ class NetworkHandler<T> {
     }
   }
 
+  static cancelCharge(
+      {String url,
+      String username,
+      String name,
+      String token,
+      String vin}) async {
+    final String longUrl =
+        'https://$url/api/emergency_charging/cancel?user=$username&name=$name&token=$token';
+    final response = await http.get(longUrl);
+    if (response.statusCode == 200) {
+      print(
+          'Cancelling charge: ${jsonDecode(response.body)['message']}: ${jsonDecode(response.body)['__errors__']}');
+    } else {
+      print('Bad response code');
+    }
+  }
+
+  static startCharge(
+      {String url,
+      String username,
+      String name,
+      String token,
+      String vin,
+      String miles}) async {
+    final String longUrl =
+        'https://$url/api/emergency_charging/set?user=$username&name=$name&token=$token&miles=$miles';
+    final response = await http.get(longUrl);
+    if (response.statusCode == 200) {
+      print(
+          'Starting charge: ${jsonDecode(response.body)['message']}: ${jsonDecode(response.body)['__errors__']}');
+    } else {
+      print('Bad response code');
+    }
+  }
+
   Future fetchEVStatus(String url, String dataUrl) async {
     final response = await http.get(url);
     final dataResponse = await http.get(dataUrl);
@@ -75,6 +110,9 @@ class NetworkHandler<T> {
             miles: 'null',
             credit: 'null',
             primaryStatus: 'null',
+            tCellAvg: '0',
+            tCellMax: '0',
+            tCellMin: '0',
           );
         }
       }

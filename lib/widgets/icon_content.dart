@@ -7,6 +7,17 @@ class IconContent extends StatelessWidget {
   final IconData icon;
   final String label;
 
+  double getIconSize(double h) {
+    if (h < 900 && h > 400) {
+      return h / 18;
+    }
+    if (h < 900) {
+      return h / 25;
+    } else {
+      return h / 13;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -14,7 +25,7 @@ class IconContent extends StatelessWidget {
       children: <Widget>[
         Icon(
           icon,
-          size: 70.0,
+          size: getIconSize(MediaQuery.of(context).copyWith().size.height),
         ),
         SizedBox(
           height: 15.0,

@@ -10,6 +10,8 @@ import 'package:v2g/models/network_handler.dart';
 import 'package:v2g/models/user.dart';
 import 'package:provider/provider.dart';
 
+import 'home_page.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -73,9 +75,10 @@ class _LoginPageState extends State<LoginPage> {
       isDismissible: false,
       context: context,
       builder: (BuildContext builder) {
+        //print(MediaQuery.of(context).copyWith().size.height);
         return Container(
           color: Color.fromRGBO(5, 27, 27, 60),
-          height: MediaQuery.of(context).copyWith().size.height / 2.5,
+          height: MediaQuery.of(context).copyWith().size.height / 2.2,
           child: Container(
             decoration: BoxDecoration(
               color: kBackgroundColor,
@@ -87,7 +90,9 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               children: [
                 Container(
-                  height: 250,
+                  height: MediaQuery.of(context).copyWith().size.height > 1000
+                      ? 300
+                      : 200,
                   child: CupertinoPicker(
                       itemExtent: 50,
                       onSelectedItemChanged: (int index) {
@@ -133,7 +138,6 @@ class _LoginPageState extends State<LoginPage> {
                       ]),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
                     color: Colors.green,
@@ -179,7 +183,8 @@ class _LoginPageState extends State<LoginPage> {
       passwordEntered = true;
     }
 
-    if (userId != null && pass != null && i != null) {
+    if (userId != null && pass != null && i != null && i != 'custom') {
+      print(i);
       if (i == 'pjm') {
         //print('i is pjm');
         url = i + '.nuvve.com';
@@ -240,7 +245,9 @@ class _LoginPageState extends State<LoginPage> {
         Provider.of<User>(context, listen: false).setIso(iso);
         Provider.of<User>(context, listen: false).setVersion(version);
         //print('pushing home screen');
-        Navigator.pushReplacementNamed(context, '/home');
+        //Navigator.pushReplacementNamed(context, '/home');
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
       } else if (temp[3] == 'SNR') {
         //print(temp[3]);
         //print(temp);
@@ -333,7 +340,9 @@ class _LoginPageState extends State<LoginPage> {
       Provider.of<User>(context, listen: false).seturl(url);
       Provider.of<User>(context, listen: false).setVersion(version);
 
-      Navigator.pushReplacementNamed(context, '/home');
+      //Navigator.pushReplacementNamed(context, '/home');
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
     } else {
       print(loginInfo[3]);
       setState(() {

@@ -8,6 +8,7 @@ import 'package:v2g/models/user.dart';
 import 'package:v2g/widgets/ev_evse_resource_buttons.dart';
 import 'package:v2g/widgets/reusable_card.dart';
 import '../constants.dart';
+import 'login_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,13 +18,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).copyWith().size.height;
-
     List<double> getMarginWidth() {
       double width = MediaQuery.of(context).copyWith().size.width;
-      print(width);
       if (width > 430 && width < 1100) {
-        return [width / 4.25, width / 4.25, width / 4.25, width / 4.25];
+        return [width / 4.25, width / 4.25, 0, width / 4.25];
       } else if (width >= 1100) {
         return [width / 4.25, width / 4.25, 0, width / 4.25];
       } else {
@@ -43,10 +41,13 @@ class _HomePageState extends State<HomePage> {
       prefs.setString('username', null);
       prefs.setString('url', null);
 
-      Navigator.pushReplacementNamed(context, '/login');
+      //Navigator.pushReplacementNamed(context, '/login');
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
 
       if (logoutResponse == 'success') {
-        Navigator.pushReplacementNamed(context, '/login');
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => LoginPage()));
       } else {
         print('error logging out');
       }
@@ -64,10 +65,12 @@ class _HomePageState extends State<HomePage> {
 
       prefs.setString('iso', null);
 
-      Navigator.pushReplacementNamed(context, '/login');
-
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
       if (logoutResponse == 'success') {
-        Navigator.pushReplacementNamed(context, '/login');
+        //Navigator.pushReplacementNamed(context, '/login');
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => LoginPage()));
       } else {
         print('error logging out');
       }
@@ -91,16 +94,20 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(top: 30),
-                child: Text(
-                  iso.toUpperCase(),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 45,
+              if (MediaQuery.of(context).copyWith().size.height > 700)
+                Expanded(
+                  flex: 1,
+                  //padding: EdgeInsets.only(top: 30),
+                  child: Center(
+                    child: Text(
+                      iso.toUpperCase(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 45,
+                      ),
+                    ),
                   ),
                 ),
-              ),
               SizedBox(height: 15),
               //Main element on this page
               EVEVSEResourceButtons(),
@@ -108,15 +115,21 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 30),
               Container(
                 padding: EdgeInsets.only(left: 40, right: 40),
+                height: 60,
                 child: ReusableCard(
                   margin: 0,
                   colour: Color(0xFFabca46),
                   cardChild: Container(
                     padding: EdgeInsets.all(15),
-                    child: Text(
-                      'Change RTO',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 20),
+                    child: Center(
+                      child: FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text(
+                          'Change RTO',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 25),
+                        ),
+                      ),
                     ),
                   ),
                   onPress: changeRTO,
@@ -126,27 +139,35 @@ class _HomePageState extends State<HomePage> {
                 height: 10,
               ),
               Container(
-                padding: EdgeInsets.only(left: 60, right: 60),
+                height: 60,
+                padding: EdgeInsets.only(left: 50, right: 50),
                 child: ReusableCard(
                   margin: 0,
                   colour: Color(0xFFabca46),
                   cardChild: Container(
                     padding: EdgeInsets.all(15),
-                    child: Text(
-                      'Logout',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 20),
+                    child: Center(
+                      child: FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text(
+                          'Logout',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 25),
+                        ),
+                      ),
                     ),
                   ),
                   onPress: logout,
                 ),
               ),
-              height > 900
-                  ? SizedBox(
-                      height: 260,
-                    )
-                  : SizedBox(height: 80),
+              // height > 900
+              //     ? SizedBox(
+              //         height: 100,
+              //       )
+              //     : SizedBox(height: 20),
+              Expanded(child: SizedBox()),
               Container(
+                margin: EdgeInsets.only(bottom: 30),
                 child: Center(
                     child: Text(
                   'Version $version',

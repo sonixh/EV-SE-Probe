@@ -21,15 +21,15 @@ class _ResourceList extends State<ResourceList> {
   List evseStatusList;
 
   void displayHelp() {
-    print('displaying help modal');
-
     showModalBottomSheet(
       isDismissible: true,
       context: context,
       builder: (BuildContext builder) {
         return Container(
           color: Color.fromRGBO(5, 27, 27, 60),
-          height: MediaQuery.of(context).copyWith().size.height / 2.5,
+          height: MediaQuery.of(context).copyWith().size.height > 1000
+              ? MediaQuery.of(context).copyWith().size.height / 2.5
+              : MediaQuery.of(context).copyWith().size.height / 2,
           child: Container(
             decoration: BoxDecoration(
               color: kBackgroundColor,
@@ -235,6 +235,7 @@ class _ResourceList extends State<ResourceList> {
       return Container(
         margin:
             EdgeInsets.only(left: getMarginWidth(), right: getMarginWidth()),
+        //margin: EdgeInsets.only(top: 70, left: 30, right: 30),
         child: Column(
           children: <Widget>[
             Container(
@@ -380,6 +381,7 @@ class Connected extends StatelessWidget {
       onTap: () {
         // print(sortedList[index].vinConnected);
         // print(sortedList[index].id);
+        print(sortedList[index].carName);
         Navigator.push(
           context,
           MaterialPageRoute(

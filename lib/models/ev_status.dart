@@ -5,6 +5,7 @@ class EVStatus {
   final String evseName;
   final String peerConnected;
   final String soc;
+  final String socKwh;
   final String miles;
   final String credit;
   final String primaryStatus;
@@ -15,6 +16,7 @@ class EVStatus {
   final String tCellAvg;
   final String tCellMin;
   final String tCellMax;
+  final String powerFlow;
 
   EVStatus({
     this.name,
@@ -31,6 +33,8 @@ class EVStatus {
     this.tCellAvg,
     this.tCellMin,
     this.tCellMax,
+    this.powerFlow,
+    this.socKwh,
   });
 
   factory EVStatus.fromTwoJson(
@@ -40,9 +44,11 @@ class EVStatus {
         evseName: evStatusJson['evse_name'],
         peerConnected: evStatusJson['peer_connected'],
         soc: evStatusJson['soc'],
+        socKwh: evStatusJson['soc_kwh'],
         miles: evStatusJson['miles'],
         credit: evStatusJson['credit'],
         primaryStatus: evStatusJson['primary_status'],
+        powerFlow: evStatusJson['power_flow'],
         vin: evStatusJson['vin'],
         id: evStatusJson['vin'],
         secondaryStatus: evStatusJson['secondary_status'],
@@ -74,6 +80,13 @@ class EVStatus {
       String token,
       String url}) async {
     NetworkHandler nH = new NetworkHandler(type: EVStatus);
+    if (vin == '') {
+      print('here in ev_status: $vin');
+
+      return await nH.fetchEVStatus(
+          'https://$url/api/get_status?user=$username&name=$name&token=$token&vin=x',
+          'https://$url/api/ev/data/get?user=$username&name=$name&token=$token&vin=x');
+    }
     return await nH.fetchEVStatus(
         'https://$url/api/get_status?user=$username&name=$name&token=$token&vin=$vin',
         'https://$url/api/ev/data/get?user=$username&name=$name&token=$token&vin=$vin');

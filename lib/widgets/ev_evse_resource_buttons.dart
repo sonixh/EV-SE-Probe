@@ -133,7 +133,9 @@ class _EVEVSEResourceButtonsState extends State<EVEVSEResourceButtons> {
           },
         ),
         Container(
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.all(
+            10,
+          ),
           child: Divider(
             color: Colors.white,
             thickness: 3,
@@ -155,8 +157,10 @@ class _EVEVSEResourceButtonsState extends State<EVEVSEResourceButtons> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                IconContent(
-                    icon: FontAwesomeIcons.chargingStation, label: 'Peer'),
+                Container(
+                  child: IconContent(
+                      icon: FontAwesomeIcons.chargingStation, label: 'Peer'),
+                ),
                 Container(width: 30),
                 IconContent(icon: FontAwesomeIcons.car, label: 'Pair'),
               ],

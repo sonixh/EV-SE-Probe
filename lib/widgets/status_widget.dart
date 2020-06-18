@@ -21,8 +21,18 @@ class _StatusWidgetState extends State<StatusWidget> {
     }
   }
 
+  String parseSoc(AsyncSnapshot snapshot) {
+    try {
+      return '${double.parse(snapshot.data.soc).truncate().toString()}% / ';
+    } catch (e) {
+      return '';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    String type = Provider.of<User>(context).type;
+
     return FutureBuilder(
       future: widget.future,
       builder: (context, AsyncSnapshot snapshot) {
@@ -61,7 +71,7 @@ class _StatusWidgetState extends State<StatusWidget> {
             ),
             Attribute(
               snapshot: snapshot,
-              label: 'Real Power ',
+              label: 'Real Power Flow ',
               x: 'realPower',
             ),
             Attribute(
@@ -96,7 +106,28 @@ class _StatusWidgetState extends State<StatusWidget> {
                 snapshot: snapshot,
                 label: 'Peer Connected ',
                 x: 'peerConnected'),
-            Attribute(snapshot: snapshot, label: 'State of Charge ', x: 'soc'),
+            if (type == 'ev')
+              Container(
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: RichText(
+                    text: TextSpan(
+                      style: kLabelTextStyle,
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'State of Charge ',
+                          style: kLabelTextStyle,
+                        ),
+                        TextSpan(
+                          text: parseSoc(snapshot) +
+                              '${snapshot.data.socKwh} kWh',
+                          style: kLargeLabelTextStyle,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             Attribute(snapshot: snapshot, label: 'Miles ', x: 'miles'),
             Attribute(
                 snapshot: snapshot,
@@ -109,24 +140,47 @@ class _StatusWidgetState extends State<StatusWidget> {
             Attribute(
                 snapshot: snapshot, label: 'Battery Temperature ', x: 'tBatt'),
             Container(
-              child: RichText(
-                text: TextSpan(
-                  style: kLabelTextStyle,
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: 'Bat. Module °C (min,avg,max) ',
-                      style: kLabelTextStyle,
-                    ),
-                    TextSpan(
-                      text: parseTemp(snapshot),
-                      style: kLargeLabelTextStyle,
-                    ),
-                  ],
+              child: FittedBox(
+                fit: BoxFit.fitWidth,
+                child: RichText(
+                  text: TextSpan(
+                    style: kLabelTextStyle,
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'Bat. Module °C (min,avg,max) ',
+                        style: kLabelTextStyle,
+                      ),
+                      TextSpan(
+                        text: parseTemp(snapshot),
+                        style: kLargeLabelTextStyle,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
+            if (type == 'ev')
+              Container(
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: RichText(
+                    text: TextSpan(
+                      style: kLabelTextStyle,
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Power Flow ',
+                          style: kLabelTextStyle,
+                        ),
+                        TextSpan(
+                          text: '${snapshot.data.powerFlow} kW',
+                          style: kLargeLabelTextStyle,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
           ];
-          String type = Provider.of<User>(context).type;
           if (type == 'evse') {
             return Container(
               padding:

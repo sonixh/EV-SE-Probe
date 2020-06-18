@@ -191,10 +191,6 @@ class Connected extends StatelessWidget {
       },
       child: Container(
         decoration: box,
-        margin: EdgeInsets.only(
-          left: 7,
-          right: 7,
-        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -250,10 +246,6 @@ class NotConnected extends StatelessWidget {
       },
       child: Container(
         color: Colors.grey,
-        margin: EdgeInsets.only(
-          left: 7,
-          right: 7,
-        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -309,10 +301,6 @@ class NotConnecteda extends StatelessWidget {
       },
       child: Container(
         color: Colors.black12,
-        margin: EdgeInsets.only(
-          left: 7,
-          right: 7,
-        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
