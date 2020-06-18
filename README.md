@@ -1,16 +1,17 @@
-# v2g_flutter
+# EV/SE Probe
 
-A new Flutter project.
+Flutter app to view to view static and dynamic electric vehicle and V2G capable EVSEs throughout the state of Delaware
 
-## Getting Started
+## Screenshots
 
-This project is a starting point for a Flutter application.
+![image](https://user-images.githubusercontent.com/38408825/84706129-7c78cc00-af2a-11ea-84e6-ccefd4ccd2b9.png)
 
-A few resources to get you started if this is your first Flutter project:
+![image](https://user-images.githubusercontent.com/38408825/84706179-8c90ab80-af2a-11ea-8186-7b0157103ef8.png)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+![image](https://user-images.githubusercontent.com/38408825/84706214-9b775e00-af2a-11ea-9983-115e4fbde5d7.png)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![image](https://user-images.githubusercontent.com/38408825/84706332-c5c91b80-af2a-11ea-81dd-0bff9c431c98.png)
+
+![image](https://user-images.githubusercontent.com/38408825/84706366-d5486480-af2a-11ea-95b9-b89aa1e338c3.png)
+
+
