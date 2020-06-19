@@ -55,24 +55,26 @@ class NetworkHandler<T> {
     }
   }
 
-  static cancelCharge(
+  static Future<String> cancelCharge(
       {String url,
       String username,
       String name,
       String token,
       String vin}) async {
     final String longUrl =
-        'https://$url/api/emergency_charging/cancel?user=$username&name=$name&token=$token';
+        'https://$url/api/emergency_charging/cancel?user=$username&name=$name&token=$token&vin=$vin';
     final response = await http.get(longUrl);
     if (response.statusCode == 200) {
       print(
-          'Cancelling charge: ${jsonDecode(response.body)['message']}: ${jsonDecode(response.body)['__errors__']}');
+          'Cancelling charge: "${jsonDecode(response.body)['message']}"-----Errors: ${jsonDecode(response.body)['__errors__']}');
+      return jsonDecode(response.body)['__errors__'].toString();
     } else {
       print('Bad response code');
+      return 'null';
     }
   }
 
-  static startCharge(
+  static Future startCharge(
       {String url,
       String username,
       String name,
@@ -80,13 +82,33 @@ class NetworkHandler<T> {
       String vin,
       String miles}) async {
     final String longUrl =
-        'https://$url/api/emergency_charging/set?user=$username&name=$name&token=$token&miles=$miles';
+        'https://$url/api/emergency_charging/get_info?user=$username&name=$name&token=$token&vin=$vin&miles=8&entries=25';
     final response = await http.get(longUrl);
     if (response.statusCode == 200) {
-      print(
-          'Starting charge: ${jsonDecode(response.body)['message']}: ${jsonDecode(response.body)['__errors__']}');
+      try {
+        List chargeTable = jsonDecode(response.body)['charge_table'];
+
+        for (int i = 0; i < chargeTable.length; i++) {
+          if (chargeTable[i][2] == '08' ||
+              chargeTable[i][2] == '09' ||
+              chargeTable[i][2] == '10' ||
+              chargeTable[i][2] == '11' ||
+              chargeTable[i][2] == '12') {
+            final String longUrl1 =
+                'https://$url/api/emergency_charging/set?user=$username&name=$name&token=$token&vin=$vin&miles=${chargeTable[i][0]}';
+            final response1 = await http.get(longUrl1);
+            print(
+                'Starting charge: "${jsonDecode(response1.body)['message']}"-----Errors: ${jsonDecode(response1.body)['__errors__']}');
+            print(jsonDecode(response1.body));
+            return jsonDecode(response1.body)['__errors__'].toString();
+          }
+        }
+      } catch (e) {
+        print(e);
+      }
     } else {
       print('Bad response code');
+      return 'Bad response';
     }
   }
 

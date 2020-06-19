@@ -71,7 +71,7 @@ class _StatusWidgetState extends State<StatusWidget> {
             ),
             Attribute(
               snapshot: snapshot,
-              label: 'Real Power Flow ',
+              label: 'Real Power ',
               x: 'realPower',
             ),
             Attribute(

@@ -64,7 +64,6 @@ class _SingleResourcePage extends State<SingleResourcePage> {
         print('$e here in single resource page');
       }
 
-      print('Single resource page evInfo.id: ${evInfo.id}');
       print('Single resource page vin: $vin');
     }
 
@@ -270,7 +269,7 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                     style: kLabelTextStyle,
                                     children: <TextSpan>[
                                       TextSpan(
-                                        text: 'Real Power Flow ',
+                                        text: 'Real Power ',
                                         style: kLabelTextStyle,
                                       ),
                                       TextSpan(
@@ -527,7 +526,7 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                         ),
                                       ),
                                     ),
-                              SizedBox(height: 40),
+                              SizedBox(height: 30),
                               EmergencyChargeButton(vin: snapshot.data[1].vin),
                             ],
                           ),
