@@ -1,4 +1,4 @@
-import 'package:device_simulator/device_simulator.dart';
+//import 'package:device_simulator/device_simulator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +25,8 @@ class MyApp extends StatelessWidget {
           primaryColor: kBackgroundColor,
           scaffoldBackgroundColor: kBackgroundColor,
         ),
-        home: DeviceSimulator(enable: true, child: LoginPage()),
+        //home: DeviceSimulator(enable: false, child: LoginPage()),
+        home: LoginPage(),
         routes: {
           '/login': (_) => LoginPage(),
           '/home': (_) => HomePage(),
