@@ -92,7 +92,7 @@ class EVStatus {
         'https://$url/api/ev/data/get?user=$username&name=$name&token=$token&vin=$vin');
   }
 
-  Future<List> fetchDetailedEVStatusList(
+  static Future<List> fetchDetailedEVStatusList(
       {String username, String name, String token, String url}) async {
     NetworkHandler nH = new NetworkHandler(type: EVStatus);
     return await nH.fetchList(

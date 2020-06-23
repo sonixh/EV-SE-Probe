@@ -3,7 +3,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:v2g/models/user.dart';
 import 'package:v2g/screens/single_item_page.dart';
-
 import '../constants.dart';
 
 class EVEVSELists extends StatefulWidget {
@@ -49,6 +48,7 @@ class _EVEVSEListsState extends State<EVEVSELists> {
 
       sortedList.sort((a, b) => b.peerConnected.compareTo(a.peerConnected));
 
+      //User search implementation
       sortedList = sortedList
           .where((object) =>
               (object.id
@@ -71,13 +71,6 @@ class _EVEVSEListsState extends State<EVEVSELists> {
           duration: Duration(seconds: 1),
         ),
       );
-      // } else if (sortedList.length == 0) {
-      //   return Center(
-      //     child: Text(
-      //       'Nothing to display for this user',
-      //       style: TextStyle(fontSize: 22),
-      //     ),
-      //   );
     } else if (sortedList != null && refreshing == false) {
       return Container(
         margin:
@@ -114,19 +107,19 @@ class _EVEVSEListsState extends State<EVEVSELists> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           if (sortedList[index].peerConnected == 'true')
-                            Connected(sortedList: sortedList, index: index),
+                            ConnectedItem(sortedList: sortedList, index: index),
                           if (type == 'evse')
                             if (sortedList[index].peerConnected == 'false' &&
                                 sortedList[index].status == 'Connected')
-                              NotConnected(
+                              NotConnectedItem(
                                   sortedList: sortedList, index: index),
                           if (type == 'ev')
                             if (sortedList[index].peerConnected == 'false')
-                              NotConnected(
+                              NotConnectedItem(
                                   sortedList: sortedList, index: index),
                           if (type == 'evse')
                             if (sortedList[index].status == 'NotConnected')
-                              NotConnecteda(
+                              NotConnectedandOfflineItem(
                                   sortedList: sortedList, index: index),
                           SizedBox(
                             height: 10,
@@ -158,8 +151,8 @@ class _EVEVSEListsState extends State<EVEVSELists> {
   }
 }
 
-class Connected extends StatelessWidget {
-  const Connected({
+class ConnectedItem extends StatelessWidget {
+  const ConnectedItem({
     Key key,
     @required this.sortedList,
     @required this.index,
@@ -222,8 +215,8 @@ class Connected extends StatelessWidget {
   }
 }
 
-class NotConnected extends StatelessWidget {
-  const NotConnected({
+class NotConnectedItem extends StatelessWidget {
+  const NotConnectedItem({
     Key key,
     @required this.sortedList,
     @required this.index,
@@ -277,8 +270,8 @@ class NotConnected extends StatelessWidget {
   }
 }
 
-class NotConnecteda extends StatelessWidget {
-  const NotConnecteda({
+class NotConnectedandOfflineItem extends StatelessWidget {
+  const NotConnectedandOfflineItem({
     Key key,
     @required this.sortedList,
     @required this.index,

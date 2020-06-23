@@ -17,7 +17,6 @@ class _ResourceList extends State<ResourceList> {
   List sortedList;
   int index;
   bool refreshing = true;
-  EVSEStatus evseStatus = new EVSEStatus();
   List evseStatusList;
 
   void displayHelp() {
@@ -179,7 +178,7 @@ class _ResourceList extends State<ResourceList> {
   void getEVSEStatusList(
       String token, String name, String username, String url) async {
     if (true) {
-      evseStatusList = await evseStatus.fetchDetailedEVSEStatusList(
+      evseStatusList = await EVSEStatus.fetchDetailedEVSEStatusList(
           token: token, username: username, name: name, url: url);
       Provider.of<User>(context, listen: false)
           .setEVSEStatusList(evseStatusList);

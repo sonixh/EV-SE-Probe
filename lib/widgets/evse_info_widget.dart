@@ -251,6 +251,24 @@ class EVSEInfoWidget extends StatelessWidget {
               ),
             ),
           ),
+          if (future.subMeterId != '')
+            Container(
+              child: RichText(
+                text: TextSpan(
+                  style: kLabelTextStyle,
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'Sub Meter Id ',
+                      style: kLabelTextStyle,
+                    ),
+                    TextSpan(
+                      text: '${future.subMeterId}',
+                      style: kLargeLabelTextStyle,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           SizedBox(height: 20),
           Container(
             child: RichText(

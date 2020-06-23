@@ -23,7 +23,7 @@ class EVSESwVer {
         meterVersion: json['vel_values']['??<17>']);
   }
 
-  Future<List> fetchEVSESwVerList(
+  static Future<List> fetchEVSESwVerList(
       {String username, String name, String token, String url}) async {
     NetworkHandler nH = new NetworkHandler(type: EVSESwVer);
     return await nH.fetchList(

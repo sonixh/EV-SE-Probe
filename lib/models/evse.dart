@@ -28,6 +28,7 @@ class EVSE {
   final String reverse;
   final String rcd;
   final String meterVersion;
+  final String subMeterId;
 
   EVSE(
       {this.id,
@@ -56,7 +57,8 @@ class EVSE {
       this.maxd,
       this.reverse,
       this.rcd,
-      this.meterVersion});
+      this.meterVersion,
+      this.subMeterId});
 
   factory EVSE.fromJson(Map<String, dynamic> json) {
     return EVSE(
@@ -87,6 +89,7 @@ class EVSE {
       reverse: json['reverse_feeding_permitted_p'],
       rcd: json['??<16>'],
       meterVersion: json['??<17>'],
+      subMeterId: json['sub_meter_id'],
     );
   }
 
@@ -101,7 +104,7 @@ class EVSE {
         'https://$url/api/get_info?user=$username&name=$name&token=$token&evse=$evseID');
   }
 
-  Future<List> fetchDetailedEVSEList(
+  static Future<List> fetchDetailedEVSEList(
       {String username, String name, String token, String url}) async {
     NetworkHandler nH = new NetworkHandler(type: EVSE);
     return await nH.fetchList(

@@ -55,62 +55,71 @@ class NetworkHandler<T> {
     }
   }
 
-  static Future<String> cancelCharge(
-      {String url,
-      String username,
-      String name,
-      String token,
-      String vin}) async {
-    final String longUrl =
-        'https://$url/api/emergency_charging/cancel?user=$username&name=$name&token=$token&vin=$vin';
-    final response = await http.get(longUrl);
-    if (response.statusCode == 200) {
-      print(
-          'Cancelling charge: "${jsonDecode(response.body)['message']}"-----Errors: ${jsonDecode(response.body)['__errors__']}');
-      return jsonDecode(response.body)['__errors__'].toString();
-    } else {
-      print('Bad response code');
-      return 'null';
-    }
-  }
+  // static Future<List> startCharge(
+  //     {String url,
+  //     String username,
+  //     String name,
+  //     String token,
+  //     String vin,
+  //     String miles}) async {
+  //   final String longUrl =
+  //       'https://$url/api/emergency_charging/get_info?user=$username&name=$name&token=$token&vin=$vin&miles=8&entries=25';
+  //   final response = await http.get(longUrl);
+  //   int timeNeeded = 5;
 
-  static Future startCharge(
-      {String url,
-      String username,
-      String name,
-      String token,
-      String vin,
-      String miles}) async {
-    final String longUrl =
-        'https://$url/api/emergency_charging/get_info?user=$username&name=$name&token=$token&vin=$vin&miles=8&entries=25';
-    final response = await http.get(longUrl);
-    if (response.statusCode == 200) {
-      try {
-        List chargeTable = jsonDecode(response.body)['charge_table'];
+  //   if (response.statusCode == 200) {
+  //     try {
+  //       List chargeTable = jsonDecode(response.body)['charge_table'];
 
-        for (int i = 0; i < chargeTable.length; i++) {
-          if (chargeTable[i][2] == '08' ||
-              chargeTable[i][2] == '09' ||
-              chargeTable[i][2] == '10' ||
-              chargeTable[i][2] == '11' ||
-              chargeTable[i][2] == '12') {
-            final String longUrl1 =
-                'https://$url/api/emergency_charging/set?user=$username&name=$name&token=$token&vin=$vin&miles=${chargeTable[i][0]}';
-            final response1 = await http.get(longUrl1);
-            print(
-                'Starting charge: "${jsonDecode(response1.body)['message']}"-----Errors: ${jsonDecode(response1.body)['__errors__']}');
-            print(jsonDecode(response1.body));
-            return jsonDecode(response1.body)['__errors__'].toString();
-          }
-        }
-      } catch (e) {
-        print(e);
-      }
-    } else {
-      print('Bad response code');
-      return 'Bad response';
-    }
-  }
+  //       print(chargeTable);
+  //       for (int i = 0; i < chargeTable.length; i++) {
+  //         if (chargeTable[i][2] == '05' ||
+  //             chargeTable[i][2] == '06' ||
+  //             chargeTable[i][2] == '04' ||
+  //             chargeTable[i][2] == '03' ||
+  //             chargeTable[i][2] == '07') {
+  //           final String longUrl1 =
+  //               'https://$url/api/emergency_charging/get_info?user=$username&name=$name&token=$token&vin=$vin&miles=${chargeTable[i][0]}';
+  //           final response1 = await http.get(longUrl1);
+  //           print(
+  //               'Starting charge: "${jsonDecode(response1.body)['message']}"-----Errors: ${jsonDecode(response1.body)['__errors__']}');
+  //           try {
+  //             timeNeeded = int.parse(jsonDecode(response1.body)['time_needed']);
+  //           } catch (e) {
+  //             timeNeeded = 5;
+  //           }
+  //           print(jsonDecode(response1.body));
+  //           return [
+  //             timeNeeded,
+  //             jsonDecode(response1.body)['__errors__'].toString()
+  //           ];
+  //         }
+  //       }
+  //     } catch (e) {
+  //       print(e);
+  //     }
+  //   } else {
+  //     print('Bad response code');
+  //     return ['Bad response'];
+  //   }
+  // }
+
+  // static cancelCharge(
+  //     {String url,
+  //     String username,
+  //     String name,
+  //     String token,
+  //     String vin}) async {
+  //   final String longUrl =
+  //       'https://$url/api/emergency_charging/cancel?user=$username&name=$name&token=$token&vin=$vin';
+  //   final response = await http.get(longUrl);
+  //   if (response.statusCode == 200) {
+  //     print(
+  //         'Cancelling charge: ${jsonDecode(response.body)['message']}: ${jsonDecode(response.body)['__errors__']}');
+  //   } else {
+  //     print('Bad response code');
+  //   }
+  // }
 
   Future fetchEVStatus(String url, String dataUrl) async {
     final response = await http.get(url);

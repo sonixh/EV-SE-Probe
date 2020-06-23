@@ -8,7 +8,7 @@ import 'package:v2g/models/evse.dart';
 import 'package:v2g/models/evse_status.dart';
 import 'package:v2g/models/user.dart';
 import 'package:v2g/screens/single_item_page.dart';
-import 'package:v2g/widgets/emergency_charge_button.dart';
+//import 'package:v2g/widgets/emergency_charge_button.dart';
 import 'package:v2g/widgets/reusable_card.dart';
 
 class SingleResourcePage extends StatefulWidget {
@@ -526,8 +526,8 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                         ),
                                       ),
                                     ),
-                              SizedBox(height: 30),
-                              EmergencyChargeButton(vin: snapshot.data[1].vin),
+                              //SizedBox(height: 30),
+                              //EmergencyChargeButton(vin: snapshot.data[1].vin),
                             ],
                           ),
                         ),

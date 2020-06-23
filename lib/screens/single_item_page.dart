@@ -116,7 +116,6 @@ class _SingleItemPageState extends State<SingleItemPage> {
       f = evStatus.fetchEVStatus(
           vin: iD, token: token, name: name, username: username, url: url);
     } else {
-      //TODO: meter API call
       meter = true;
       status = false;
     }

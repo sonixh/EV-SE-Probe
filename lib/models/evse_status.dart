@@ -16,6 +16,7 @@ class EVSEStatus {
   final String carName;
   final String vinConnected;
   final String powerFactor;
+  final String meterSource;
 
   EVSEStatus(
       {this.name,
@@ -32,7 +33,8 @@ class EVSEStatus {
       this.id,
       this.carName,
       this.vinConnected,
-      this.powerFactor});
+      this.powerFactor,
+      this.meterSource});
 
   factory EVSEStatus.fromJson(Map<String, dynamic> json) {
     return EVSEStatus(
@@ -50,7 +52,8 @@ class EVSEStatus {
         id: json['evse_id'],
         vinConnected: json['vin'],
         carName: json['car_name'],
-        powerFactor: json['power_factor']);
+        powerFactor: json['power_factor'],
+        meterSource: json['meter_source']);
   }
 
   Future<EVSEStatus> fetchEVSEStatus(
@@ -64,7 +67,7 @@ class EVSEStatus {
         'https://$url/api/get_status?user=$username&name=$name&token=$token&evse=$evseID');
   }
 
-  Future<List> fetchDetailedEVSEStatusList(
+  static Future<List> fetchDetailedEVSEStatusList(
       {String username, String name, String token, String url}) async {
     NetworkHandler nH = new NetworkHandler(type: EVSEStatus);
     return await nH.fetchList(

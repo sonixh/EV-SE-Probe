@@ -111,6 +111,9 @@ class _AttributeState extends State<Attribute> {
           internal = internal + ' °C';
         }
       }
+      if (widget.x == 'meterSource') {
+        internal = snapshot.data.meterSource;
+      }
 
       if (internal == null || internal == '') {
         this.setState(() {

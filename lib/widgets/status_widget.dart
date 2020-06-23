@@ -99,6 +99,8 @@ class _StatusWidgetState extends State<StatusWidget> {
               label: 'EVSE State ',
               x: 'evseState',
             ),
+            Attribute(
+                snapshot: snapshot, label: 'Meter Source ', x: 'meterSource')
           ];
           List<Widget> evStatusChildren = <Widget>[
             Attribute(snapshot: snapshot, label: 'EVSE Name ', x: 'evseName'),
