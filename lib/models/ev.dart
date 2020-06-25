@@ -7,7 +7,6 @@ class EV {
   final String make;
   final String model;
   final String year;
-  final String color;
   final String defaultIso;
   final String name;
   final String minRange;
@@ -19,7 +18,6 @@ class EV {
       this.year,
       this.defaultIso,
       this.id,
-      this.color,
       this.name,
       this.minRange,
       this.maxRange});
@@ -30,12 +28,23 @@ class EV {
       make: json['make'],
       model: json['model'],
       year: json['year'],
-      color: json['color'],
       defaultIso: json['default_iso'],
       name: json['name'],
       minRange: json['min_range'],
       maxRange: json['max_range'],
     );
+  }
+
+  Map<String, String> get map {
+    return {
+      "VIN ": id,
+      "Make ": make,
+      "Model ": model,
+      "Year ": year,
+      "Default ISO ": defaultIso,
+      "Min Range ": minRange,
+      "Max Range ": maxRange
+    };
   }
 
   Future<EV> fetchEV(

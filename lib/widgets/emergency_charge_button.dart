@@ -1,3 +1,5 @@
+//Instructed to comment out emergency charge functionality due to server issues
+
 // import 'dart:async';
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';

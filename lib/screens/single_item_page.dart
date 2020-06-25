@@ -8,9 +8,11 @@ import 'package:v2g/models/evse.dart';
 import 'package:v2g/models/ev_status.dart';
 import 'package:v2g/models/evse_status.dart';
 import 'package:v2g/models/evse_swver.dart';
+import 'package:v2g/models/network_handler.dart';
 import 'package:v2g/models/user.dart';
 import 'package:v2g/widgets/ev_info_widget.dart';
 import 'package:v2g/widgets/evse_info_widget.dart';
+import 'package:v2g/widgets/meter_status_view.dart';
 import 'package:v2g/widgets/status_widget.dart';
 
 class SingleItemPage extends StatefulWidget {
@@ -81,13 +83,23 @@ class _SingleItemPageState extends State<SingleItemPage> {
     EV ev = new EV();
     EVSESwVer evseSwVer = new EVSESwVer();
 
-    if (sharedValue == 1 && type == 'evse') {
-      status = false;
-      meter = false;
+    if (type == 'evse') {
       evse = evseList
           .where(
               (object) => (object.id.toLowerCase().contains(iD.toLowerCase())))
           .toList()[0];
+    }
+
+    if (type == 'ev') {
+      ev = evList
+          .where(
+              (object) => (object.id.toLowerCase().contains(iD.toLowerCase())))
+          .toList()[0];
+    }
+
+    if (sharedValue == 1 && type == 'evse') {
+      status = false;
+      meter = false;
       try {
         evseSwVer = evseSwVerList
             .where((object) =>
@@ -99,10 +111,6 @@ class _SingleItemPageState extends State<SingleItemPage> {
     } else if (sharedValue == 1 && type == 'ev') {
       status = false;
       meter = false;
-      ev = evList
-          .where(
-              (object) => (object.id.toLowerCase().contains(iD.toLowerCase())))
-          .toList()[0];
     } else if (sharedValue == 0 && type == 'evse') {
       status = true;
       meter = false;
@@ -118,179 +126,98 @@ class _SingleItemPageState extends State<SingleItemPage> {
     } else {
       meter = true;
       status = false;
+      f = NetworkHandler.fetchMeterStatus(
+          token: token,
+          name: name,
+          username: username,
+          url: url,
+          meterId: 'EVSE:$iD');
     }
 
-    if (status) {
-      return Container(
-        child: FutureBuilder(
-          future: f,
-          builder: (context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              return Scaffold(
-                appBar: AppBar(
-                  title: Column(
-                    children: <Widget>[
-                      if (type == 'ev')
-                        Text(
-                          'EV: ${snapshot.data.name}',
-                          style: TextStyle(fontSize: 17),
-                        ),
-                      if (type == 'evse')
-                        Text(
-                          'EVSE: ${snapshot.data.name}',
-                          style: TextStyle(fontSize: 17),
-                        ),
-                    ],
-                  ),
-                  elevation: 0,
-                ),
-                body: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.only(
-                          top: 5, bottom: 0, left: 20, right: 20),
-                      width: 325,
-                      child: CupertinoSegmentedControl(
-                        padding: EdgeInsets.only(top: 0),
-                        selectedColor: kAccentColor,
-                        unselectedColor: kBackgroundColor,
-                        borderColor: kAccentColor,
-                        children:
-                            type == 'ev' ? evOptionWidgets : evseOptionWidgets,
-                        onValueChanged: (int val) {
-                          setState(() {
-                            sharedValue = val;
-                          });
-                        },
-                        groupValue: sharedValue,
-                      ),
-                    ),
-                    RefreshIndicator(
-                      onRefresh: () async {
-                        setState(() {});
-                        await Future.delayed(new Duration(seconds: 1));
-                        return null;
-                      },
-                      child: Container(
-                        height: 500,
-                        child: ListView(
-                          children: [
-                            StatusWidget(
-                              future: f,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            } else {
-              return Center(
-                child: Container(
-                  color: kBackgroundColor,
-                  child: SpinKitPulse(
-                    color: Colors.white,
-                    size: 100,
-                  ),
-                ),
-              );
-            }
-          },
-        ),
-      );
-    } else if (status == false && meter == false) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Column(
-            children: <Widget>[
-              if (type == 'evse')
-                Text(
-                  'EVSE: ${evse.name}',
-                  style: TextStyle(fontSize: 17),
-                ),
-              if (type == 'ev')
-                Text(
-                  'EV: ${ev.name}',
-                  style: TextStyle(fontSize: 17),
-                ),
-            ],
-          ),
-          elevation: 0,
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Scaffold(
+      appBar: AppBar(
+        title: Column(
           children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(top: 5, bottom: 0, left: 20, right: 20),
-              width: 325,
-              child: CupertinoSegmentedControl(
-                padding: EdgeInsets.only(top: 0),
-                unselectedColor: kBackgroundColor,
-                selectedColor: kAccentColor,
-                borderColor: kAccentColor,
-                children: type == 'ev' ? evOptionWidgets : evseOptionWidgets,
-                onValueChanged: (int val) {
-                  setState(() {
-                    sharedValue = val;
-                  });
-                },
-                groupValue: sharedValue,
-              ),
-            ),
-            if (sharedValue == 1 && type == 'evse')
-              EVSEInfoWidget(
-                future: evse,
-                evseSwVer: evseSwVer,
-              ),
-            if (sharedValue == 1 && type == 'ev') EVInfoWidget(future: ev),
-          ],
-        ),
-      );
-    } else {
-      return Scaffold(
-        appBar: AppBar(
-          title: Column(
-            children: <Widget>[
+            if (type == 'ev')
               Text(
-                'Meter: ${ev.name}',
+                'EV: ${ev.name}',
                 style: TextStyle(fontSize: 17),
               ),
-            ],
-          ),
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(top: 5, bottom: 0, left: 20, right: 20),
-              width: 325,
-              child: CupertinoSegmentedControl(
-                padding: EdgeInsets.only(top: 0),
-                unselectedColor: kBackgroundColor,
-                selectedColor: kAccentColor,
-                borderColor: kAccentColor,
-                children: type == 'ev' ? evOptionWidgets : evseOptionWidgets,
-                onValueChanged: (int val) {
-                  setState(() {
-                    sharedValue = val;
-                  });
-                },
-                groupValue: sharedValue,
+            if (type == 'evse')
+              Text(
+                'EVSE: ${evse.name}',
+                style: TextStyle(fontSize: 17),
               ),
-            ),
-            Expanded(
-              child: Center(
-                child: Text(
-                  'No Meter Data to Display',
-                  style: kLargeLabelTextStyle,
-                ),
-              ),
-            ),
           ],
         ),
-      );
-    }
+        elevation: 0,
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: 5, bottom: 0, left: 20, right: 20),
+            width: 325,
+            child: CupertinoSegmentedControl(
+              padding: EdgeInsets.only(top: 0),
+              selectedColor: kAccentColor,
+              unselectedColor: kBackgroundColor,
+              borderColor: kAccentColor,
+              children: type == 'ev' ? evOptionWidgets : evseOptionWidgets,
+              onValueChanged: (int val) {
+                setState(() {
+                  sharedValue = val;
+                });
+              },
+              groupValue: sharedValue,
+            ),
+          ),
+          RefreshIndicator(
+            color: Colors.white,
+            onRefresh: () async {
+              setState(() {});
+              await Future.delayed(new Duration(seconds: 1));
+              return null;
+            },
+            child: status || meter
+                ? Container(
+                    height: 500,
+                    child: ListView(
+                      children: [
+                        FutureBuilder(
+                          future: f,
+                          builder: (context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasData) {
+                              return status
+                                  ? StatusWidget(
+                                      future: f,
+                                    )
+                                  : MeterStatusView(future: f);
+                            } else {
+                              return Center(
+                                child: Container(
+                                  color: kBackgroundColor,
+                                  child: SpinKitPulse(
+                                    color: Colors.white,
+                                    size: 100,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  )
+                : type == 'evse'
+                    ? EVSEInfoWidget(
+                        evse: evse,
+                        evseSwVer: evseSwVer,
+                      )
+                    : EVInfoWidget(ev: ev),
+          ),
+        ],
+      ),
+    );
   }
 }

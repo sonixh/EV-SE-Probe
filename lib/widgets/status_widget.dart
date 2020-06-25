@@ -29,6 +29,41 @@ class _StatusWidgetState extends State<StatusWidget> {
     }
   }
 
+  List<Widget> _getWidgets(Map map) {
+    List<Widget> _l = [];
+    String k;
+    String value;
+    for (k in map.keys) {
+      try {
+        value = map[k];
+      } catch (e) {
+        value = 'null';
+      }
+      if (map[k] != null && map[k] != '') {
+        _l.add(
+          Container(
+            child: RichText(
+              text: TextSpan(
+                style: kLabelTextStyle,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: k,
+                    style: kLabelTextStyle,
+                  ),
+                  TextSpan(
+                    text: value,
+                    style: kLargeLabelTextStyle,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
+    }
+    return _l;
+  }
+
   @override
   Widget build(BuildContext context) {
     String type = Provider.of<User>(context).type;
@@ -45,69 +80,7 @@ class _StatusWidgetState extends State<StatusWidget> {
             ),
           );
         } else {
-          List<Widget> evseStatusChildren = <Widget>[
-            Attribute(
-              snapshot: snapshot,
-              label: 'Status ',
-              x: 'status',
-            ),
-            Attribute(
-              snapshot: snapshot,
-              label: 'Car Name ',
-              x: 'carName',
-            ),
-            Attribute(
-              snapshot: snapshot,
-              label: 'Peer Connected ',
-              x: 'peerConnected',
-            ),
-            FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Attribute(
-                snapshot: snapshot,
-                label: 'Timestamp ',
-                x: 'timestamp',
-              ),
-            ),
-            Attribute(
-              snapshot: snapshot,
-              label: 'Real Power ',
-              x: 'realPower',
-            ),
-            Attribute(
-              snapshot: snapshot,
-              label: 'Energy Up ',
-              x: 'energyUp',
-            ),
-            Attribute(
-              snapshot: snapshot,
-              label: 'Energy Down ',
-              x: 'energyDown',
-            ),
-            Attribute(
-              snapshot: snapshot,
-              label: 'GFCI ',
-              x: 'gfci',
-            ),
-            Attribute(
-              snapshot: snapshot,
-              label: 'EV State ',
-              x: 'evState',
-            ),
-            Attribute(
-              snapshot: snapshot,
-              label: 'EVSE State ',
-              x: 'evseState',
-            ),
-            Attribute(
-                snapshot: snapshot, label: 'Meter Source ', x: 'meterSource')
-          ];
           List<Widget> evStatusChildren = <Widget>[
-            Attribute(snapshot: snapshot, label: 'EVSE Name ', x: 'evseName'),
-            Attribute(
-                snapshot: snapshot,
-                label: 'Peer Connected ',
-                x: 'peerConnected'),
             if (type == 'ev')
               Container(
                 child: FittedBox(
@@ -130,15 +103,6 @@ class _StatusWidgetState extends State<StatusWidget> {
                   ),
                 ),
               ),
-            Attribute(snapshot: snapshot, label: 'Miles ', x: 'miles'),
-            Attribute(
-                snapshot: snapshot,
-                label: 'Primary Status ',
-                x: 'primaryStatus'),
-            Attribute(
-                snapshot: snapshot,
-                label: 'Secondary Status ',
-                x: 'secondaryStatus'),
             Attribute(
                 snapshot: snapshot, label: 'Battery Temperature ', x: 'tBatt'),
             Container(
@@ -161,27 +125,6 @@ class _StatusWidgetState extends State<StatusWidget> {
                 ),
               ),
             ),
-            if (type == 'ev')
-              Container(
-                child: FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: RichText(
-                    text: TextSpan(
-                      style: kLabelTextStyle,
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: 'Power Flow ',
-                          style: kLabelTextStyle,
-                        ),
-                        TextSpan(
-                          text: '${snapshot.data.powerFlow} kW',
-                          style: kLargeLabelTextStyle,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
           ];
           if (type == 'evse') {
             return Container(
@@ -189,7 +132,7 @@ class _StatusWidgetState extends State<StatusWidget> {
                   EdgeInsets.only(top: 20, bottom: 30, left: 30, right: 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: evseStatusChildren,
+                children: _getWidgets(snapshot.data.map),
               ),
             );
           } else {
@@ -198,7 +141,16 @@ class _StatusWidgetState extends State<StatusWidget> {
                   EdgeInsets.only(top: 20, bottom: 30, left: 30, right: 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: evStatusChildren,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: _getWidgets(snapshot.data.map),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: evStatusChildren,
+                  ),
+                ],
               ),
             );
           }

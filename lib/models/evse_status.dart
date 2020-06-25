@@ -56,6 +56,20 @@ class EVSEStatus {
         meterSource: json['meter_source']);
   }
 
+  Map<String, String> get map {
+    return {
+      'Status ': status,
+      'Car Name': carName,
+      'Peer Connected ': peerConnected,
+      'Real Power (kW) ': realPower,
+      'Energy Up (kWh) ': energyUp,
+      'Energy Down (kWh) ': energyDown,
+      'GFCI ': gfci,
+      'EVSE State ': evseState,
+      'Meter Source ': meterSource,
+    };
+  }
+
   Future<EVSEStatus> fetchEVSEStatus(
       {String username,
       String name,

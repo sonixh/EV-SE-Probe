@@ -1,42 +1,29 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:v2g/models/evse.dart';
 import 'package:v2g/models/evse_swver.dart';
 import '../constants.dart';
 
 class EVSEInfoWidget extends StatelessWidget {
-  final EVSE future;
+  final EVSE evse;
   final EVSESwVer evseSwVer;
-  EVSEInfoWidget({@required this.future, @required this.evseSwVer});
+  EVSEInfoWidget({@required this.evse, @required this.evseSwVer});
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(top: 20, bottom: 30, left: 30, right: 30),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          if (future.address != '')
-            FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Container(
-                child: RichText(
-                  text: TextSpan(
-                    style: kLabelTextStyle,
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: 'Address ',
-                        style: kLabelTextStyle,
-                      ),
-                      TextSpan(
-                        text: '${future.address}',
-                        style: kLargeLabelTextStyle,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+  List<Widget> _getWidgets(Map map) {
+    List<Widget> _l = [];
+    String k;
+    String value;
+    for (k in map.keys) {
+      try {
+        value = map[k];
+      } catch (e) {
+        value = 'null';
+      }
+      if (map[k] == null || map[k] == '') {
+      } else if (k == 'Address ' ||
+          k == 'Latitude, Longitude ' ||
+          k == 'RTO/Utility ' ||
+          k == 'Meter Serial Number ') {
+        _l.add(
           FittedBox(
             fit: BoxFit.fitWidth,
             child: Container(
@@ -45,11 +32,11 @@ class EVSEInfoWidget extends StatelessWidget {
                   style: kLabelTextStyle,
                   children: <TextSpan>[
                     TextSpan(
-                      text: 'Latitude, Longitude ',
+                      text: k,
                       style: kLabelTextStyle,
                     ),
                     TextSpan(
-                      text: '${future.latitude}, ${future.longitude}',
+                      text: value,
                       style: kLargeLabelTextStyle,
                     ),
                   ],
@@ -57,219 +44,43 @@ class EVSEInfoWidget extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            child: AutoSizeText.rich(
-              TextSpan(
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'RTO/Utility ',
-                    style: kLabelTextStyle,
-                  ),
-                  TextSpan(
-                    text: '${future.iso}/${future.utility}',
-                    style: kLargeLabelTextStyle,
-                  ),
-                ],
-              ),
-              minFontSize: 8,
-              maxLines: 1,
-            ),
-          ),
+        );
+      } else if (map[k] != '') {
+        _l.add(
           Container(
             child: RichText(
               text: TextSpan(
                 style: kLabelTextStyle,
                 children: <TextSpan>[
                   TextSpan(
-                    text: 'Manufacturer,Model ',
+                    text: k,
                     style: kLabelTextStyle,
                   ),
                   TextSpan(
-                    text: '${future.manufacturer},${future.model}',
+                    text: value,
                     style: kLargeLabelTextStyle,
                   ),
                 ],
               ),
             ),
           ),
-          Container(
-            child: RichText(
-              text: TextSpan(
-                style: kLabelTextStyle,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Meter Type ',
-                    style: kLabelTextStyle,
-                  ),
-                  TextSpan(
-                    text: '${future.meterType}',
-                    style: kLargeLabelTextStyle,
-                  ),
-                ],
-              ),
-            ),
+        );
+      } else {}
+    }
+    return _l;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(top: 20, bottom: 30, left: 30, right: 30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: _getWidgets(evse.map),
           ),
-          Container(
-            child: RichText(
-              text: TextSpan(
-                style: kLabelTextStyle,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Connector ',
-                    style: kLabelTextStyle,
-                  ),
-                  TextSpan(
-                    text: '${future.connector}',
-                    style: kLargeLabelTextStyle,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            child: RichText(
-              text: TextSpan(
-                style: kLabelTextStyle,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Protocol ',
-                    style: kLabelTextStyle,
-                  ),
-                  TextSpan(
-                    text: '${future.protocols}',
-                    style: kLargeLabelTextStyle,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            child: RichText(
-              text: TextSpan(
-                style: kLabelTextStyle,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Part Number ',
-                    style: kLabelTextStyle,
-                  ),
-                  TextSpan(
-                    text: '${future.partNumber}',
-                    style: kLargeLabelTextStyle,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            child: RichText(
-              text: TextSpan(
-                style: kLabelTextStyle,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Nominal Voltage, Phase ',
-                    style: kLabelTextStyle,
-                  ),
-                  TextSpan(
-                    text: '${future.nominalVoltage} V, ${future.phase} ɸ',
-                    style: kLargeLabelTextStyle,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            child: RichText(
-              text: TextSpan(
-                style: kLabelTextStyle,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Max Charge ',
-                    style: kLabelTextStyle,
-                  ),
-                  TextSpan(
-                    text: '${future.maxc} A',
-                    style: kLargeLabelTextStyle,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            child: RichText(
-              text: TextSpan(
-                style: kLabelTextStyle,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Max Discharge ',
-                    style: kLabelTextStyle,
-                  ),
-                  TextSpan(
-                    text: '${future.maxd} A',
-                    style: kLargeLabelTextStyle,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            child: RichText(
-              text: TextSpan(
-                style: kLabelTextStyle,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Reverse Feeding Permitted ',
-                    style: kLabelTextStyle,
-                  ),
-                  if (future.reverse == '1')
-                    TextSpan(
-                      text: 'True',
-                      style: kLargeLabelTextStyle,
-                    ),
-                  if (future.reverse == '0')
-                    TextSpan(
-                      text: 'False',
-                      style: kLargeLabelTextStyle,
-                    ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            child: RichText(
-              text: TextSpan(
-                style: kLabelTextStyle,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Hardware Version ',
-                    style: kLabelTextStyle,
-                  ),
-                  TextSpan(
-                    text: '${future.hardwareVersion}',
-                    style: kLargeLabelTextStyle,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          if (future.subMeterId != '')
-            Container(
-              child: RichText(
-                text: TextSpan(
-                  style: kLabelTextStyle,
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: 'Sub Meter Id ',
-                      style: kLabelTextStyle,
-                    ),
-                    TextSpan(
-                      text: '${future.subMeterId}',
-                      style: kLargeLabelTextStyle,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          SizedBox(height: 20),
           Container(
             child: RichText(
               text: TextSpan(

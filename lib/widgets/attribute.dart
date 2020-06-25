@@ -78,12 +78,6 @@ class _AttributeState extends State<Attribute> {
       if (widget.x == 'soc') {
         internal = snapshot.data.soc + " %";
       }
-      if (widget.x == 'miles') {
-        internal = snapshot.data.miles;
-      }
-      if (widget.x == 'credit') {
-        internal = snapshot.data.credit;
-      }
       if (widget.x == 'primaryStatus') {
         internal = snapshot.data.primaryStatus;
       }

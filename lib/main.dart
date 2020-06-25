@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
           primaryColor: kBackgroundColor,
           scaffoldBackgroundColor: kBackgroundColor,
         ),
-        //home: DeviceSimulator(enable: false, child: LoginPage()),
+        //home: DeviceSimulator(enable: true, child: LoginPage()),
         home: LoginPage(),
         routes: {
           '/login': (_) => LoginPage(),

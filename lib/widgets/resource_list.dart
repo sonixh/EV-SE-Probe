@@ -277,6 +277,7 @@ class _ResourceList extends State<ResourceList> {
                   padding:
                       EdgeInsets.only(top: 0, left: 5, right: 5, bottom: 0),
                   child: RefreshIndicator(
+                    color: Colors.white,
                     onRefresh: () async {
                       setState(() {
                         getEVSEStatusList(token, name, username, url);

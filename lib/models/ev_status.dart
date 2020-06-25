@@ -6,8 +6,6 @@ class EVStatus {
   final String peerConnected;
   final String soc;
   final String socKwh;
-  final String miles;
-  final String credit;
   final String primaryStatus;
   final String vin;
   final String id;
@@ -23,8 +21,6 @@ class EVStatus {
     this.evseName,
     this.peerConnected,
     this.soc,
-    this.miles,
-    this.credit,
     this.primaryStatus,
     this.vin,
     this.id,
@@ -45,8 +41,6 @@ class EVStatus {
         peerConnected: evStatusJson['peer_connected'],
         soc: evStatusJson['soc'],
         socKwh: evStatusJson['soc_kwh'],
-        miles: evStatusJson['miles'],
-        credit: evStatusJson['credit'],
         primaryStatus: evStatusJson['primary_status'],
         powerFlow: evStatusJson['power_flow'],
         vin: evStatusJson['vin'],
@@ -64,13 +58,22 @@ class EVStatus {
       evseName: evStatusJson['evse_name'],
       peerConnected: evStatusJson['peer_connected'],
       soc: evStatusJson['soc'],
-      miles: evStatusJson['miles'],
-      credit: evStatusJson['credit'],
       primaryStatus: evStatusJson['primary_status'],
       vin: evStatusJson['vin'],
       id: evStatusJson['vin'],
       secondaryStatus: evStatusJson['secondary_status'],
     );
+  }
+
+  Map<String, String> get map {
+    return {
+      'EV Name ': name,
+      'VIN ': vin,
+      'Peer Connected ': peerConnected,
+      'Primary Status ': primaryStatus,
+      'Secondary Status ': secondaryStatus,
+      'Powr Flow (kW)': powerFlow,
+    };
   }
 
   Future<EVStatus> fetchEVStatus(

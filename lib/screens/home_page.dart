@@ -282,7 +282,7 @@ class _HomePageState extends State<HomePage> {
                         child: Text(
                           'Change RTO',
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 25),
+                          style: TextStyle(fontSize: 21),
                         ),
                       ),
                     ),
@@ -307,7 +307,7 @@ class _HomePageState extends State<HomePage> {
                         child: Text(
                           'Logout',
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 25),
+                          style: TextStyle(fontSize: 21),
                         ),
                       ),
                     ),

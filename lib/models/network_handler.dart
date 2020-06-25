@@ -6,6 +6,7 @@ import 'evse.dart';
 import 'ev_status.dart';
 import 'evse_status.dart';
 import 'evse_swver.dart';
+import 'meter_status.dart';
 
 class NetworkHandler<T> {
   NetworkHandler({this.type});
@@ -121,6 +122,28 @@ class NetworkHandler<T> {
   //   }
   // }
 
+  static Future fetchMeterStatus(
+      {String token,
+      String username,
+      String name,
+      String url,
+      String meterId}) async {
+    String poplulatedUrl =
+        'https://$url/api/get_status?user=$username&name=$name&token=$token&meter=$meterId';
+    final response = await http.get(poplulatedUrl);
+    if (response.statusCode == 200) {
+      try {
+        return MeterStatus.fromJson(
+            (json.decode(response.body)['meters_log'])[0]);
+      } catch (e) {
+        print('here in fetch meter status in nH: $e');
+        return MeterStatus(
+          meterId: 'null',
+        );
+      }
+    }
+  }
+
   Future fetchEVStatus(String url, String dataUrl) async {
     final response = await http.get(url);
     final dataResponse = await http.get(dataUrl);
@@ -138,8 +161,6 @@ class NetworkHandler<T> {
             evseName: 'null',
             peerConnected: 'null',
             soc: 'null',
-            miles: 'null',
-            credit: 'null',
             primaryStatus: 'null',
             tCellAvg: '0',
             tCellMax: '0',
@@ -209,7 +230,6 @@ class NetworkHandler<T> {
               make: 'null',
               model: 'null',
               year: 'null',
-              color: 'null',
               defaultIso: 'null',
               name: 'null',
               minRange: 'null',
@@ -243,8 +263,6 @@ class NetworkHandler<T> {
               evseName: 'null',
               peerConnected: 'null',
               soc: 'null',
-              miles: 'null',
-              credit: 'null',
               primaryStatus: 'null',
             );
           }

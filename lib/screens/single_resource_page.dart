@@ -6,6 +6,7 @@ import 'package:v2g/models/ev.dart';
 import 'package:v2g/models/ev_status.dart';
 import 'package:v2g/models/evse.dart';
 import 'package:v2g/models/evse_status.dart';
+import 'package:v2g/models/network_handler.dart';
 import 'package:v2g/models/user.dart';
 import 'package:v2g/screens/single_item_page.dart';
 //import 'package:v2g/widgets/emergency_charge_button.dart';
@@ -13,7 +14,6 @@ import 'package:v2g/widgets/reusable_card.dart';
 
 class SingleResourcePage extends StatefulWidget {
   const SingleResourcePage({Key key, this.iD, this.vin}) : super(key: key);
-
   final String iD;
   final String vin;
 
@@ -22,14 +22,35 @@ class SingleResourcePage extends StatefulWidget {
 }
 
 class _SingleResourcePage extends State<SingleResourcePage> {
-  Future f0;
-  Future f1;
-  Future<List> listOfFutures;
-
   _SingleResourcePage({@required this.iD, @required this.vin});
   final String iD;
   final String vin;
-  Future f;
+  EVSE evseInfo = new EVSE();
+  EV evInfo = new EV();
+  EVSEStatus evseStatus = new EVSEStatus();
+  EVStatus evStatus = new EVStatus();
+
+  Future<List> _getFs() {
+    String token = Provider.of<User>(context).token;
+    String name = Provider.of<User>(context).name;
+    String username = Provider.of<User>(context).username;
+    String url = Provider.of<User>(context).url;
+
+    Future f0 = evseStatus.fetchEVSEStatus(
+        evseID: iD, token: token, name: name, username: username, url: url);
+
+    Future f1 = evStatus.fetchEVStatus(
+        vin: vin, token: token, name: name, username: username, url: url);
+
+    Future f2 = NetworkHandler.fetchMeterStatus(
+        meterId: 'EVSE:$iD',
+        token: token,
+        name: name,
+        username: username,
+        url: url);
+
+    return Future.wait([f0, f1, f2]);
+  }
 
   String parseSoc(AsyncSnapshot snapshot) {
     try {
@@ -41,15 +62,6 @@ class _SingleResourcePage extends State<SingleResourcePage> {
 
   @override
   Widget build(BuildContext context) {
-    String token = Provider.of<User>(context).token;
-    String name = Provider.of<User>(context).name;
-    String username = Provider.of<User>(context).username;
-    String url = Provider.of<User>(context).url;
-    EVSE evseInfo = new EVSE();
-    EV evInfo = new EV();
-    EVSEStatus evseStatus = new EVSEStatus();
-    EVStatus evStatus = new EVStatus();
-
     List evseList = Provider.of<User>(context).evseList;
     List evList = Provider.of<User>(context).evList;
     String role = Provider.of<User>(context).role;
@@ -63,8 +75,6 @@ class _SingleResourcePage extends State<SingleResourcePage> {
       } catch (e) {
         print('$e here in single resource page');
       }
-
-      print('Single resource page vin: $vin');
     }
 
     if (evseInfo != null && evseList.length != 0) {
@@ -72,19 +82,11 @@ class _SingleResourcePage extends State<SingleResourcePage> {
           .where(
               (object) => (object.id.toLowerCase().contains(iD.toLowerCase())))
           .toList()[0];
-      // print(evseInfo.id);
-      // print(iD);
     }
-
-    f0 = evseStatus.fetchEVSEStatus(
-        evseID: iD, token: token, name: name, username: username, url: url);
-
-    f1 = evStatus.fetchEVStatus(
-        vin: vin, token: token, name: name, username: username, url: url);
 
     return Container(
       child: FutureBuilder(
-        future: Future.wait([f0, f1]),
+        future: _getFs(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             return Scaffold(
@@ -103,18 +105,18 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.only(
-                          top: 5, bottom: 0, left: 20, right: 20),
-                      width: 325,
-                      child: RefreshIndicator(
-                        onRefresh: () async {
-                          setState(() {});
-                          await Future.delayed(new Duration(seconds: 1));
-                          return null;
-                        },
-                        child: Container(
-                          height: 700,
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            top: 5, bottom: 0, left: 20, right: 20),
+                        width: 325,
+                        child: RefreshIndicator(
+                          color: Colors.white,
+                          onRefresh: () async {
+                            setState(() {});
+                            await Future.delayed(new Duration(seconds: 1));
+                            return null;
+                          },
                           child: ListView(
                             children: [
                               Container(
@@ -374,46 +376,22 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                 ),
                               ),
                               Container(
-                                child: MediaQuery.of(context)
-                                            .copyWith()
-                                            .size
-                                            .width <
-                                        600
-                                    ? FittedBox(
-                                        fit: BoxFit.fitWidth,
-                                        child: RichText(
-                                          text: TextSpan(
-                                            style: kLabelTextStyle,
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                text: 'State of Charge ',
-                                                style: kLabelTextStyle,
-                                              ),
-                                              TextSpan(
-                                                text: parseSoc(snapshot) +
-                                                    '${snapshot.data[1].socKwh} kWh',
-                                                style: kLargeLabelTextStyle,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                    : RichText(
-                                        text: TextSpan(
-                                          style: kLabelTextStyle,
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                              text: 'State of Charge ',
-                                              style: kLabelTextStyle,
-                                            ),
-                                            TextSpan(
-                                              text: parseSoc(snapshot) +
-                                                  '${snapshot.data[1].socKwh} kWh',
-                                              style: kLargeLabelTextStyle,
-                                            ),
-                                          ],
-                                        ),
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: kLabelTextStyle,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'State of Charge ',
+                                        style: kLabelTextStyle,
                                       ),
+                                      TextSpan(
+                                        text: parseSoc(snapshot) +
+                                            '${snapshot.data[1].socKwh} kWh',
+                                        style: kLargeLabelTextStyle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                               Container(
                                 child: RichText(
@@ -526,6 +504,80 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                         ),
                                       ),
                                     ),
+                              Container(
+                                padding: EdgeInsets.only(top: 5, bottom: 5),
+                                child:
+                                    Divider(thickness: 2, color: Colors.white),
+                              ),
+                              Container(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: kLabelTextStyle,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'Meter Name ',
+                                        style: kLabelTextStyle,
+                                      ),
+                                      TextSpan(
+                                        text: '${snapshot.data[2].meterName}',
+                                        style: kLargeLabelTextStyle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: kLabelTextStyle,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'Meter ID ',
+                                        style: kLabelTextStyle,
+                                      ),
+                                      TextSpan(
+                                        text: '${snapshot.data[2].meterId}',
+                                        style: kLargeLabelTextStyle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: kLabelTextStyle,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'Power Factor ',
+                                        style: kLabelTextStyle,
+                                      ),
+                                      TextSpan(
+                                        text: '${snapshot.data[2].powerFactor}',
+                                        style: kLargeLabelTextStyle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: kLabelTextStyle,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'Power Flow Real ',
+                                        style: kLabelTextStyle,
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            '${snapshot.data[2].powerFlowReal} kW',
+                                        style: kLargeLabelTextStyle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                               //SizedBox(height: 30),
                               //EmergencyChargeButton(vin: snapshot.data[1].vin),
                             ],
