@@ -1,14 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:v2g/constants.dart';
 import 'package:v2g/models/ev.dart';
 import 'package:v2g/models/evse.dart';
-import 'package:v2g/models/ev_status.dart';
-import 'package:v2g/models/evse_status.dart';
 import 'package:v2g/models/evse_swver.dart';
-import 'package:v2g/models/network_handler.dart';
 import 'package:v2g/models/user.dart';
 import 'package:v2g/widgets/ev_info_widget.dart';
 import 'package:v2g/widgets/evse_info_widget.dart';
@@ -71,10 +67,6 @@ class _SingleItemPageState extends State<SingleItemPage> {
 
   @override
   Widget build(BuildContext context) {
-    String token = Provider.of<User>(context).token;
-    String name = Provider.of<User>(context).name;
-    String username = Provider.of<User>(context).username;
-    String url = Provider.of<User>(context).url;
     String type = Provider.of<User>(context).type;
     List evseList = Provider.of<User>(context).evseList;
     List evList = Provider.of<User>(context).evList;
@@ -114,24 +106,12 @@ class _SingleItemPageState extends State<SingleItemPage> {
     } else if (sharedValue == 0 && type == 'evse') {
       status = true;
       meter = false;
-      EVSEStatus evseStatus = new EVSEStatus();
-      f = evseStatus.fetchEVSEStatus(
-          evseID: iD, token: token, name: name, username: username, url: url);
     } else if (sharedValue == 0 && type == 'ev') {
       status = true;
       meter = false;
-      EVStatus evStatus = new EVStatus();
-      f = evStatus.fetchEVStatus(
-          vin: iD, token: token, name: name, username: username, url: url);
     } else {
       meter = true;
       status = false;
-      f = NetworkHandler.fetchMeterStatus(
-          token: token,
-          name: name,
-          username: username,
-          url: url,
-          meterId: 'EVSE:$iD');
     }
 
     return Scaffold(
@@ -181,31 +161,14 @@ class _SingleItemPageState extends State<SingleItemPage> {
             },
             child: status || meter
                 ? Container(
-                    height: 500,
+                    height: MediaQuery.of(context).copyWith().size.height - 200,
                     child: ListView(
                       children: [
-                        FutureBuilder(
-                          future: f,
-                          builder: (context, AsyncSnapshot snapshot) {
-                            if (snapshot.hasData) {
-                              return status
-                                  ? StatusWidget(
-                                      future: f,
-                                    )
-                                  : MeterStatusView(future: f);
-                            } else {
-                              return Center(
-                                child: Container(
-                                  color: kBackgroundColor,
-                                  child: SpinKitPulse(
-                                    color: Colors.white,
-                                    size: 100,
-                                  ),
-                                ),
-                              );
-                            }
-                          },
-                        ),
+                        status
+                            ? StatusWidget(
+                                iD: iD,
+                              )
+                            : MeterStatusView(iD: iD),
                       ],
                     ),
                   )

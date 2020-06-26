@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +20,7 @@ class _ResourceList extends State<ResourceList> {
   int index;
   bool refreshing = true;
   List evseStatusList;
+  Timer timer;
 
   void displayHelp() {
     showModalBottomSheet(
@@ -188,12 +191,24 @@ class _ResourceList extends State<ResourceList> {
   }
 
   @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    //List evStatusList = Provider.of<User>(context).evStatusList;
     String token = Provider.of<User>(context).token;
     String name = Provider.of<User>(context).name;
     String username = Provider.of<User>(context).username;
     String url = Provider.of<User>(context).url;
+    timer?.cancel();
+    timer = Timer.periodic(
+        Duration(seconds: kInterval),
+        (Timer t) => setState(() {
+              getEVSEStatusList(token, name, username, url);
+              print('refreshing resource list');
+            }));
 
     evseStatusList = Provider.of<User>(context).evseStatusList;
     sortedList = evseStatusList;
@@ -222,14 +237,6 @@ class _ResourceList extends State<ResourceList> {
           duration: Duration(seconds: 1),
         ),
       );
-      // } else if (sortedList != null && sortedList.length == 0) {
-      //   return Center(
-      //     child: Text(
-      //       'Nothing to display for this user',
-      //       style: TextStyle(fontSize: 22),
-      //     ),
-      //   );
-      // }
     } else if (sortedList != null && refreshing == false) {
       return Container(
         margin:
@@ -382,6 +389,7 @@ class Connected extends StatelessWidget {
         // print(sortedList[index].vinConnected);
         // print(sortedList[index].id);
         print(sortedList[index].carName);
+
         Navigator.push(
           context,
           MaterialPageRoute(

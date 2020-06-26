@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +30,7 @@ class _SingleResourcePage extends State<SingleResourcePage> {
   EV evInfo = new EV();
   EVSEStatus evseStatus = new EVSEStatus();
   EVStatus evStatus = new EVStatus();
+  Timer timer;
 
   Future<List> _getFs() {
     String token = Provider.of<User>(context).token;
@@ -61,10 +63,22 @@ class _SingleResourcePage extends State<SingleResourcePage> {
   }
 
   @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    timer?.cancel();
+    timer = Timer.periodic(
+        Duration(seconds: kInterval),
+        (Timer t) => setState(() {
+              print('refreshing single resource page');
+            }));
+
     List evseList = Provider.of<User>(context).evseList;
     List evList = Provider.of<User>(context).evList;
-    String role = Provider.of<User>(context).role;
 
     if (evInfo != null && evList.length != 0) {
       try {
@@ -327,8 +341,10 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                   colour: kBackgroundColor,
                                   margin: 0,
                                   onPress: () {
-                                    if (role == 'developer' && vin != '') {
+                                    print(vin);
+                                    if (snapshot.data[1].name != 'null') {
                                       print('Going to single EV status page');
+                                      print(snapshot.data[1].name);
                                       Provider.of<User>(context, listen: false)
                                           .setType('ev');
                                       Navigator.push(

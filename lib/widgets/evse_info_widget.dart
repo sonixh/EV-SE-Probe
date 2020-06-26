@@ -73,7 +73,7 @@ class EVSEInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 20, bottom: 30, left: 30, right: 30),
+      padding: EdgeInsets.only(top: 20, bottom: 30, left: 22, right: 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -72,7 +72,7 @@ class EVStatus {
       'Peer Connected ': peerConnected,
       'Primary Status ': primaryStatus,
       'Secondary Status ': secondaryStatus,
-      'Powr Flow (kW)': powerFlow,
+      'Powr Flow (kW) ': powerFlow,
     };
   }
 

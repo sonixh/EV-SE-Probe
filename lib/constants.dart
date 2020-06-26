@@ -50,3 +50,5 @@ const kNumberTextStyle = TextStyle(
 const kBackgroundColor = Color(0xFF393b3a);
 const kCardColor = Color(0xFF75983f);
 const kAccentColor = Color(0xFF75983f);
+
+const kInterval = 10;
