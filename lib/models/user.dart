@@ -14,12 +14,28 @@ class User extends ChangeNotifier {
   List _evseSwVerList;
   String _iso;
   String _version;
+  String _buildNumber;
 
-  User(this._username, this._token, this._name, this._role, this._evseList,
-      this._evList, this._url, this._iso, this._version, this._evseSwVerList);
+  User(
+      this._username,
+      this._token,
+      this._name,
+      this._role,
+      this._evseList,
+      this._evList,
+      this._url,
+      this._iso,
+      this._version,
+      this._evseSwVerList,
+      this._buildNumber);
 
   setUsername(String username) {
     _username = username;
+    notifyListeners();
+  }
+
+  setBuildNumber(String buildNumber) {
+    _buildNumber = buildNumber;
     notifyListeners();
   }
 
@@ -85,6 +101,10 @@ class User extends ChangeNotifier {
 
   String get version {
     return _version;
+  }
+
+  String get buildNumber {
+    return _buildNumber;
   }
 
   String get iso {

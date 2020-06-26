@@ -74,19 +74,27 @@ class _SingleItemPageState extends State<SingleItemPage> {
     EVSE evse = new EVSE();
     EV ev = new EV();
     EVSESwVer evseSwVer = new EVSESwVer();
-
+    print('-------------type is $type');
     if (type == 'evse') {
-      evse = evseList
-          .where(
-              (object) => (object.id.toLowerCase().contains(iD.toLowerCase())))
-          .toList()[0];
+      try {
+        evse = evseList
+            .where((object) =>
+                (object.id.toLowerCase().contains(iD.toLowerCase())))
+            .toList()[0];
+      } catch (e) {
+        print('failed here in single item page evse with $e');
+      }
     }
 
     if (type == 'ev') {
-      ev = evList
-          .where(
-              (object) => (object.id.toLowerCase().contains(iD.toLowerCase())))
-          .toList()[0];
+      try {
+        ev = evList
+            .where((object) =>
+                (object.id.toLowerCase().contains(iD.toLowerCase())))
+            .toList()[0];
+      } catch (e) {
+        print('failed here in single item page ev with $e');
+      }
     }
 
     if (sharedValue == 1 && type == 'evse') {

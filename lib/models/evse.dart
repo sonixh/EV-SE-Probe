@@ -89,6 +89,21 @@ class EVSE {
         evseMeterSerialNumber: json['evse_meter_serial_number']);
   }
 
+  String _parseReverseFeeding() {
+    if (reverse == '1') {
+      return 'True';
+    } else {
+      return 'False';
+    }
+  }
+
+  //Can be used as extra parameters, maybe we need a fitted box if map[k][0] == 1
+  // Map<String, List> get mapDetailed {
+  //   return {
+  //     'Address ': [address, 1],
+  //   };
+  // }
+
   Map<String, String> get map {
     return {
       "Address ": address,
@@ -101,7 +116,7 @@ class EVSE {
       "Nominal Voltage, Phase (V),(ɸ) ": '$nominalVoltage, $phase',
       "Max Charge (A) ": maxc,
       "Max Discharge (A) ": maxd,
-      "Reverse Feeding Permitted ": reverse,
+      "Reverse Feeding Permitted ": _parseReverseFeeding(),
       "Hardware Version ": hardwareVersion,
       "EVSE Meter Type ": meterType,
       "Meter Serial Number ": evseMeterSerialNumber,

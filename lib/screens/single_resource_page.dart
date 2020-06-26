@@ -344,7 +344,6 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                     print(vin);
                                     if (snapshot.data[1].name != 'null') {
                                       print('Going to single EV status page');
-                                      print(snapshot.data[1].name);
                                       Provider.of<User>(context, listen: false)
                                           .setType('ev');
                                       Navigator.push(

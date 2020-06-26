@@ -187,7 +187,7 @@ class _ResourceList extends State<ResourceList> {
           .setEVSEStatusList(evseStatusList);
       print('EVSE Status list loaded');
     }
-    Provider.of<User>(context, listen: false).setType('evse');
+    //Provider.of<User>(context, listen: false).setType('evse');
   }
 
   @override
@@ -204,7 +204,7 @@ class _ResourceList extends State<ResourceList> {
     String url = Provider.of<User>(context).url;
     timer?.cancel();
     timer = Timer.periodic(
-        Duration(seconds: kInterval),
+        Duration(seconds: 20),
         (Timer t) => setState(() {
               getEVSEStatusList(token, name, username, url);
               print('refreshing resource list');

@@ -65,6 +65,22 @@ class EVStatus {
     );
   }
 
+  String _parseTemp() {
+    try {
+      return '${double.parse(tCellMin).truncate().toString()}, ${double.parse(tCellAvg).truncate().toString()}, ${double.parse(tCellMax).truncate().toString()}';
+    } catch (e) {
+      return 'null';
+    }
+  }
+
+  String _parseSoc() {
+    try {
+      return '${double.parse(soc).truncate().toString()}% / $socKwh kWh';
+    } catch (e) {
+      return '0.00';
+    }
+  }
+
   Map<String, String> get map {
     return {
       'EV Name ': name,
@@ -72,7 +88,9 @@ class EVStatus {
       'Peer Connected ': peerConnected,
       'Primary Status ': primaryStatus,
       'Secondary Status ': secondaryStatus,
-      'Powr Flow (kW) ': powerFlow,
+      'Power Flow (kW) ': powerFlow,
+      'State of Charge ': _parseSoc(),
+      'Bat Module °C (min,avg,max) ': _parseTemp(),
     };
   }
 

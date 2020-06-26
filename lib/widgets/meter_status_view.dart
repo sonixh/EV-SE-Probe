@@ -76,6 +76,7 @@ class _MeterStatusViewState extends State<MeterStatusView> {
   }
 
   Future _getFuture() {
+    print('getting new meter future&&&&&&&&&&&&&&&&');
     String token = Provider.of<User>(context).token;
     String name = Provider.of<User>(context).name;
     String username = Provider.of<User>(context).username;
@@ -98,10 +99,7 @@ class _MeterStatusViewState extends State<MeterStatusView> {
   Widget build(BuildContext context) {
     timer?.cancel();
     timer = Timer.periodic(
-        Duration(seconds: kInterval),
-        (Timer t) => setState(() {
-              print('refreshing meter status');
-            }));
+        Duration(seconds: kInterval), (Timer t) => setState(() {}));
     return FutureBuilder(
       future: _getFuture(),
       builder: (context, AsyncSnapshot snapshot) {

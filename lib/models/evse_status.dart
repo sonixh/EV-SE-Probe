@@ -59,7 +59,7 @@ class EVSEStatus {
   Map<String, String> get map {
     return {
       'Status ': status,
-      'Car Name': carName,
+      'Car Name ': carName,
       'Peer Connected ': peerConnected,
       'Real Power (kW) ': realPower,
       'Energy Up (kWh) ': energyUp,

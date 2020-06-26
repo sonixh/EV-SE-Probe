@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) =>
           //User object istantiated here so we can use Provider
-          User(null, null, null, null, null, null, null, null, null, null),
+          User(
+              null, null, null, null, null, null, null, null, null, null, null),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark().copyWith(

@@ -147,6 +147,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     String iso = Provider.of<User>(context, listen: false).iso;
     String version = Provider.of<User>(context, listen: false).version;
+    String buildNumber = Provider.of<User>(context, listen: false).buildNumber;
     List margins = [null, null, null, null];
 
     String token = Provider.of<User>(context).token;
@@ -154,7 +155,7 @@ class _HomePageState extends State<HomePage> {
     String username = Provider.of<User>(context).username;
     String url = Provider.of<User>(context).url;
 
-    if (iso != null && version != null) {
+    if (iso != null && version != null && buildNumber != null) {
       margins = getMarginWidth();
       return Scaffold(
         body: Container(
@@ -325,7 +326,7 @@ class _HomePageState extends State<HomePage> {
                 margin: EdgeInsets.only(bottom: 30),
                 child: Center(
                     child: Text(
-                  'Version $version',
+                  'Version $version ($buildNumber)',
                   style: kLabelTextStyle,
                 )),
               )

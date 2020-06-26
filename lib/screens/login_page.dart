@@ -40,6 +40,7 @@ class _LoginPageState extends State<LoginPage> {
   bool serverNRError = false;
   bool noInternetError = false;
   String version;
+  String buildNumber;
 
   @override
   void initState() {
@@ -206,23 +207,17 @@ class _LoginPageState extends State<LoginPage> {
         password = pass;
         iso = i;
       });
-      //print('here right before connectivity');
       var result = await Connectivity().checkConnectivity();
-      //  print('got connectivity');
       if (result == ConnectivityResult.none) {
-        //print('no internet connection');
         temp[3] = 'NIC';
       } else {
         noInternetError = false;
-        //print('here right before login');
-        //Send request to API to login
         temp = await nH.login(username, password, url);
-        //print('logged in from nH');
 
         PackageInfo packageInfo = await PackageInfo.fromPlatform();
-        //print('got package version');
         setState(() {
           version = packageInfo.version;
+          buildNumber = packageInfo.buildNumber;
         });
       }
 
@@ -244,6 +239,7 @@ class _LoginPageState extends State<LoginPage> {
         Provider.of<User>(context, listen: false).seturl(url);
         Provider.of<User>(context, listen: false).setIso(iso);
         Provider.of<User>(context, listen: false).setVersion(version);
+        Provider.of<User>(context, listen: false).setBuildNumber(buildNumber);
         //print('pushing home screen');
         //Navigator.pushReplacementNamed(context, '/home');
         Navigator.push(
@@ -299,6 +295,7 @@ class _LoginPageState extends State<LoginPage> {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
       setState(() {
         version = packageInfo.version;
+        buildNumber = packageInfo.buildNumber;
       });
     }
 
@@ -339,6 +336,7 @@ class _LoginPageState extends State<LoginPage> {
       Provider.of<User>(context, listen: false).setIso(iso);
       Provider.of<User>(context, listen: false).seturl(url);
       Provider.of<User>(context, listen: false).setVersion(version);
+      Provider.of<User>(context, listen: false).setBuildNumber(buildNumber);
 
       //Navigator.pushReplacementNamed(context, '/home');
       Navigator.push(

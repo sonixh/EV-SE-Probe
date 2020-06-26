@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -7,10 +6,8 @@ import 'package:v2g/models/ev_status.dart';
 import 'package:v2g/models/evse_status.dart';
 import 'package:v2g/models/user.dart';
 import '../constants.dart';
-import 'attribute.dart';
 
 class StatusWidget extends StatefulWidget {
-  //final Future future;
   final String iD;
   const StatusWidget({Key key, @required this.iD}) : super(key: key);
   @override
@@ -19,21 +16,6 @@ class StatusWidget extends StatefulWidget {
 
 class _StatusWidgetState extends State<StatusWidget> {
   Timer timer;
-  String parseTemp(AsyncSnapshot snapshot) {
-    try {
-      return '${double.parse(snapshot.data.tCellMin).truncate().toString()}, ${double.parse(snapshot.data.tCellAvg).truncate().toString()}, ${double.parse(snapshot.data.tCellMax).truncate().toString()}';
-    } catch (e) {
-      return 'null';
-    }
-  }
-
-  String parseSoc(AsyncSnapshot snapshot) {
-    try {
-      return '${double.parse(snapshot.data.soc).truncate().toString()}% / ';
-    } catch (e) {
-      return '';
-    }
-  }
 
   List<Widget> _getWidgets(Map map) {
     List<Widget> _l = [];
@@ -46,25 +28,72 @@ class _StatusWidgetState extends State<StatusWidget> {
         value = 'null';
       }
       if (map[k] != null && map[k] != '') {
-        _l.add(
-          Container(
-            child: RichText(
-              text: TextSpan(
-                style: kLabelTextStyle,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: k,
-                    style: kLabelTextStyle,
-                  ),
-                  TextSpan(
-                    text: value,
-                    style: kLargeLabelTextStyle,
-                  ),
-                ],
+        if (k == 'Car Name ' && map['Peer Connected '] == 'false') {
+          _l.add(
+            Container(
+              child: RichText(
+                text: TextSpan(
+                  style: kLabelTextStyle,
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: k,
+                      style: kLabelTextStyle,
+                    ),
+                    TextSpan(
+                      text: value,
+                      style: kGreyedOutTextStyle,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        );
+          );
+        } else {
+          if (k == 'Bat Module °C (min,avg,max) ') {
+            _l.add(
+              Container(
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: RichText(
+                    text: TextSpan(
+                      style: kLabelTextStyle,
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: k,
+                          style: kLabelTextStyle,
+                        ),
+                        TextSpan(
+                          text: value,
+                          style: kLargeLabelTextStyle,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          } else {
+            _l.add(
+              Container(
+                child: RichText(
+                  text: TextSpan(
+                    style: kLabelTextStyle,
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: k,
+                        style: kLabelTextStyle,
+                      ),
+                      TextSpan(
+                        text: value,
+                        style: kLargeLabelTextStyle,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
+        }
       }
     }
     return _l;
@@ -85,7 +114,7 @@ class _StatusWidgetState extends State<StatusWidget> {
           name: name,
           username: username,
           url: url);
-    } else {
+    } else if (type == 'ev') {
       EVStatus evStatus = new EVStatus();
       return evStatus.fetchEVStatus(
           vin: widget.iD,
@@ -93,6 +122,8 @@ class _StatusWidgetState extends State<StatusWidget> {
           name: name,
           username: username,
           url: url);
+    } else {
+      return null;
     }
   }
 
@@ -104,7 +135,6 @@ class _StatusWidgetState extends State<StatusWidget> {
 
   @override
   Widget build(BuildContext context) {
-    String type = Provider.of<User>(context).type;
     timer?.cancel();
     timer = Timer.periodic(
         Duration(seconds: kInterval),
@@ -124,80 +154,13 @@ class _StatusWidgetState extends State<StatusWidget> {
             ),
           );
         } else {
-          List<Widget> evStatusChildren = <Widget>[
-            if (type == 'ev')
-              Container(
-                child: FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: RichText(
-                    text: TextSpan(
-                      style: kLabelTextStyle,
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: 'State of Charge ',
-                          style: kLabelTextStyle,
-                        ),
-                        TextSpan(
-                          text: parseSoc(snapshot) +
-                              '${snapshot.data.socKwh} kWh',
-                          style: kLargeLabelTextStyle,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            Attribute(
-                snapshot: snapshot, label: 'Battery Temperature ', x: 'tBatt'),
-            Container(
-              child: FittedBox(
-                fit: BoxFit.fitWidth,
-                child: RichText(
-                  text: TextSpan(
-                    style: kLabelTextStyle,
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: 'Bat. Module °C (min,avg,max) ',
-                        style: kLabelTextStyle,
-                      ),
-                      TextSpan(
-                        text: parseTemp(snapshot),
-                        style: kLargeLabelTextStyle,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+          return Container(
+            padding: EdgeInsets.only(top: 20, bottom: 30, left: 22, right: 30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: _getWidgets(snapshot.data.map),
             ),
-          ];
-          if (type == 'evse') {
-            return Container(
-              padding:
-                  EdgeInsets.only(top: 20, bottom: 30, left: 22, right: 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: _getWidgets(snapshot.data.map),
-              ),
-            );
-          } else {
-            return Container(
-              padding:
-                  EdgeInsets.only(top: 20, bottom: 30, left: 30, right: 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: _getWidgets(snapshot.data.map),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: evStatusChildren,
-                  ),
-                ],
-              ),
-            );
-          }
+          );
         }
       },
     );
