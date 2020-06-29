@@ -51,7 +51,7 @@ class MeterStatus {
       "Meter Id ": meterId,
       "Meter Name ": meterName,
       'Reported At ': timeStamp,
-      'Univ epoch time ': DateTime.now().millisecondsSinceEpoch.toString(),
+      'Unix epoch time ': DateTime.now().millisecondsSinceEpoch.toString(),
       "Power Factor ": powerFactor,
       "Frequency ": frequency,
       "Line Current (A) ": lineCurrent,

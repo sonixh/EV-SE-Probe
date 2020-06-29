@@ -242,7 +242,7 @@ class _LoginPageState extends State<LoginPage> {
         Provider.of<User>(context, listen: false).setBuildNumber(buildNumber);
         //print('pushing home screen');
         //Navigator.pushReplacementNamed(context, '/home');
-        Navigator.push(
+        Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => HomePage()));
       } else if (temp[3] == 'SNR') {
         //print(temp[3]);
@@ -339,7 +339,7 @@ class _LoginPageState extends State<LoginPage> {
       Provider.of<User>(context, listen: false).setBuildNumber(buildNumber);
 
       //Navigator.pushReplacementNamed(context, '/home');
-      Navigator.push(
+      Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => HomePage()));
     } else {
       print(loginInfo[3]);
