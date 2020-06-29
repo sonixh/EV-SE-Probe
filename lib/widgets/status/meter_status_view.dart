@@ -5,7 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:v2g/models/network_handler.dart';
 import 'package:v2g/models/user.dart';
-import '../constants.dart';
+import '../../constants.dart';
 
 class MeterStatusView extends StatefulWidget {
   final String iD;

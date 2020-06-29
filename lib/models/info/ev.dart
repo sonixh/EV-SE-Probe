@@ -1,4 +1,4 @@
-import 'network_handler.dart';
+import '../network_handler.dart';
 
 class EV {
   NetworkHandler nH = new NetworkHandler(type: EV);

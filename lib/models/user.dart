@@ -15,6 +15,7 @@ class User extends ChangeNotifier {
   String _iso;
   String _version;
   String _buildNumber;
+  int _count = 0;
 
   User(
       this._username,
@@ -27,10 +28,16 @@ class User extends ChangeNotifier {
       this._iso,
       this._version,
       this._evseSwVerList,
-      this._buildNumber);
+      this._buildNumber,
+      this._count);
 
   setUsername(String username) {
     _username = username;
+    notifyListeners();
+  }
+
+  setCount(int count) {
+    _count = count;
     notifyListeners();
   }
 
@@ -101,6 +108,10 @@ class User extends ChangeNotifier {
 
   String get version {
     return _version;
+  }
+
+  int get count {
+    return _count;
   }
 
   String get buildNumber {

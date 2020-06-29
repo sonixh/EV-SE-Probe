@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:v2g/models/evse.dart';
-import 'package:v2g/models/evse_swver.dart';
-import '../constants.dart';
+import 'package:v2g/models/info/evse.dart';
+import 'package:v2g/models/info/evse_swver.dart';
+import '../../constants.dart';
 
 class EVSEInfoWidget extends StatelessWidget {
   final EVSE evse;

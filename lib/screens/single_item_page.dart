@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:v2g/constants.dart';
-import 'package:v2g/models/ev.dart';
-import 'package:v2g/models/evse.dart';
-import 'package:v2g/models/evse_swver.dart';
+import 'package:v2g/models/info/ev.dart';
+import 'package:v2g/models/info/evse.dart';
+import 'package:v2g/models/info/evse_swver.dart';
 import 'package:v2g/models/user.dart';
-import 'package:v2g/widgets/ev_info_widget.dart';
-import 'package:v2g/widgets/evse_info_widget.dart';
-import 'package:v2g/widgets/meter_status_view.dart';
-import 'package:v2g/widgets/status_widget.dart';
+import 'package:v2g/widgets/info/ev_info_widget.dart';
+import 'package:v2g/widgets/info/evse_info_widget.dart';
+import 'package:v2g/widgets/status/meter_status_view.dart';
+import 'package:v2g/widgets/status/status_widget.dart';
 
 class SingleItemPage extends StatefulWidget {
   const SingleItemPage({Key key, this.iD}) : super(key: key);

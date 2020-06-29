@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:v2g/constants.dart';
-import 'package:v2g/models/ev.dart';
-import 'package:v2g/models/ev_status.dart';
-import 'package:v2g/models/evse.dart';
-import 'package:v2g/models/evse_status.dart';
+import 'package:v2g/models/info/ev.dart';
+import 'package:v2g/models/status/ev_status.dart';
+import 'package:v2g/models/info/evse.dart';
+import 'package:v2g/models/status/evse_status.dart';
 import 'package:v2g/models/network_handler.dart';
 import 'package:v2g/models/user.dart';
 import 'package:v2g/screens/single_item_page.dart';
 //import 'package:v2g/widgets/emergency_charge_button.dart';
-import 'package:v2g/widgets/reusable_card.dart';
+import 'package:v2g/widgets/ui/reusable_card.dart';
 
 class SingleResourcePage extends StatefulWidget {
   const SingleResourcePage({Key key, this.iD, this.vin}) : super(key: key);
@@ -70,6 +70,17 @@ class _SingleResourcePage extends State<SingleResourcePage> {
 
   @override
   Widget build(BuildContext context) {
+    //int _count = Provider.of<User>(context).count;
+
+    // Stream<int> _stopwatch() async* {
+    //   while (true) {
+    //     await Future.delayed(Duration(seconds: 1));
+    //     _count = _count + 1;
+    //     //Provider.of<User>(context, listen: false).setCount(_count);
+    //     yield _count;
+    //   }
+    // }
+
     timer?.cancel();
     timer = Timer.periodic(
         Duration(seconds: kInterval),
@@ -593,6 +604,16 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                   ),
                                 ),
                               ),
+                              // StreamBuilder<int>(
+                              //   stream: _stopwatch(),
+                              //   builder: (context, snapshot) {
+                              //     if (snapshot.hasData) {
+                              //       return Text('Has data: $_count');
+                              //     } else {
+                              //       return Text('Waiting...');
+                              //     }
+                              //   },
+                              // ),
                               //SizedBox(height: 30),
                               //EmergencyChargeButton(vin: snapshot.data[1].vin),
                             ],

@@ -4,16 +4,16 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:v2g/models/ev.dart';
-import 'package:v2g/models/ev_status.dart';
-import 'package:v2g/models/evse.dart';
-import 'package:v2g/models/evse_status.dart';
-import 'package:v2g/models/evse_swver.dart';
+import 'package:v2g/models/info/ev.dart';
+import 'package:v2g/models/status/ev_status.dart';
+import 'package:v2g/models/info/evse.dart';
+import 'package:v2g/models/status/evse_status.dart';
+import 'package:v2g/models/info/evse_swver.dart';
 import 'package:v2g/models/network_handler.dart';
 import 'package:v2g/models/user.dart';
 import 'package:v2g/screens/resource_page.dart';
-import 'package:v2g/widgets/icon_content.dart';
-import 'package:v2g/widgets/reusable_card.dart';
+import 'package:v2g/widgets/ui/icon_content.dart';
+import 'package:v2g/widgets/ui/reusable_card.dart';
 import '../constants.dart';
 import 'list_page.dart';
 import 'login_page.dart';
@@ -316,20 +316,16 @@ class _HomePageState extends State<HomePage> {
                   onPress: logout,
                 ),
               ),
-              // height > 900
-              //     ? SizedBox(
-              //         height: 100,
-              //       )
-              //     : SizedBox(height: 20),
               Expanded(child: SizedBox()),
               Container(
                 margin: EdgeInsets.only(bottom: 30),
                 child: Center(
-                    child: Text(
-                  'Version $version ($buildNumber)',
-                  style: kLabelTextStyle,
-                )),
-              )
+                  child: Text(
+                    'Version $version ($buildNumber)',
+                    style: kLabelTextStyle,
+                  ),
+                ),
+              ),
             ],
           ),
         ),

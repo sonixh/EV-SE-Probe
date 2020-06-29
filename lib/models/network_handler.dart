@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:v2g/models/ev.dart';
-import 'evse.dart';
-import 'ev_status.dart';
-import 'evse_status.dart';
-import 'evse_swver.dart';
-import 'meter_status.dart';
+import 'package:v2g/models/info/ev.dart';
+import 'info/evse.dart';
+import 'status/ev_status.dart';
+import 'status/evse_status.dart';
+import 'info/evse_swver.dart';
+import 'status/meter_status.dart';
 
 class NetworkHandler<T> {
   NetworkHandler({this.type});

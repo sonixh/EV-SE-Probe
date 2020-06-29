@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
-import 'package:v2g/models/evse_status.dart';
+import 'package:v2g/models/status/evse_status.dart';
 import 'package:v2g/models/user.dart';
 import 'package:v2g/screens/single_resource_page.dart';
-import 'package:v2g/widgets/round_icon_button.dart';
+import 'package:v2g/widgets/ui/round_icon_button.dart';
 import '../constants.dart';
 
 class ResourceList extends StatefulWidget {

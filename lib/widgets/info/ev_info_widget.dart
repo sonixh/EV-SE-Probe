@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:v2g/models/ev.dart';
-import '../constants.dart';
+import 'package:v2g/models/info/ev.dart';
+import '../../constants.dart';
 
 class EVInfoWidget extends StatelessWidget {
   EVInfoWidget({@required this.ev});

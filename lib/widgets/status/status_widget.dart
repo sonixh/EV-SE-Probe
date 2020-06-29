@@ -2,10 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
-import 'package:v2g/models/ev_status.dart';
-import 'package:v2g/models/evse_status.dart';
+import 'package:v2g/models/status/ev_status.dart';
+import 'package:v2g/models/status/evse_status.dart';
 import 'package:v2g/models/user.dart';
-import '../constants.dart';
+import '../../constants.dart';
 
 class StatusWidget extends StatefulWidget {
   final String iD;
