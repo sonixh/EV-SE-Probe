@@ -15,6 +15,8 @@ class EVStatus {
   final String tCellMin;
   final String tCellMax;
   final String powerFlow;
+  final String powerCapacityUp;
+  final String powerCapacityDown;
 
   EVStatus({
     this.name,
@@ -31,25 +33,30 @@ class EVStatus {
     this.tCellMax,
     this.powerFlow,
     this.socKwh,
+    this.powerCapacityDown,
+    this.powerCapacityUp,
   });
 
   factory EVStatus.fromTwoJson(
       Map<String, dynamic> evStatusJson, Map<String, dynamic> evDataJson) {
     return EVStatus(
-        name: evStatusJson['car_name'],
-        evseName: evStatusJson['evse_name'],
-        peerConnected: evStatusJson['peer_connected'],
-        soc: evStatusJson['soc'],
-        socKwh: evStatusJson['soc_kwh'],
-        primaryStatus: evStatusJson['primary_status'],
-        powerFlow: evStatusJson['power_flow'],
-        vin: evStatusJson['vin'],
-        id: evStatusJson['vin'],
-        secondaryStatus: evStatusJson['secondary_status'],
-        //tAmbient: evDataJson['t_ambient'],
-        tCellAvg: evDataJson['t_cell_avg'],
-        tCellMax: evDataJson['t_cell_max'],
-        tCellMin: evDataJson['t_cell_min']);
+      name: evStatusJson['car_name'],
+      evseName: evStatusJson['evse_name'],
+      peerConnected: evStatusJson['peer_connected'],
+      soc: evStatusJson['soc'],
+      socKwh: evStatusJson['soc_kwh'],
+      primaryStatus: evStatusJson['primary_status'],
+      powerFlow: evStatusJson['power_flow'],
+      vin: evStatusJson['vin'],
+      id: evStatusJson['vin'],
+      secondaryStatus: evStatusJson['secondary_status'],
+      //tAmbient: evDataJson['t_ambient'],
+      tCellAvg: evDataJson['t_cell_avg'],
+      tCellMax: evDataJson['t_cell_max'],
+      tCellMin: evDataJson['t_cell_min'],
+      powerCapacityDown: evStatusJson['power_capacity_down'],
+      powerCapacityUp: evStatusJson['power_capacity_up'],
+    );
   }
 
   factory EVStatus.fromJson(Map<String, dynamic> evStatusJson) {
@@ -89,6 +96,7 @@ class EVStatus {
       'Primary Status ': primaryStatus,
       'Secondary Status ': secondaryStatus,
       'Power Flow (kW) ': powerFlow,
+      'Power Cap. Up/Down ': '$powerCapacityUp / $powerCapacityDown',
       'State of Charge ': _parseSoc(),
       'Bat Module °C (min,avg,max) ': _parseTemp(),
     };

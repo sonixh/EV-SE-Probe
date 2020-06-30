@@ -17,6 +17,8 @@ class EVSEStatus {
   final String vinConnected;
   final String powerFactor;
   final String meterSource;
+  final String maxC;
+  final String maxD;
 
   EVSEStatus(
       {this.name,
@@ -34,26 +36,31 @@ class EVSEStatus {
       this.carName,
       this.vinConnected,
       this.powerFactor,
-      this.meterSource});
+      this.meterSource,
+      this.maxC,
+      this.maxD});
 
   factory EVSEStatus.fromJson(Map<String, dynamic> json) {
     return EVSEStatus(
-        name: json['name'],
-        status: json['status'],
-        timestamp: json['timestamp'],
-        energyNet: json['energy_net_kwh'],
-        realPower: json['power_flow_real_kw'],
-        energyDown: json['energy_down_kwh'],
-        energyUp: json['energy_up_kwh'],
-        peerConnected: json['peer_connected'],
-        gfci: json['gfci_state'],
-        evseState: json['evse_state'],
-        evState: json['ev_status'],
-        id: json['evse_id'],
-        vinConnected: json['vin'],
-        carName: json['car_name'],
-        powerFactor: json['power_factor'],
-        meterSource: json['meter_source']);
+      name: json['name'],
+      status: json['status'],
+      timestamp: json['timestamp'],
+      energyNet: json['energy_net_kwh'],
+      realPower: json['power_flow_real_kw'],
+      energyDown: json['energy_down_kwh'],
+      energyUp: json['energy_up_kwh'],
+      peerConnected: json['peer_connected'],
+      gfci: json['gfci_state'],
+      evseState: json['evse_state'],
+      evState: json['ev_status'],
+      id: json['evse_id'],
+      vinConnected: json['vin'],
+      carName: json['car_name'],
+      powerFactor: json['power_factor'],
+      meterSource: json['meter_source'],
+      maxC: json['max_c'],
+      maxD: json['max_d'],
+    );
   }
 
   Map<String, String> get map {
@@ -62,6 +69,8 @@ class EVSEStatus {
       'Car Name ': carName,
       'Peer Connected ': peerConnected,
       'Real Power (kW) ': realPower,
+      'Max Charging ': maxC,
+      'Max Discharging ': maxD,
       'Energy Up (kWh) ': energyUp,
       'Energy Down (kWh) ': energyDown,
       'GFCI ': gfci,
