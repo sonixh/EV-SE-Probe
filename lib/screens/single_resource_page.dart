@@ -70,14 +70,6 @@ class _SingleResourcePage extends State<SingleResourcePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Stream<int> _stopwatch() async* {
-    // while (true) {
-    //   await Future.delayed(Duration(seconds: 1));
-    //   _count = _count + 1;
-    //   yield _count;
-    // }
-    // }
-
     timer?.cancel();
     timer = Timer.periodic(
         Duration(seconds: kInterval),
@@ -601,17 +593,18 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                   ),
                                 ),
                               ),
-                              StreamBuilder<int>(
-                                stream: Provider.of<User>(context).intStream(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    return Text(
-                                        '${Provider.of<User>(context).count}');
-                                  } else {
-                                    return Text('Waiting...');
-                                  }
-                                },
-                              ),
+                              // StreamBuilder<int>(
+                              //   stream: Provider.of<User>(context).intStream(),
+                              //   builder: (context, snapshot) {
+                              //     if (snapshot.hasData) {
+                              //       print(snapshot.data);
+                              //       return Text(
+                              //           '${Provider.of<User>(context).count}');
+                              //     } else {
+                              //       return Text('Waiting...');
+                              //     }
+                              //   },
+                              // ),
                               //SizedBox(height: 30),
                               //EmergencyChargeButton(vin: snapshot.data[1].vin),
                             ],

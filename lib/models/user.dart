@@ -32,13 +32,13 @@ class User extends ChangeNotifier {
     this._count,
   );
 
-  Stream<int> intStream() async* {
-    while (true) {
-      await Future.delayed(Duration(seconds: 2));
-      _count = _count + 2;
-      yield _count;
-    }
-  }
+  // Stream<int> intStream() async* {
+  //   while (true) {
+  //     await Future.delayed(Duration(seconds: 2));
+  //     _count = _count + 2;
+  //     yield _count;
+  //   }
+  // }
 
   setUsername(String username) {
     _username = username;
