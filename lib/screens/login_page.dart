@@ -197,8 +197,10 @@ class _LoginPageState extends State<LoginPage> {
         url = 'aggregator.nuvve.fr';
       } else if (i == 'unitedkingdom') {
         url = 'aggregator.nuvve.co.uk';
+      } else if (i == 'custom') {
+        url = i;
       } else {
-        url = i + '.nuvve.com';
+        url = i;
       }
 
       setState(() {
@@ -272,8 +274,10 @@ class _LoginPageState extends State<LoginPage> {
         url = 'aggregator.nuvve.fr';
       } else if (iso == 'unitedkingdom') {
         url = 'aggregator.nuvve.co.uk';
+      } else if (iso == 'custom') {
+        url = iso;
       } else {
-        url = iso + '.nuvve.com';
+        url = iso;
       }
     } else if (urlEntered) {
       //print(url);
@@ -538,7 +542,7 @@ class _LoginPageState extends State<LoginPage> {
                         serverNRError = false;
                       });
                     },
-                    onSubmitted: (_) => {login()},
+                    onSubmitted: (value) => {if (value != '') login()},
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'URL',

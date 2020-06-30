@@ -70,15 +70,12 @@ class _SingleResourcePage extends State<SingleResourcePage> {
 
   @override
   Widget build(BuildContext context) {
-    //int _count = Provider.of<User>(context).count;
-
     // Stream<int> _stopwatch() async* {
-    //   while (true) {
-    //     await Future.delayed(Duration(seconds: 1));
-    //     _count = _count + 1;
-    //     //Provider.of<User>(context, listen: false).setCount(_count);
-    //     yield _count;
-    //   }
+    // while (true) {
+    //   await Future.delayed(Duration(seconds: 1));
+    //   _count = _count + 1;
+    //   yield _count;
+    // }
     // }
 
     timer?.cancel();
@@ -604,16 +601,17 @@ class _SingleResourcePage extends State<SingleResourcePage> {
                                   ),
                                 ),
                               ),
-                              // StreamBuilder<int>(
-                              //   stream: _stopwatch(),
-                              //   builder: (context, snapshot) {
-                              //     if (snapshot.hasData) {
-                              //       return Text('Has data: $_count');
-                              //     } else {
-                              //       return Text('Waiting...');
-                              //     }
-                              //   },
-                              // ),
+                              StreamBuilder<int>(
+                                stream: Provider.of<User>(context).intStream(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    return Text(
+                                        '${Provider.of<User>(context).count}');
+                                  } else {
+                                    return Text('Waiting...');
+                                  }
+                                },
+                              ),
                               //SizedBox(height: 30),
                               //EmergencyChargeButton(vin: snapshot.data[1].vin),
                             ],

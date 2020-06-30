@@ -18,18 +18,27 @@ class User extends ChangeNotifier {
   int _count = 0;
 
   User(
-      this._username,
-      this._token,
-      this._name,
-      this._role,
-      this._evseList,
-      this._evList,
-      this._url,
-      this._iso,
-      this._version,
-      this._evseSwVerList,
-      this._buildNumber,
-      this._count);
+    this._username,
+    this._token,
+    this._name,
+    this._role,
+    this._evseList,
+    this._evList,
+    this._url,
+    this._iso,
+    this._version,
+    this._evseSwVerList,
+    this._buildNumber,
+    this._count,
+  );
+
+  Stream<int> intStream() async* {
+    while (true) {
+      await Future.delayed(Duration(seconds: 2));
+      _count = _count + 2;
+      yield _count;
+    }
+  }
 
   setUsername(String username) {
     _username = username;
