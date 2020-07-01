@@ -49,7 +49,8 @@ class _StatusWidgetState extends State<StatusWidget> {
             ),
           );
         } else {
-          if (k == 'Bat Module °C (min,avg,max) ') {
+          if (k == 'Bat Module °C (min,avg,max) ' ||
+              k == 'Power Cap. Up/Down (kW) ') {
             _l.add(
               Container(
                 child: FittedBox(

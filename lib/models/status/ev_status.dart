@@ -96,7 +96,7 @@ class EVStatus {
       'Primary Status ': primaryStatus,
       'Secondary Status ': secondaryStatus,
       'Power Flow (kW) ': powerFlow,
-      'Power Cap. Up/Down ': '$powerCapacityUp / $powerCapacityDown',
+      'Power Cap. Up/Down (kW) ': '$powerCapacityUp / $powerCapacityDown',
       'State of Charge ': _parseSoc(),
       'Bat Module °C (min,avg,max) ': _parseTemp(),
     };
