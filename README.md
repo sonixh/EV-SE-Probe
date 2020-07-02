@@ -4,14 +4,12 @@ Flutter app to view to view static and dynamic electric vehicle and V2G capable 
 
 ## Screenshots
 
-![image](https://user-images.githubusercontent.com/38408825/84706129-7c78cc00-af2a-11ea-84e6-ccefd4ccd2b9.png)
+![IMG_1853](https://user-images.githubusercontent.com/38408825/86396039-3c765080-bc6f-11ea-8892-0c2997920b4d.PNG)
 
-![image](https://user-images.githubusercontent.com/38408825/84706179-8c90ab80-af2a-11ea-8186-7b0157103ef8.png)
+![IMG_1852](https://user-images.githubusercontent.com/38408825/86396042-3d0ee700-bc6f-11ea-884b-6c0681bb7ca8.PNG)
 
-![image](https://user-images.githubusercontent.com/38408825/84706214-9b775e00-af2a-11ea-9983-115e4fbde5d7.png)
+![IMG_1851](https://user-images.githubusercontent.com/38408825/86396045-3da77d80-bc6f-11ea-99d7-ab92298cce36.PNG)
 
-![image](https://user-images.githubusercontent.com/38408825/84706332-c5c91b80-af2a-11ea-81dd-0bff9c431c98.png)
+![IMG_1850](https://user-images.githubusercontent.com/38408825/86396046-3e401400-bc6f-11ea-98a2-65df6178f170.PNG)
 
-![image](https://user-images.githubusercontent.com/38408825/84706366-d5486480-af2a-11ea-95b9-b89aa1e338c3.png)
-
-
+![IMG_1849](https://user-images.githubusercontent.com/38408825/86396048-3ed8aa80-bc6f-11ea-9f76-6b1cbee0a16d.PNG)
