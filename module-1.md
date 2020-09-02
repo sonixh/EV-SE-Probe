@@ -94,4 +94,13 @@ want to win instead of being ethical
 
 ## Madoff Video
 
-* 
+* I wouldn't understand if I asked
+* too many clients to operate as unregistered investment advisors
+* was wondering if they should have been licensed \(don't worry you're my clients lawyers said it's ok\)
+* Bernie didn't want to get licensed \(owned Us\)
+* blamed Bernie that he didn't want them to get licensed
+* Bernie didn't get in trouble at first
+* new in between company feed money to Bernie
+* aggressive in catching new clients
+* thousands of clients and billions but name Madoff couldn't be anywhere publicly because he wasn't registered with the SEC
+
