@@ -103,4 +103,19 @@ want to win instead of being ethical
 * new in between company feed money to Bernie
 * aggressive in catching new clients
 * thousands of clients and billions but name Madoff couldn't be anywhere publicly because he wasn't registered with the SEC
+* everyone operated with Madoff's secrecy rules
+  * people said "I don't know that Madoff did want to be public"
+  * "something you didn't talk about"
+* when did it become fraud? still a question
+* good company to work for people didn't leave you stayed there
+* woman who said wanted more transparency from hedge funds, didn't fully answer the question
+* intimidated 
+* "we make the assumption that he's doing everything properly, he's a well known broker"
+
+## Ethics and Your Business Career
+
+* if they say I'll report to CEO and SEC then they're not thinking through
+* want to compete with people above you, think they're above rules arrogance
+* do something, talk about it with group of people
+* don't excuse inaction because you are new at a firm
 
